@@ -2,11 +2,12 @@
 
 @import "./components/web-app/web-app.style.css";
 @import "./components/web-sidebar/web-sidebar.style.css";
+@import "./components/web-view/web-view.style.css";
 
 :root {
   --color-background: hsl(226, 71%, 40%);
   --color-app: hsl(222, 47%, 12%);
-  --color-sidebar: hsl(217, 47%, 16%);
+  --color-sidebar: hsl(217, 47%, 14%);
   --color-primary-text: hsl(210, 40%, 96%);
 }
 

@@ -1,0 +1,21 @@
+.webView {
+  display: block;
+}
+
+.webView__container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.webView__bar {
+  flex: none;
+  display: block;
+  height: 64px;
+  background-color: var(--color-sidebar);
+}
+
+.webView__content {
+  flex: 1;
+  display: block;
+}
