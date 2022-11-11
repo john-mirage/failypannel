@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <title>Failypannel</title>
+</head>
+
+<body class="page">
+  <div class="page__app" id="app"></div>
+
+  <template id="template-web-app">
+    <web-sidebar class="webApp__sidebar"></web-sidebar>
+    <web-view class="webApp__view"></web-view>
+  </template>
+
+  <template id="template-web-sidebar">
+    <aside class="webSidebar__container">
+      <h2 class="webSidebar__title">Menu</h2>
+      <web-navigation></web-navigation>
+    </aside>
+  </template>
+
+  <template id="template-web-view">
+    <main class="webView__container">
+      <web-bar></web-bar>
+      <web-content></web-content>
+    </main>
+  </template>
+
+  <template id="template-web-navigation">
+    <nav class="webNavigation__container">
+      <ul class="webNavigation__list" data-js="list"></ul>
+    </nav>
+  </template>
+
+  <template id="template-web-navigation-item">
+    <li class="webNavigationItem__container">
+      <button class="webNavigationItem__button" data-js="button"></button>
+    </li>
+  </template>
+
+  <template id="template-web-bar">
+    <header class="webBar__container">
+      <h2 class="webBar__title" data-js="title"></h2>
+    </header>
+  </template>
+
+  <template id="template-web-content">
+
+  </template>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+.webSidebar {
+  display: block;
+  width: 256px;
+  height: 100%;
+  padding: 24px;
+  background-color: var(--color-sidebar);
+}
+
+.webSidebar__title {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+  color: var(--color-primary-text);
+}
