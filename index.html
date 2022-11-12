@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <title>Failypannel</title>
 </head>
 
@@ -15,14 +15,19 @@
   <div class="page__app" id="app"></div>
 
   <template id="template-web-app">
-    <web-sidebar class="webApp__sidebar"></web-sidebar>
+    <web-sidebar class="webApp__sidebar" data-label="Los Santos Police Department"></web-sidebar>
     <web-view class="webApp__view"></web-view>
   </template>
 
   <template id="template-web-sidebar">
     <aside class="webSidebar__container">
-      <h2 class="webSidebar__title">Menu</h2>
-      <web-navigation></web-navigation>
+      <header class="webSidebar__header">
+        <img class="webSidebar__logo" src="/src/images/lspd.png" alt="LSPD logo" data-js="image" draggable="false">
+        <h2 class="webSidebar__title" data-js="title"></h2>
+      </header>
+      <div class="webSidebar__body">
+        <web-navigation></web-navigation>
+      </div>
     </aside>
   </template>
 
@@ -35,19 +40,19 @@
 
   <template id="template-web-navigation">
     <nav class="webNavigation__container">
-      <ul class="webNavigation__list" data-js="list"></ul>
+      <web-navigation-item data-name="plaque d'immatriculation"></web-navigation-item>
+      <web-navigation-item data-name="dossiers"></web-navigation-item>
+      <web-navigation-item data-name="dispatch"></web-navigation-item>
     </nav>
   </template>
 
   <template id="template-web-navigation-item">
-    <li class="webNavigationItem__container">
-      <button class="webNavigationItem__button" data-js="button"></button>
-    </li>
+    <button class="webNavigationItem__button" data-js="button"></button>
   </template>
 
   <template id="template-web-bar">
     <header class="webBar__container">
-      <h2 class="webBar__title" data-js="title"></h2>
+      <h2 class="webBar__title" data-js="title">Vérification de plaque d'immatriculation</h2>
     </header>
   </template>
 

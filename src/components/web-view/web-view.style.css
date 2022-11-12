@@ -10,9 +10,6 @@
 
 .webView__bar {
   flex: none;
-  display: block;
-  height: 64px;
-  background-color: var(--color-sidebar);
 }
 
 .webView__content {
