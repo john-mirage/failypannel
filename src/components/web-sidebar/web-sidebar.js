@@ -35,29 +35,30 @@ class WebSidebar extends HTMLElement {
   }
 
   clearTitleSize() {
-    this.#titleElement.classList.remove("webSidebar__title--sm");
-    this.#titleElement.classList.remove("webSidebar__title--md");
-    this.#titleElement.classList.remove("webSidebar__title--lg");
+    this.#titleElement.classList.remove(
+      "webSidebar__title--sm",
+      "webSidebar__title--md",
+      "webSidebar__title--lg"
+    );
   }
 
-  handleTitle(newTitle) {
-    if (newTitle) {
-      this.clearTitleSize();
-      if (newTitle.length > 25) {
-        this.#titleElement.classList.add("webSidebar__title--sm");
-      } else if (newTitle.length > 15 && newTitle.length <= 25) {
-        this.#titleElement.classList.add("webSidebar__title--md");
-      } else {
-        this.#titleElement.classList.add("webSidebar__title--lg");
-      }
+  addTitleSize(newTitleLength) {
+    if (newTitleLength > 25) {
+      this.#titleElement.classList.add("webSidebar__title--sm");
+    } else if (newTitleLength > 15) {
+      this.#titleElement.classList.add("webSidebar__title--md");
+    } else {
+      this.#titleElement.classList.add("webSidebar__title--lg");
     }
-    this.#titleElement.textContent = newTitle;
   }
 
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
       case "data-label":
-        this.handleTitle(newValue || "");
+        const newTitle = newValue ?? "";
+        this.clearTitleSize();
+        this.addTitleSize(newTitle.length);
+        this.#titleElement.textContent = newTitle;
     }
   }
 }
