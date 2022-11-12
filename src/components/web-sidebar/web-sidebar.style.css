@@ -1,28 +1,38 @@
 .webSidebar {
   display: block;
-  width: 256px;
+  width: 276px;
   height: 100%;
   background-color: var(--color-app-bar);
   border-right: 1px solid var(--color-app-border);
 }
 
+.webSidebar__container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .webSidebar__header {
+  flex: none;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   height: 80px;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 24px;
+  padding-right: 24px;
   border-bottom: 1px solid var(--color-app-border);
 }
 
 .webSidebar__body {
-  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
 }
 
 .webSidebar__logo {
-  margin-right: 16px;
+  margin-right: 12px;
   flex: none;
   width: 48px;
   height: 48px;
@@ -54,9 +64,13 @@
 
 .webSidebar__subtitle {
   margin-bottom: 16px;
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 12px;
+  font-weight: 500;
   letter-spacing: 1.4px;
   text-transform: uppercase;
   color: var(--color-secondary-text);
+}
+
+.webSidebar__themeButton {
+  margin-top: auto;
 }

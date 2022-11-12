@@ -6,6 +6,7 @@
 @import "./components/web-navigation-item/web-navigation-item.style.css";
 @import "./components/web-view/web-view.style.css";
 @import "./components/web-bar/web-bar.style.css";
+@import "./components/web-theme-button/web-theme-button.style.css";
 
 :root {
   --color-background: hsl(226, 71%, 40%);
@@ -15,6 +16,7 @@
   --color-selected: hsl(215, 25%, 27%);
   --color-primary-text: hsl(214, 32%, 91%);
   --color-secondary-text: hsl(215, 20%, 65%);
+  --color-accent: hsl(228, 89%, 63%);
 }
 
 .page {

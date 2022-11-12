@@ -7,6 +7,7 @@ import WebNavigation from "./components/web-navigation";
 import WebNavigationItem from "./components/web-navigation-item";
 import WebBar from "./components/web-bar";
 import WebPlate from "./components/web-view/views/web-plate";
+import WebThemeButton from "./components/web-theme-button";
 
 customElements.define("web-app", WebApp);
 customElements.define("web-sidebar", WebSidebar);
@@ -15,6 +16,7 @@ customElements.define("web-navigation", WebNavigation);
 customElements.define("web-navigation-item", WebNavigationItem);
 customElements.define("web-bar", WebBar);
 customElements.define("web-plate", WebPlate);
+customElements.define("web-theme-button", WebThemeButton);
 
 const app = document.getElementById("app");
 const webApp = document.createElement("web-app");
