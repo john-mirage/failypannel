@@ -4,18 +4,18 @@ class WebSidebar extends HTMLElement {
   #titleElement;
 
   static get observedAttributes() {
-    return ["data-label"];
+    return ["data-enterprise"];
   }
 
-  get label() {
-    return this.dataset.label;
+  get enterprise() {
+    return this.dataset.enterprise;
   }
 
-  set label(newLabel) {
-    if (typeof newLabel === "string") {
-      this.dataset.label = newLabel;
+  set enterprise(newEnterprise) {
+    if (typeof newEnterprise === "string") {
+      this.dataset.enterprise = newEnterprise;
     } else {
-      this.removeAttribute("data-label");
+      this.removeAttribute("data-enterprise");
     }
   }
 
@@ -31,6 +31,15 @@ class WebSidebar extends HTMLElement {
       this.classList.add("webSidebar");
       this.append(this.#template);
       this.#isMounted = true;
+    }
+    this.upgradeProperty("enterprise");
+  }
+
+  upgradeProperty(prop) {
+    if (this.hasOwnProperty(prop)) {
+      let value = this[prop];
+      delete this[prop];
+      this[prop] = value;
     }
   }
 
@@ -54,11 +63,10 @@ class WebSidebar extends HTMLElement {
 
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
-      case "data-label":
-        const newTitle = newValue ?? "";
+      case "data-enterprise":
         this.clearTitleSize();
-        this.addTitleSize(newTitle.length);
-        this.#titleElement.textContent = newTitle;
+        if (newValue) this.addTitleSize(newValue.length);
+        this.#titleElement.textContent = newValue ?? "";
     }
   }
 }

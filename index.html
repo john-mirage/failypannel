@@ -21,8 +21,8 @@
   <div class="page__app" id="app"></div>
 
   <template id="template-web-app">
-    <web-sidebar class="webApp__sidebar" data-label="Los Santos Police Department"></web-sidebar>
-    <web-view class="webApp__view"></web-view>
+    <web-sidebar class="webApp__sidebar" data-js="web-sidebar"></web-sidebar>
+    <web-view class="webApp__view" data-js="web-view"></web-view>
   </template>
 
   <template id="template-web-sidebar">
@@ -41,7 +41,7 @@
   <template id="template-web-view">
     <main class="webView__container">
       <web-bar class="webView__bar"></web-bar>
-      <web-content class="webView__content"></web-content>
+      <div class="webView__content" data-js="content"></div>
     </main>
   </template>
 

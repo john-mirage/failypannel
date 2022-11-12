@@ -14,4 +14,8 @@ customElements.define("web-bar", WebBar);
 
 const app = document.getElementById("app");
 const webApp = document.createElement("web-app");
+
+webApp.view = "plate-check";
+webApp.enterprise = "Los Santos Police Department";
+
 app?.append(webApp);
