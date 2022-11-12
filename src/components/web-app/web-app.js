@@ -63,8 +63,10 @@ class WebApp extends HTMLElement {
       case "data-view":
         this.#webSidebar.view = newValue;
         this.#webView.view = newValue;
+        break;
       case "data-enterprise":
         this.#webSidebar.enterprise = newValue;
+        break;
     }
   }
 }

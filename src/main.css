@@ -2,6 +2,8 @@
 
 @import "./components/web-app/web-app.style.css";
 @import "./components/web-sidebar/web-sidebar.style.css";
+@import "./components/web-navigation/web-navigation.style.css";
+@import "./components/web-navigation-item/web-navigation-item.style.css";
 @import "./components/web-view/web-view.style.css";
 @import "./components/web-bar/web-bar.style.css";
 
@@ -10,6 +12,7 @@
   --color-app: hsl(222, 47%, 11%);
   --color-app-bar: hsl(217, 33%, 17%);
   --color-app-border: hsl(215, 25%, 21%);
+  --color-selected: hsl(215, 25%, 27%);
   --color-primary-text: hsl(214, 32%, 91%);
   --color-secondary-text: hsl(215, 20%, 65%);
 }

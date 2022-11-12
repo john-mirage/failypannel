@@ -58,6 +58,7 @@ class WebView extends HTMLElement {
     switch (name) {
       case "data-view":
         this.switchView(newValue);
+        break;
     }
   }
 }

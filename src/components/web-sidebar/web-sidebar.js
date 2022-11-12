@@ -2,9 +2,10 @@ class WebSidebar extends HTMLElement {
   #isMounted = false;
   #template;
   #titleElement;
+  #webNavigation;
 
   static get observedAttributes() {
-    return ["data-enterprise"];
+    return ["data-enterprise", "data-view"];
   }
 
   get enterprise() {
@@ -19,11 +20,26 @@ class WebSidebar extends HTMLElement {
     }
   }
 
+  get view() {
+    return this.dataset.view;
+  }
+
+  set view(newView) {
+    if (typeof newView === "string") {
+      this.dataset.view = newView;
+    } else {
+      this.removeAttribute("data-view");
+    }
+  }
+
   constructor() {
     super();
     const template = document.getElementById("template-web-sidebar");
     this.#template = template.content.cloneNode(true);
     this.#titleElement = this.#template.querySelector('[data-js="title"]');
+    this.#webNavigation = this.#template.querySelector(
+      '[data-js="web-navigation"]'
+    );
   }
 
   connectedCallback() {
@@ -33,6 +49,7 @@ class WebSidebar extends HTMLElement {
       this.#isMounted = true;
     }
     this.upgradeProperty("enterprise");
+    this.upgradeProperty("view");
   }
 
   upgradeProperty(prop) {
@@ -67,6 +84,10 @@ class WebSidebar extends HTMLElement {
         this.clearTitleSize();
         if (newValue) this.addTitleSize(newValue.length);
         this.#titleElement.textContent = newValue ?? "";
+        break;
+      case "data-view":
+        this.#webNavigation.view = newValue;
+        break;
     }
   }
 }

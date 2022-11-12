@@ -33,7 +33,7 @@
       </header>
       <div class="webSidebar__body">
         <h3 class="webSidebar__subtitle">Menu</h3>
-        <web-navigation></web-navigation>
+        <web-navigation data-js="web-navigation"></web-navigation>
       </div>
     </aside>
   </template>
@@ -47,9 +47,9 @@
 
   <template id="template-web-navigation">
     <nav class="webNavigation__container">
-      <web-navigation-item data-label="Plaque d'immatriculation"></web-navigation-item>
-      <web-navigation-item data-label="Dossier"></web-navigation-item>
-      <web-navigation-item data-label="Dispatch"></web-navigation-item>
+      <web-navigation-item data-view="plate-check" data-label="Plaque d'immatriculation"></web-navigation-item>
+      <web-navigation-item data-view="investigation" data-label="Dossier"></web-navigation-item>
+      <web-navigation-item data-view="dispatch" data-label="Dispatch"></web-navigation-item>
     </nav>
   </template>
 

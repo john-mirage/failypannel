@@ -47,6 +47,7 @@ class WebBar extends HTMLElement {
     switch (name) {
       case "data-title":
         this.#titleElement.textContent = newValue;
+        break;
     }
   }
 }
