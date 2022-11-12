@@ -15,4 +15,5 @@
 .webView__content {
   flex: 1;
   display: block;
+  padding: 24px;
 }

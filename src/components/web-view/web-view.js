@@ -2,6 +2,7 @@ class WebView extends HTMLElement {
   #isMounted = false;
   #template;
   #contentElement;
+  #webBar;
 
   static get observedAttributes() {
     return ["data-view"];
@@ -24,6 +25,7 @@ class WebView extends HTMLElement {
     const template = document.getElementById("template-web-view");
     this.#template = template.content.cloneNode(true);
     this.#contentElement = this.#template.querySelector('[data-js="content"]');
+    this.#webBar = this.#template.querySelector('[data-js="web-bar"]');
   }
 
   connectedCallback() {
@@ -46,7 +48,9 @@ class WebView extends HTMLElement {
   switchView(newView) {
     switch (newView) {
       case "plate-check":
-        this.#contentElement.replaceChildren("Verification de plaque");
+        const plateView = document.createElement("web-plate");
+        this.#webBar.title = "Vérification d'une plaque d'immatriculation";
+        this.#contentElement.replaceChildren(plateView);
     }
   }
 

@@ -61,6 +61,7 @@ class WebApp extends HTMLElement {
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
       case "data-view":
+        this.#webSidebar.view = newValue;
         this.#webView.view = newValue;
       case "data-enterprise":
         this.#webSidebar.enterprise = newValue;

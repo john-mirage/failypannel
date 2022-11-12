@@ -40,7 +40,7 @@
 
   <template id="template-web-view">
     <main class="webView__container">
-      <web-bar class="webView__bar"></web-bar>
+      <web-bar class="webView__bar" data-js="web-bar"></web-bar>
       <div class="webView__content" data-js="content"></div>
     </main>
   </template>
@@ -59,12 +59,16 @@
 
   <template id="template-web-bar">
     <header class="webBar__container">
-      <h2 class="webBar__title" data-js="title">Vérification de plaque d'immatriculation</h2>
+      <h2 class="webBar__title" data-js="title"></h2>
     </header>
   </template>
 
   <template id="template-web-content">
 
+  </template>
+
+  <template id="template-web-plate">
+    <div style="color: white;">PLATE VIEW</div>
   </template>
 
   <script type="module" src="/src/main.js"></script>
