@@ -52,6 +52,10 @@ class WebApp extends HTMLElement {
     this.addEventListener("active-view-update", this.handleViewUpdate);
   }
 
+  disconnectedCallback() {
+    this.removeEventListener("active-view-update", this.handleViewUpdate);
+  }
+
   upgradeProperty(prop) {
     if (this.hasOwnProperty(prop)) {
       let value = this[prop];

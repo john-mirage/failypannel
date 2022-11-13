@@ -8,15 +8,15 @@
   justify-content: flex-start;
   align-items: center;
   width: calc(100% + 24px);
-  min-height: 44px;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding: 12px 24px;
   transform: translateX(-24px);
   border-top-right-radius: 9999px;
   border-bottom-right-radius: 9999px;
   background-color: transparent;
+  text-align: left;
   font-size: 14px;
   font-weight: 500;
+  line-height: 24px;
   color: var(--color-typo-secondary);
 }
 

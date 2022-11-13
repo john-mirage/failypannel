@@ -50,7 +50,7 @@ class WebView extends HTMLElement {
     switch (newView) {
       case "plate-view":
         const plateView = document.createElement("web-plate-view");
-        this.#webBar.title = "Vérification d'une plaque d'immatriculation";
+        this.#webBar.title = "Plaque d'immatriculation";
         this.#contentElement.replaceChildren(plateView);
         break;
       case "investigation-view":
