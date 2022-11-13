@@ -6,8 +6,7 @@
 @import "./components/web-navigation-item/web-navigation-item.style.css";
 @import "./components/web-view/web-view.style.css";
 @import "./components/web-bar/web-bar.style.css";
-@import "./components/web-theme-button/web-theme-button.style.css";
-@import "./components/web-power-button/web-power-button.style.css";
+@import "./components/web-switch/web-switch.style.css";
 
 :root {
   --color-app: hsl(210, 17%, 97%);
@@ -41,7 +40,7 @@
   --color-selected: hsl(215, 25%, 27%);
   --color-primary-text: hsl(214, 32%, 91%);
   --color-secondary-text: hsl(215, 20%, 65%);
-  --color-accent: hsl(228, 89%, 63%);
+  --color-accent: #364fc7;
 }
 
 :root[data-theme="dark"] {
@@ -56,7 +55,7 @@
   --color-toggle-button-icon-active: #f59f00;
 
   --color-typo-primary: hsl(210, 14%, 80%);
-  --color-typo-secondary: hsl(210, 7%, 52%);
+  --color-typo-secondary: hsl(210, 7%, 60%);
   --color-typo-positive: hsl(162, 87%, 35%);
   --color-typo-negative: hsl(339, 65%, 60%);
 
@@ -65,7 +64,22 @@
 
 .page {
   background-color: var(--color-background);
-  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family:
+    "Plus Jakarta Sans",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
 }
 
 .page__icons {
@@ -76,6 +90,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: 100vh;
   padding: 24px;
 }

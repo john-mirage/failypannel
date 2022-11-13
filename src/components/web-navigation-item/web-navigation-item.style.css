@@ -21,13 +21,13 @@
 }
 
 .webNavigationItem__button:disabled {
-  background-color: var(--color-nav-active-item);
-  color: var(--color-typo-primary);
+  background-color: var(--color-accent);
+  color: #fff;
   cursor: default;
 }
 
 @media screen and (hover: hover) {
   .webNavigationItem__button:not(:disabled):hover {
-    color: var(--color-typo-primary);
+    color: #fff;
   }
 }

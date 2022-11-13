@@ -1,0 +1,35 @@
+.webPowerButton {
+  display: block;
+}
+
+.webPowerButton__container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  padding-left: 16px;
+  padding-right: 16px;
+  color: var(--color-typo-primary);
+}
+
+.webPowerButton__label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 20px;
+  letter-spacing: 1px;
+}
+
+.webPowerButton__icon {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+@media screen and (hover: hover) {
+  .webPowerButton__container:hover {
+    color: hsl(339, 65%, 60%);
+  }
+}

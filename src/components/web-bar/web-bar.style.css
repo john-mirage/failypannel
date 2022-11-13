@@ -8,6 +8,7 @@
 .webBar__container {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   height: 100%;
   padding-left: 24px;
@@ -20,4 +21,8 @@
   line-height: 24px;
   letter-spacing: 0.4px;
   color: var(--color-typo-primary);
+}
+
+.webBar__button {
+  margin-right: -16px;
 }

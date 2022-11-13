@@ -1,14 +1,22 @@
+import WebSwitch from "../web-switch";
+
 const LOCAL_STORAGE_KEY = "failyv-theme";
 const LIGHT_THEME = "light";
 const DARK_THEME = "dark";
 
-class WebThemeButton extends HTMLElement {
-  #isMounted = false;
-  #template;
+class WebThemeSwitch extends WebSwitch {
+  #labelElement;
   #inputElement;
 
   static get observedAttributes() {
-    return ["data-theme"];
+    return ["data-label", "data-theme"];
+  }
+
+  constructor() {
+    super();
+    this.#labelElement = this.template.querySelector('[data-js="label"]');
+    this.#inputElement = this.template.querySelector('[data-js="input"]');
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   get localTheme() {
@@ -35,6 +43,18 @@ class WebThemeButton extends HTMLElement {
     );
   }
 
+  get label() {
+    return this.dataset.label;
+  }
+
+  set label(newLabel) {
+    if (typeof newLabel === "string") {
+      this.dataset.label = newLabel;
+    } else {
+      this.removeAttribute("data-label");
+    }
+  }
+
   get theme() {
     return this.dataset.theme;
   }
@@ -47,24 +67,17 @@ class WebThemeButton extends HTMLElement {
     }
   }
 
-  constructor() {
-    super();
-    const template = document.getElementById("template-web-theme-button");
-    this.#template = template.content.cloneNode(true);
-    this.#inputElement = this.#template.querySelector('[data-js="input"]');
-    this.handleInputChange = this.handleInputChange.bind(this);
-  }
-
   connectedCallback() {
-    if (!this.#isMounted) {
-      this.classList.add("webThemeButton");
-      this.append(this.#template);
-      this.#isMounted = true;
-    }
+    super.connectedCallback();
+    this.upgradeProperty("label");
     this.upgradeProperty("theme");
     this.theme = this.localTheme;
     if (this.theme === DARK_THEME) this.#inputElement.checked = true;
     this.#inputElement.addEventListener("change", this.handleInputChange);
+  }
+
+  disconnectedCallback() {
+    this.#inputElement.removeEventListener("change", this.handleInputChange);
   }
 
   upgradeProperty(prop) {
@@ -77,6 +90,9 @@ class WebThemeButton extends HTMLElement {
 
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
+      case "data-label":
+        this.#labelElement.textContent = newValue ?? "";
+        break;
       case "data-theme":
         if (newValue === DARK_THEME) {
           document.documentElement.dataset.theme = DARK_THEME;
@@ -98,4 +114,4 @@ class WebThemeButton extends HTMLElement {
   }
 }
 
-export default WebThemeButton;
+export default WebThemeSwitch;

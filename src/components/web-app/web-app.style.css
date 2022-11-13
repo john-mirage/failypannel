@@ -2,11 +2,19 @@
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  width: 1440px;
-  height: 800px;
   background-color: var(--color-app);
   box-shadow: var(--color-app-shadow);
   overflow: hidden;
+}
+
+[data-screen="window"] .webApp {
+  width: 1440px;
+  height: 800px;
+}
+
+[data-screen="full"] .webApp {
+  width: 100%;
+  height: 100%;
 }
 
 .webApp__sidebar {

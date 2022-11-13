@@ -7,11 +7,12 @@
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <title>Failypannel</title>
 </head>
 
 <body class="page">
+  <!-- icons -->
   <svg class="page__icons" xmlns="http://www.w3.org/2000/svg">
     <symbol id="icon-sun" viewBox="0 0 512 512">
       <path d="M256 118a22 22 0 01-22-22V48a22 22 0 0144 0v48a22 22 0 01-22 22zM256 486a22 22 0 01-22-22v-48a22 22 0 0144 0v48a22 22 0 01-22 22zM369.14 164.86a22 22 0 01-15.56-37.55l33.94-33.94a22 22 0 0131.11 31.11l-33.94 33.94a21.93 21.93 0 01-15.55 6.44zM108.92 425.08a22 22 0 01-15.55-37.56l33.94-33.94a22 22 0 1131.11 31.11l-33.94 33.94a21.94 21.94 0 01-15.56 6.45zM464 278h-48a22 22 0 010-44h48a22 22 0 010 44zM96 278H48a22 22 0 010-44h48a22 22 0 010 44zM403.08 425.08a21.94 21.94 0 01-15.56-6.45l-33.94-33.94a22 22 0 0131.11-31.11l33.94 33.94a22 22 0 01-15.55 37.56zM142.86 164.86a21.89 21.89 0 01-15.55-6.44l-33.94-33.94a22 22 0 0131.11-31.11l33.94 33.94a22 22 0 01-15.56 37.55zM256 358a102 102 0 11102-102 102.12 102.12 0 01-102 102z"/>
@@ -25,13 +26,16 @@
     </symbol>
   </svg>
 
+  <!-- app -->
   <div class="page__app" id="app"></div>
 
+  <!-- template | web app -->
   <template id="template-web-app">
     <web-sidebar class="webApp__sidebar" data-js="web-sidebar"></web-sidebar>
     <web-view class="webApp__view" data-js="web-view"></web-view>
   </template>
 
+  <!-- template | web sidebar -->
   <template id="template-web-sidebar">
     <aside class="webSidebar__container">
       <header class="webSidebar__header">
@@ -39,19 +43,20 @@
         <h2 class="webSidebar__title" data-js="title"></h2>
       </header>
       <div class="webSidebar__body">
-        <h3 class="webSidebar__subtitle">Menu</h3>
-        <web-navigation data-js="web-navigation"></web-navigation>
-        <div class="webSidebar__settings">
-          <h3 class="webSidebar__subtitle">Theme</h3>
-          <web-theme-button></web-theme-button>
-        </div>
+        <section class="webSidebar__section">
+          <h3 class="webSidebar__sectionTitle">Menu</h3>
+          <web-navigation data-js="web-navigation"></web-navigation>
+        </section>
+        <section class="webSidebar__section">
+          <h3 class="webSidebar__sectionTitle">Paramètres</h3>
+          <web-theme-switch class="webSidebar__switch" data-label="Mode nuit"></web-theme-switch>
+          <web-screen-switch class="webSidebar__switch" data-label="Mode plein écran"></web-screen-switch>
+        </section>
       </div>
-      <footer class="webSidebar__footer">
-        <web-power-button></web-power-button>
-      </footer>
     </aside>
   </template>
 
+  <!-- template | web view -->
   <template id="template-web-view">
     <main class="webView__container">
       <web-bar class="webView__bar" data-js="web-bar"></web-bar>
@@ -59,6 +64,15 @@
     </main>
   </template>
 
+  <!-- template | web bar -->
+  <template id="template-web-bar">
+    <header class="webBar__container">
+      <h2 class="webBar__title" data-js="title"></h2>
+      <web-power-button class="webBar__button"></web-power-button>
+    </header>
+  </template>
+
+  <!-- template | web navigation -->
   <template id="template-web-navigation">
     <nav class="webNavigation__container">
       <web-navigation-item data-view="plate-view" data-label="Plaque d'immatriculation"></web-navigation-item>
@@ -67,51 +81,45 @@
     </nav>
   </template>
 
+  <!-- template | web navigation item -->
   <template id="template-web-navigation-item">
     <button class="webNavigationItem__button" data-js="button"></button>
   </template>
 
-  <template id="template-web-bar">
-    <header class="webBar__container">
-      <h2 class="webBar__title" data-js="title"></h2>
-    </header>
+  <!-- template | web switch -->
+  <template id="template-web-switch">
+    <label class="webSwitch__container">
+      <span class="webSwitch__label" data-js="label"></span>
+      <input class="webSwitch__input" data-js="input" type="checkbox">
+    </label>
   </template>
 
-  <template id="template-web-theme-button">
-    <div class="webThemeButton__container">
-      <svg class="webThemeButton__icon webThemeButton__icon--sun" fill="currentColor">
-        <use href="#icon-sun" />
+  <!-- template | web button -->
+  <template id="template-web-button">
+    <button class="webButton__container" data-js="button">
+      <svg class="webButton__icon" fill="currentColor">
+        <use data-js="icon" />
       </svg>
-      <label class="webThemeButton__label" aria-label="toggle theme">
-        <input class="webThemeButton__input" data-js="input" type="checkbox">
-      </label>
-      <svg class="webThemeButton__icon webThemeButton__icon--moon" fill="currentColor">
-        <use href="#icon-moon" />
-      </svg>
-    </div>
-  </template>
-
-  <template id="template-web-power-button">
-    <button class="webPowerButton__container">
-      <svg class="webPowerButton__icon" fill="currentColor">
-        <use href="#icon-power" />
-      </svg>
-      <span class="webPowerButton__label">Quitter l'application</span>
+      <span class="webButton__label" data-js="label"></span>
     </button>
   </template>
 
+  <!-- template | web plate view -->
   <template id="template-web-plate-view">
     <div>PLATE VIEW</div>
   </template>
 
+  <!-- template | web investigation view -->
   <template id="template-web-investigation-view">
     <div>INVESTIGATION VIEW</div>
   </template>
 
+  <!-- template | web dispatch view -->
   <template id="template-web-dispatch-view">
     <div>DISPATCH VIEW</div>
   </template>
 
+  <!-- module -->
   <script type="module" src="/src/main.js"></script>
 </body>
 

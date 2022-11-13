@@ -1,25 +1,22 @@
-.webThemeButton {
+.webSwitch {
   display: block;
 }
 
-.webThemeButton__container {
+.webSwitch__container {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
 }
 
-.webThemeButton__icon {
-  width: 16px;
-  height: 16px;
-  color: var(--color-toggle-button-icon);
+.webSwitch__label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--color-typo-secondary);
 }
 
-.webThemeButton__label {
-  margin-left: 8px;
-  margin-right: 8px;
-}
-
-.webThemeButton__input {
+.webSwitch__input {
   --track-size: 40px;
   --track-padding: 4px;
   --track-color-inactive: var(--color-toggle-button-track);
@@ -44,12 +41,12 @@
   outline-offset: 4px;
 }
 
-.webThemeButton__input:checked {
+.webSwitch__input:checked {
   background-color: var(--track-color-active);
   --thumb-position: calc(var(--track-size) - (var(--track-padding) * 2) - 100%);
 }
 
-.webThemeButton__input::before {
+.webSwitch__input::before {
   content: "";
   display: block;
   width: var(--thumb-size);
@@ -62,10 +59,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.webThemeButton__input:hover {
+.webSwitch__input:hover {
   --thumb-highlight-size: 8px;
 }
 
-.webThemeButton__input:not(:checked):hover {
+.webSwitch__input:not(:checked):hover {
   background-color: var(--track-color-hover);
 }
