@@ -8,6 +8,15 @@ class WebApp extends HTMLElement {
     return ["data-view", "data-enterprise"];
   }
 
+  constructor() {
+    super();
+    const template = document.getElementById("template-web-app");
+    this.#template = template.content.cloneNode(true);
+    this.#webSidebar = this.#template.querySelector('[data-js="web-sidebar"]');
+    this.#webView = this.#template.querySelector('[data-js="web-view"]');
+    this.handleViewUpdate = this.handleViewUpdate.bind(this);
+  }
+
   get view() {
     return this.dataset.view;
   }
@@ -32,14 +41,6 @@ class WebApp extends HTMLElement {
     }
   }
 
-  constructor() {
-    super();
-    const template = document.getElementById("template-web-app");
-    this.#template = template.content.cloneNode(true);
-    this.#webSidebar = this.#template.querySelector('[data-js="web-sidebar"]');
-    this.#webView = this.#template.querySelector('[data-js="web-view"]');
-  }
-
   connectedCallback() {
     if (!this.#isMounted) {
       this.classList.add("webApp");
@@ -48,6 +49,7 @@ class WebApp extends HTMLElement {
     }
     this.upgradeProperty("view");
     this.upgradeProperty("enterprise");
+    this.addEventListener("active-view-update", this.handleViewUpdate);
   }
 
   upgradeProperty(prop) {
@@ -61,12 +63,20 @@ class WebApp extends HTMLElement {
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
       case "data-view":
-        this.#webSidebar.view = newValue;
         this.#webView.view = newValue;
         break;
       case "data-enterprise":
         this.#webSidebar.enterprise = newValue;
         break;
+    }
+  }
+
+  handleViewUpdate(customEvent) {
+    const { view } = customEvent.detail;
+    if (typeof view === "string") {
+      this.view = view;
+    } else {
+      throw new Error("The view is not defined in the custom event");
     }
   }
 }

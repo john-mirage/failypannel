@@ -16,11 +16,11 @@ class WebNavigation extends HTMLElement {
   }
 
   set activeNavigationItem(newActiveNavigationItem) {
-    if (this.#activeNavigationItem) {
-      this.#activeNavigationItem.active = false;
+    if (this.activeNavigationItem) {
+      this.activeNavigationItem.active = false;
     }
     this.#activeNavigationItem = newActiveNavigationItem;
-    this.#activeNavigationItem.active = true;
+    this.activeNavigationItem.active = true;
   }
 
   connectedCallback() {

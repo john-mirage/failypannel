@@ -35,6 +35,7 @@ class WebView extends HTMLElement {
       this.#isMounted = true;
     }
     this.upgradeProperty("view");
+    this.view = "plate-view";
   }
 
   upgradeProperty(prop) {
@@ -47,10 +48,25 @@ class WebView extends HTMLElement {
 
   switchView(newView) {
     switch (newView) {
-      case "plate-check":
-        const plateView = document.createElement("web-plate");
+      case "plate-view":
+        const plateView = document.createElement("web-plate-view");
         this.#webBar.title = "Vérification d'une plaque d'immatriculation";
         this.#contentElement.replaceChildren(plateView);
+        break;
+      case "investigation-view":
+        const inverstigationView = document.createElement(
+          "web-investigation-view"
+        );
+        this.#webBar.title = "Dossiers et enquêtes";
+        this.#contentElement.replaceChildren(inverstigationView);
+        break;
+      case "dispatch-view":
+        const dispatchView = document.createElement("web-dispatch-view");
+        this.#webBar.title = "Dispatch des unités";
+        this.#contentElement.replaceChildren(dispatchView);
+        break;
+      default:
+        throw new Error("The view is not valid");
     }
   }
 

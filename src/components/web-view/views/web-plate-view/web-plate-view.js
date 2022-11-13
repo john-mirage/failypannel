@@ -1,20 +1,20 @@
-class WebPlate extends HTMLElement {
+class WebPlateView extends HTMLElement {
   #isMounted = false;
   #template;
 
   constructor() {
     super();
-    const template = document.getElementById("template-web-plate");
+    const template = document.getElementById("template-web-plate-view");
     this.#template = template.content.cloneNode(true);
   }
 
   connectedCallback() {
     if (!this.#isMounted) {
-      this.classList.add("webPlate");
+      this.classList.add("webPlateView");
       this.append(this.#template);
       this.#isMounted = true;
     }
   }
 }
 
-export default WebPlate;
+export default WebPlateView;

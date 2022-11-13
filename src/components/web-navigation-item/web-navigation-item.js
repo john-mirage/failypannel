@@ -57,6 +57,7 @@ class WebNavigationItem extends HTMLElement {
       this.append(this.#template);
       this.#isMounted = true;
     }
+    this.upgradeProperty("view");
     this.upgradeProperty("label");
     this.upgradeProperty("active");
     this.#buttonElement.addEventListener("click", this.handleButtonClick);
