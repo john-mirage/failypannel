@@ -17,17 +17,17 @@
   background-color: transparent;
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-secondary-text);
+  color: var(--color-typo-secondary);
 }
 
 .webNavigationItem__button:disabled {
-  background-color: var(--color-selected);
-  color: var(--color-primary-text);
+  background-color: var(--color-nav-active-item);
+  color: var(--color-typo-primary);
   cursor: default;
 }
 
 @media screen and (hover: hover) {
   .webNavigationItem__button:not(:disabled):hover {
-    color: var(--color-primary-text);
+    color: var(--color-typo-primary);
   }
 }

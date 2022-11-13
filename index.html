@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
@@ -41,10 +41,14 @@
       <div class="webSidebar__body">
         <h3 class="webSidebar__subtitle">Menu</h3>
         <web-navigation data-js="web-navigation"></web-navigation>
-        <div class="webSidebar__footer">
+        <div class="webSidebar__settings">
+          <h3 class="webSidebar__subtitle">Theme</h3>
           <web-theme-button></web-theme-button>
         </div>
       </div>
+      <footer class="webSidebar__footer">
+        <web-power-button></web-power-button>
+      </footer>
     </aside>
   </template>
 
@@ -69,21 +73,12 @@
 
   <template id="template-web-bar">
     <header class="webBar__container">
-      <div class="webBar__section webBar__section--left">
-        <h2 class="webBar__title" data-js="title"></h2>
-      </div>
-      <div class="webBar__section webBar__section--right">
-        <button class="webBar__button">
-          <svg class="webBar__icon" fill="currentColor">
-            <use href="#icon-power" />
-          </svg>
-        </button>
-      </div>
+      <h2 class="webBar__title" data-js="title"></h2>
     </header>
   </template>
 
   <template id="template-web-plate">
-    <div style="color: white;">PLATE VIEW</div>
+    <div>PLATE VIEW</div>
   </template>
 
   <template id="template-web-theme-button">
@@ -105,6 +100,7 @@
       <svg class="webPowerButton__icon" fill="currentColor">
         <use href="#icon-power" />
       </svg>
+      <span class="webPowerButton__label">Quitter l'application</span>
     </button>
   </template>
 

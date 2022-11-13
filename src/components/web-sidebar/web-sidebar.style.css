@@ -2,8 +2,8 @@
   display: block;
   width: 276px;
   height: 100%;
-  background-color: var(--color-app-bar);
-  border-right: 1px solid var(--color-app-border);
+  background-color: var(--color-bar);
+  border-right: 1px solid var(--color-bar-border);
 }
 
 .webSidebar__container {
@@ -21,7 +21,7 @@
   height: 80px;
   padding-left: 24px;
   padding-right: 24px;
-  border-bottom: 1px solid var(--color-app-border);
+  border-bottom: 1px solid var(--color-bar-border);
 }
 
 .webSidebar__body {
@@ -29,6 +29,16 @@
   display: flex;
   flex-direction: column;
   padding: 24px;
+}
+
+.webSidebar__footer {
+  flex: none;
+  padding: 24px;
+  border-top: 1px solid var(--color-bar-border);
+}
+
+.webSidebar__settings {
+  margin-top: auto;
 }
 
 .webSidebar__logo {
@@ -44,7 +54,7 @@
   flex: 1;
   font-weight: 500;
   letter-spacing: 0.2px;
-  color: var(--color-primary-text);
+  color: var(--color-typo-primary);
 }
 
 .webSidebar__title--sm {
@@ -68,7 +78,7 @@
   font-weight: 500;
   letter-spacing: 1.4px;
   text-transform: uppercase;
-  color: var(--color-secondary-text);
+  color: var(--color-typo-secondary);
 }
 
 .webSidebar__themeButton {
