@@ -89,14 +89,29 @@ class WebNavigationItem extends HTMLElement {
     }
   }
 
-  handleButtonClick() {
+  sendActiveNavigationItemUpdate() {
+    const customEvent = new CustomEvent("active-navigation-item-update", {
+      bubbles: true,
+      detail: { navigationItem: this },
+    });
+    this.dispatchEvent(customEvent);
+  }
+
+  sendActiveViewUpdate() {
     if (this.view) {
-      const customEvent = new CustomEvent("active-navigation-item-update", {
+      const customEvent = new CustomEvent("active-view-update", {
         bubbles: true,
         detail: { view: this.view },
       });
       this.dispatchEvent(customEvent);
+    } else {
+      throw new Error("The view data attribute is not defined");
     }
+  }
+
+  handleButtonClick() {
+    this.sendActiveNavigationItemUpdate();
+    this.sendActiveViewUpdate();
   }
 }
 

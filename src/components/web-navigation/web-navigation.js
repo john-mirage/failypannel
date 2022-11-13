@@ -1,29 +1,26 @@
 class WebNavigation extends HTMLElement {
   #isMounted = false;
   #template;
-
-  static get observedAttributes() {
-    return ["data-view"];
-  }
-
-  get view() {
-    return this.dataset.view;
-  }
-
-  set view(newView) {
-    if (typeof newView === "string") {
-      this.dataset.view = newView;
-    } else {
-      this.removeAttribute("data-view");
-    }
-  }
+  #activeNavigationItem;
 
   constructor() {
     super();
     const template = document.getElementById("template-web-navigation");
     this.#template = template.content.cloneNode(true);
-    this.handleNewActiveNavigationItem =
-      this.handleNewActiveNavigationItem.bind(this);
+    this.handleActiveNavigationItem =
+      this.handleActiveNavigationItem.bind(this);
+  }
+
+  get activeNavigationItem() {
+    return this.#activeNavigationItem;
+  }
+
+  set activeNavigationItem(newActiveNavigationItem) {
+    if (this.#activeNavigationItem) {
+      this.#activeNavigationItem.active = false;
+    }
+    this.#activeNavigationItem = newActiveNavigationItem;
+    this.#activeNavigationItem.active = true;
   }
 
   connectedCallback() {
@@ -32,53 +29,32 @@ class WebNavigation extends HTMLElement {
       this.append(this.#template);
       this.#isMounted = true;
     }
-    this.upgradeProperty("view");
+    const firstNavigationItem = this.querySelector("web-navigation-item");
+    if (firstNavigationItem) {
+      this.activeNavigationItem = firstNavigationItem;
+    } else {
+      throw new Error("No navigation items found in the navigation");
+    }
     this.addEventListener(
       "active-navigation-item-update",
-      this.handleNewActiveNavigationItem
+      this.handleActiveNavigationItem
     );
   }
 
   disconnectedCallback() {
     this.removeEventListener(
       "active-navigation-item-update",
-      this.handleNewActiveNavigationItem
+      this.handleActiveNavigationItem
     );
   }
 
-  upgradeProperty(prop) {
-    if (this.hasOwnProperty(prop)) {
-      let value = this[prop];
-      delete this[prop];
-      this[prop] = value;
+  handleActiveNavigationItem(customEvent) {
+    const { navigationItem } = customEvent.detail;
+    if (navigationItem instanceof HTMLElement) {
+      this.activeNavigationItem = navigationItem;
+    } else {
+      throw new Error("The navigation item is not defined in the custom event");
     }
-  }
-
-  clearActiveItems() {
-    const items = this.querySelectorAll("web-navigation-item");
-    items.forEach((item) => {
-      if (item.active) item.active = false;
-    });
-  }
-
-  selectActiveItem(view) {
-    const newActiveNavigationItem = this.querySelector(`[data-view="${view}"]`);
-    newActiveNavigationItem.active = true;
-  }
-
-  attributeChangedCallback(name, _oldValue, newValue) {
-    switch (name) {
-      case "data-view":
-        this.clearActiveItems();
-        this.selectActiveItem(newValue);
-        break;
-    }
-  }
-
-  handleNewActiveNavigationItem(customEvent) {
-    const { view } = customEvent.detail;
-    this.clearActiveItems();
-    this.selectActiveItem(view);
   }
 }
 
