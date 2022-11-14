@@ -15,6 +15,8 @@ import WebInvestigation from "./views/web-investigation";
 import WebDispatch from "./views/web-dispatch";
 import WebDispatchColumn from "./views/web-dispatch/web-dispatch-column";
 import WebDispatchAddGroupButton from "./views/web-dispatch/web-dispatch-add-group-button";
+import WebDispatchGroup from "./views/web-dispatch/web-dispatch-group";
+import WebDispatchUnit from "./views/web-dispatch/web-dispatch-unit";
 
 customElements.define("web-app", WebApp);
 customElements.define("web-sidebar", WebSidebar);
@@ -34,6 +36,8 @@ customElements.define(
   "web-dispatch-add-group-button",
   WebDispatchAddGroupButton
 );
+customElements.define("web-dispatch-group", WebDispatchGroup);
+customElements.define("web-dispatch-unit", WebDispatchUnit);
 
 const app = document.getElementById("app");
 const webApp = document.createElement("web-app");

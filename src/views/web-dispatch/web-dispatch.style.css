@@ -16,8 +16,9 @@
 .webDispatch__body {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 280px);
   gap: 24px;
   height: 100%;
   padding: 24px;
+  overflow: auto;
 }

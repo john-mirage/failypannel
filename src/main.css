@@ -12,6 +12,8 @@
 @import "./views/web-investigation/web-investigation.style.css";
 @import "./views/web-dispatch/web-dispatch.style.css";
 @import "./views/web-dispatch/web-dispatch-column/web-dispatch-column.style.css";
+@import "./views/web-dispatch/web-dispatch-group/web-dispatch-group.style.css";
+@import "./views/web-dispatch/web-dispatch-unit/web-dispatch-unit.style.css";
 
 :root {
   --color-app: hsl(210, 17%, 97%);

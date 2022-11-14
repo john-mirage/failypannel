@@ -10,12 +10,12 @@ class WebBar extends HTMLElement {
   }
 
   get label() {
-    return this.dataset.view;
+    return this.dataset.label;
   }
 
   set label(newLabel) {
     if (typeof newLabel === "string") {
-      this.dataset.title = newLabel;
+      this.dataset.label = newLabel;
     } else {
       this.removeAttribute("data-label");
     }

@@ -11,3 +11,9 @@
   text-transform: uppercase;
   color: var(--color-typo-secondary);
 }
+
+.webDispatchColumn__list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}

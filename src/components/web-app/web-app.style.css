@@ -19,8 +19,10 @@
 
 .webApp__sidebar {
   flex: none;
+  width: 276px;
 }
 
 .webApp__view {
   flex: 1;
+  max-width: calc(100% - 276px);
 }
