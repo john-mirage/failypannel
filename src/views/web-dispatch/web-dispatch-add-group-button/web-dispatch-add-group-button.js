@@ -16,7 +16,7 @@ class WebDispatchAddGroupButton extends WebButton {
     super.connectedCallback();
     if (!this.#isMounted) {
       this.icon = "add";
-      this.label = "Ajouter un groupe";
+      this.label = "Ajouter un équipage";
       this.#isMounted = true;
     }
     this.buttonElement.addEventListener("click", this.handleButtonClick);
