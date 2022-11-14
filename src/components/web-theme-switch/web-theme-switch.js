@@ -5,17 +5,14 @@ const LIGHT_THEME = "light";
 const DARK_THEME = "dark";
 
 class WebThemeSwitch extends WebSwitch {
-  #labelElement;
-  #inputElement;
+  #hasBeenMountedOnce = false;
 
   static get observedAttributes() {
-    return ["data-label", "data-theme"];
+    return [...super.observedAttributes, "data-theme"];
   }
 
   constructor() {
     super();
-    this.#labelElement = this.template.querySelector('[data-js="label"]');
-    this.#inputElement = this.template.querySelector('[data-js="input"]');
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
@@ -43,18 +40,6 @@ class WebThemeSwitch extends WebSwitch {
     );
   }
 
-  get label() {
-    return this.dataset.label;
-  }
-
-  set label(newLabel) {
-    if (typeof newLabel === "string") {
-      this.dataset.label = newLabel;
-    } else {
-      this.removeAttribute("data-label");
-    }
-  }
-
   get theme() {
     return this.dataset.theme;
   }
@@ -69,30 +54,22 @@ class WebThemeSwitch extends WebSwitch {
 
   connectedCallback() {
     super.connectedCallback();
-    this.upgradeProperty("label");
     this.upgradeProperty("theme");
-    this.theme = this.localTheme;
-    if (this.theme === DARK_THEME) this.#inputElement.checked = true;
-    this.#inputElement.addEventListener("change", this.handleInputChange);
+    if (!this.#hasBeenMountedOnce) {
+      this.theme = this.localTheme;
+      if (this.theme === DARK_THEME) this.inputElement.checked = true;
+      this.#hasBeenMountedOnce = true;
+    }
+    this.inputElement.addEventListener("change", this.handleInputChange);
   }
 
   disconnectedCallback() {
-    this.#inputElement.removeEventListener("change", this.handleInputChange);
-  }
-
-  upgradeProperty(prop) {
-    if (this.hasOwnProperty(prop)) {
-      let value = this[prop];
-      delete this[prop];
-      this[prop] = value;
-    }
+    this.inputElement.removeEventListener("change", this.handleInputChange);
   }
 
   attributeChangedCallback(name, _oldValue, newValue) {
+    super.attributeChangedCallback(name, _oldValue, newValue);
     switch (name) {
-      case "data-label":
-        this.#labelElement.textContent = newValue ?? "";
-        break;
       case "data-theme":
         if (newValue === DARK_THEME) {
           document.documentElement.dataset.theme = DARK_THEME;
@@ -106,7 +83,7 @@ class WebThemeSwitch extends WebSwitch {
   }
 
   handleInputChange() {
-    if (this.#inputElement.checked) {
+    if (this.inputElement.checked) {
       this.theme = DARK_THEME;
     } else {
       this.theme = LIGHT_THEME;

@@ -5,17 +5,14 @@ const WINDOW_SCREEN_SIZE = "window";
 const FULL_SCREEN_SIZE = "full";
 
 class WebScreenSwitch extends WebSwitch {
-  #labelElement;
-  #inputElement;
+  #hasBeenMountedOnce = false;
 
   static get observedAttributes() {
-    return ["data-label", "data-screen"];
+    return [...super.observedAttributes, "data-screen"];
   }
 
   constructor() {
     super();
-    this.#labelElement = this.template.querySelector('[data-js="label"]');
-    this.#inputElement = this.template.querySelector('[data-js="input"]');
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
@@ -41,18 +38,6 @@ class WebScreenSwitch extends WebSwitch {
     );
   }
 
-  get label() {
-    return this.dataset.label;
-  }
-
-  set label(newLabel) {
-    if (typeof newLabel === "string") {
-      this.dataset.label = newLabel;
-    } else {
-      this.removeAttribute("data-label");
-    }
-  }
-
   get screen() {
     return this.dataset.screen;
   }
@@ -67,30 +52,22 @@ class WebScreenSwitch extends WebSwitch {
 
   connectedCallback() {
     super.connectedCallback();
-    this.upgradeProperty("label");
     this.upgradeProperty("screen");
-    this.screen = this.localScreen;
-    if (this.screen === FULL_SCREEN_SIZE) this.#inputElement.checked = true;
-    this.#inputElement.addEventListener("change", this.handleInputChange);
+    if (!this.#hasBeenMountedOnce) {
+      this.screen = this.localScreen;
+      if (this.screen === FULL_SCREEN_SIZE) this.inputElement.checked = true;
+      this.#hasBeenMountedOnce = true;
+    }
+    this.inputElement.addEventListener("change", this.handleInputChange);
   }
 
   disconnectedCallback() {
-    this.#inputElement.removeEventListener("change", this.handleInputChange);
-  }
-
-  upgradeProperty(prop) {
-    if (this.hasOwnProperty(prop)) {
-      let value = this[prop];
-      delete this[prop];
-      this[prop] = value;
-    }
+    this.inputElement.removeEventListener("change", this.handleInputChange);
   }
 
   attributeChangedCallback(name, _oldValue, newValue) {
+    super.attributeChangedCallback(name, _oldValue, newValue);
     switch (name) {
-      case "data-label":
-        this.#labelElement.textContent = newValue ?? "";
-        break;
       case "data-screen":
         if (newValue === FULL_SCREEN_SIZE) {
           document.documentElement.dataset.screen = FULL_SCREEN_SIZE;
@@ -104,7 +81,7 @@ class WebScreenSwitch extends WebSwitch {
   }
 
   handleInputChange() {
-    if (this.#inputElement.checked) {
+    if (this.inputElement.checked) {
       this.screen = FULL_SCREEN_SIZE;
     } else {
       this.screen = WINDOW_SCREEN_SIZE;

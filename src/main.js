@@ -6,9 +6,8 @@ import WebView from "./components/web-view";
 import WebBar from "./components/web-bar";
 import WebNavigation from "./components/web-navigation";
 import WebNavigationItem from "./components/web-navigation-item";
-import WebButton from "./components/web-button";
-import WebThemeSwitch from "./components/web-switch/web-theme-switch";
-import WebScreenSwitch from "./components/web-switch/web-screen-switch";
+import WebThemeSwitch from "./components/web-theme-switch";
+import WebScreenSwitch from "./components/web-screen-switch";
 
 import WebCarPlate from "./views/web-car-plate";
 import WebInvestigation from "./views/web-investigation";
@@ -23,7 +22,6 @@ customElements.define("web-view", WebView);
 customElements.define("web-bar", WebBar);
 customElements.define("web-navigation", WebNavigation);
 customElements.define("web-navigation-item", WebNavigationItem);
-customElements.define("web-button", WebButton);
 customElements.define("web-theme-switch", WebThemeSwitch);
 customElements.define("web-screen-switch", WebScreenSwitch);
 
