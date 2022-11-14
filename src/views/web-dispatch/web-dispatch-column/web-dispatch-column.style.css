@@ -1,0 +1,13 @@
+.webDispatchColumn {
+  display: block;
+  height: 100%;
+}
+
+.webDispatchColumn__title {
+  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--color-typo-secondary);
+}

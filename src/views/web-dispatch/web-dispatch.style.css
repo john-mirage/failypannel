@@ -1,0 +1,23 @@
+.webDispatch {
+  display: block;
+  height: 100%;
+}
+
+.webDispatch__container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.webDispatch__header {
+  flex: none;
+}
+
+.webDispatch__body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  height: 100%;
+  padding: 24px;
+}

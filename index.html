@@ -56,19 +56,13 @@
     </aside>
   </template>
 
-  <!-- template | web view -->
-  <template id="template-web-view">
-    <main class="webView__container">
-      <web-bar class="webView__bar" data-js="web-bar"></web-bar>
-      <div class="webView__content" data-js="content"></div>
-    </main>
-  </template>
-
   <!-- template | web bar -->
   <template id="template-web-bar">
     <header class="webBar__container">
-      <h2 class="webBar__title" data-js="title"></h2>
-      <web-power-button class="webBar__button"></web-power-button>
+      <div class="webBar__section webBar__section--left">
+        <h2 class="webBar__title" data-js="title"></h2>
+      </div>
+      <div class="webBar__section webBar__section--right" data-js="actions"></div>
     </header>
   </template>
 
@@ -104,19 +98,40 @@
     </button>
   </template>
 
-  <!-- template | web plate view -->
-  <template id="template-web-plate-view">
-    <div>PLATE VIEW</div>
+  <!-- template | web car plate -->
+  <template id="template-web-car-plate">
+    <main class="webCarPlate__container">
+      <web-bar class="webCarPlate__header" data-label="Plaque d'immatriculation" data-js="web-bar"></web-bar>
+      <div class="webCarPlate__body"></div>
+    </main>
   </template>
 
-  <!-- template | web investigation view -->
-  <template id="template-web-investigation-view">
-    <div>INVESTIGATION VIEW</div>
+  <!-- template | web investigation -->
+  <template id="template-web-investigation">
+    <main class="webInvestigation__container">
+      <web-bar class="webInvestigation__header" data-label="Dossiers et enquêtes" data-js="web-bar"></web-bar>
+      <div class="webInvestigation__body"></div>
+    </main>
   </template>
 
-  <!-- template | web dispatch view -->
-  <template id="template-web-dispatch-view">
-    <div>DISPATCH VIEW</div>
+  <!-- template | web dispatch -->
+  <template id="template-web-dispatch">
+    <main class="webDispatch__container">
+      <web-bar class="webDispatch__header" data-label="Dispatch des unités" data-js="web-bar"></web-bar>
+      <div class="webDispatch__body">
+        <web-dispatch-column data-label="En attente de dispatch"></web-dispatch-column>
+        <web-dispatch-column data-label="Lincoln"></web-dispatch-column>
+        <web-dispatch-column data-label="Adam"></web-dispatch-column>
+      </div>
+    </main>
+  </template>
+
+  <!-- template | web dispatch column -->
+  <template id="template-web-dispatch-column">
+    <section class="webDispatchColumn__container">
+      <h3 class="webDispatchColumn__title" data-js="title"></h3>
+      <ul class="webDispatchColumn__list" data-js="list"></ul>
+    </section>
   </template>
 
   <!-- module -->

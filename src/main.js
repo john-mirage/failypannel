@@ -9,9 +9,11 @@ import WebNavigationItem from "./components/web-navigation-item";
 import WebThemeSwitch from "./components/web-switch/web-theme-switch";
 import WebScreenSwitch from "./components/web-switch/web-screen-switch";
 
-import WebPlateView from "./components/web-view/views/web-plate-view";
-import WebInvestigationView from "./components/web-view/views/web-investigation-view";
-import WebDispatchView from "./components/web-view/views/web-dispatch-view";
+import WebCarPlate from "./views/web-car-plate";
+import WebInvestigation from "./views/web-investigation";
+
+import WebDispatch from "./views/web-dispatch";
+import WebDispatchColumn from "./views/web-dispatch/web-dispatch-column";
 
 customElements.define("web-app", WebApp);
 customElements.define("web-sidebar", WebSidebar);
@@ -22,9 +24,11 @@ customElements.define("web-navigation-item", WebNavigationItem);
 customElements.define("web-theme-switch", WebThemeSwitch);
 customElements.define("web-screen-switch", WebScreenSwitch);
 
-customElements.define("web-plate-view", WebPlateView);
-customElements.define("web-investigation-view", WebInvestigationView);
-customElements.define("web-dispatch-view", WebDispatchView);
+customElements.define("web-car-plate", WebCarPlate);
+customElements.define("web-investigation", WebInvestigation);
+
+customElements.define("web-dispatch", WebDispatch);
+customElements.define("web-dispatch-column", WebDispatchColumn);
 
 const app = document.getElementById("app");
 const webApp = document.createElement("web-app");

@@ -15,14 +15,25 @@
   padding-right: 24px;
 }
 
+.webBar__section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.webBar__section--left {
+  flex: 1;
+}
+
+.webBar__section--right {
+  flex: none;
+  gap: 24px;
+}
+
 .webBar__title {
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
   letter-spacing: 0.4px;
   color: var(--color-typo-primary);
-}
-
-.webBar__button {
-  margin-right: -16px;
 }

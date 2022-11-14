@@ -1,8 +1,6 @@
-class WebBar extends HTMLElement {
+class WebDispatchColumn extends HTMLElement {
   #isMounted = false;
   #template;
-  #actions;
-  #actionsElement;
   #titleElement;
 
   static get observedAttributes() {
@@ -10,37 +8,27 @@ class WebBar extends HTMLElement {
   }
 
   get label() {
-    return this.dataset.view;
+    return this.dataset.label;
   }
 
   set label(newLabel) {
     if (typeof newLabel === "string") {
-      this.dataset.title = newLabel;
+      this.dataset.label = newLabel;
     } else {
       this.removeAttribute("data-label");
     }
   }
 
-  get actions() {
-    return this.#actions;
-  }
-
-  set actions(newActions) {
-    this.#actions = newActions;
-    this.#actionsElement.replaceChildren(...this.actions);
-  }
-
   constructor() {
     super();
-    const template = document.getElementById("template-web-bar");
+    const template = document.getElementById("template-web-dispatch-column");
     this.#template = template.content.cloneNode(true);
-    this.#actionsElement = this.#template.querySelector('[data-js="actions"]');
     this.#titleElement = this.#template.querySelector('[data-js="title"]');
   }
 
   connectedCallback() {
     if (!this.#isMounted) {
-      this.classList.add("webBar");
+      this.classList.add("webDispatchColumn");
       this.append(this.#template);
       this.#isMounted = true;
     }
@@ -58,10 +46,10 @@ class WebBar extends HTMLElement {
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
       case "data-label":
-        this.#titleElement.textContent = newValue;
+        this.#titleElement.textContent = newValue ?? "";
         break;
     }
   }
 }
 
-export default WebBar;
+export default WebDispatchColumn;

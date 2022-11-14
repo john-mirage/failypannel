@@ -1,11 +1,32 @@
 class WebView extends HTMLElement {
   #isMounted = false;
-  #template;
-  #contentElement;
-  #webBar;
+  #webCarPlateView;
+  #webInvestigationView;
+  #webDispatchView;
 
   static get observedAttributes() {
     return ["data-view"];
+  }
+
+  get webCarPlateView() {
+    if (!(this.#webCarPlateView instanceof HTMLElement)) {
+      this.#webCarPlateView = document.createElement("web-car-plate");
+    }
+    return this.#webCarPlateView;
+  }
+
+  get webInvestigationView() {
+    if (!(this.#webInvestigationView instanceof HTMLElement)) {
+      this.#webInvestigationView = document.createElement("web-investigation");
+    }
+    return this.#webInvestigationView;
+  }
+
+  get webDispatchView() {
+    if (!(this.#webDispatchView instanceof HTMLElement)) {
+      this.#webDispatchView = document.createElement("web-dispatch");
+    }
+    return this.#webDispatchView;
   }
 
   get view() {
@@ -22,16 +43,11 @@ class WebView extends HTMLElement {
 
   constructor() {
     super();
-    const template = document.getElementById("template-web-view");
-    this.#template = template.content.cloneNode(true);
-    this.#contentElement = this.#template.querySelector('[data-js="content"]');
-    this.#webBar = this.#template.querySelector('[data-js="web-bar"]');
   }
 
   connectedCallback() {
     if (!this.#isMounted) {
       this.classList.add("webView");
-      this.append(this.#template);
       this.#isMounted = true;
     }
     this.upgradeProperty("view");
@@ -49,21 +65,13 @@ class WebView extends HTMLElement {
   switchView(newView) {
     switch (newView) {
       case "plate-view":
-        const plateView = document.createElement("web-plate-view");
-        this.#webBar.title = "Plaque d'immatriculation";
-        this.#contentElement.replaceChildren(plateView);
+        this.replaceChildren(this.webCarPlateView);
         break;
       case "investigation-view":
-        const inverstigationView = document.createElement(
-          "web-investigation-view"
-        );
-        this.#webBar.title = "Dossiers et enquêtes";
-        this.#contentElement.replaceChildren(inverstigationView);
+        this.replaceChildren(this.webInvestigationView);
         break;
       case "dispatch-view":
-        const dispatchView = document.createElement("web-dispatch-view");
-        this.#webBar.title = "Dispatch des unités";
-        this.#contentElement.replaceChildren(dispatchView);
+        this.replaceChildren(this.webDispatchView);
         break;
       default:
         throw new Error("The view is not valid");

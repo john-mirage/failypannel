@@ -1,20 +1,20 @@
-class WebPlateView extends HTMLElement {
+class WebInvestigation extends HTMLElement {
   #isMounted = false;
   #template;
 
   constructor() {
     super();
-    const template = document.getElementById("template-web-plate-view");
+    const template = document.getElementById("template-web-investigation");
     this.#template = template.content.cloneNode(true);
   }
 
   connectedCallback() {
     if (!this.#isMounted) {
-      this.classList.add("webPlateView");
+      this.classList.add("webInvestigation");
       this.append(this.#template);
       this.#isMounted = true;
     }
   }
 }
 
-export default WebPlateView;
+export default WebInvestigation;
