@@ -6,6 +6,7 @@
 @import "./components/web-navigation/web-navigation.style.css";
 @import "./components/web-navigation-item/web-navigation-item.style.css";
 @import "./components/web-switch/web-switch.style.css";
+@import "./components/web-button/web-button.style.css";
 
 @import "./views/web-car-plate/web-car-plate.style.css";
 @import "./views/web-investigation/web-investigation.style.css";

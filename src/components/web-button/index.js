@@ -1,3 +1,3 @@
-import WebPowerButton from "./web-power-button";
+import WebButton from "./web-button";
 
-export default WebPowerButton;
+export default WebButton;
