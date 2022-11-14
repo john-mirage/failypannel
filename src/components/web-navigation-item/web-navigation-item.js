@@ -1,5 +1,5 @@
 class WebNavigationItem extends HTMLElement {
-  #isMounted = false;
+  #hasBeenMountedOnce = false;
   #template;
   #buttonElement;
 
@@ -52,10 +52,10 @@ class WebNavigationItem extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!this.#isMounted) {
+    if (!this.#hasBeenMountedOnce) {
       this.classList.add("webNavigationItem");
       this.append(this.#template);
-      this.#isMounted = true;
+      this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("view");
     this.upgradeProperty("label");

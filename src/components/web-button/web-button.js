@@ -1,5 +1,5 @@
 class WebPowerButton extends HTMLElement {
-  #isMounted = false;
+  #hasBeenMountedOnce = false;
   #template;
   #iconElement;
   #labelElement;
@@ -42,10 +42,10 @@ class WebPowerButton extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!this.#isMounted) {
+    if (!this.#hasBeenMountedOnce) {
       this.classList.add("webButton");
       this.append(this.#template);
-      this.#isMounted = true;
+      this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("icon");
     this.upgradeProperty("label");

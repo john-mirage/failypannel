@@ -1,5 +1,5 @@
 class WebApp extends HTMLElement {
-  #isMounted = false;
+  #hasBeenMountedOnce = false;
   #template;
   #webSidebar;
   #webView;
@@ -42,10 +42,10 @@ class WebApp extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!this.#isMounted) {
+    if (!this.#hasBeenMountedOnce) {
       this.classList.add("webApp");
       this.append(this.#template);
-      this.#isMounted = true;
+      this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("view");
     this.upgradeProperty("enterprise");

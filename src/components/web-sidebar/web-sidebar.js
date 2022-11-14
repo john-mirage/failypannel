@@ -1,5 +1,5 @@
 class WebSidebar extends HTMLElement {
-  #isMounted = false;
+  #hasBeenMountedOnce = false;
   #template;
   #titleElement;
   #webNavigation;
@@ -43,10 +43,10 @@ class WebSidebar extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!this.#isMounted) {
+    if (!this.#hasBeenMountedOnce) {
       this.classList.add("webSidebar");
       this.append(this.#template);
-      this.#isMounted = true;
+      this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("enterprise");
     this.upgradeProperty("view");

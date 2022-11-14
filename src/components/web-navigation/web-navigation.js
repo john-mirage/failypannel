@@ -1,5 +1,5 @@
 class WebNavigation extends HTMLElement {
-  #isMounted = false;
+  #hasBeenMountedOnce = false;
   #template;
   #activeNavigationItem;
 
@@ -24,10 +24,10 @@ class WebNavigation extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!this.#isMounted) {
+    if (!this.#hasBeenMountedOnce) {
       this.classList.add("webNavigation");
       this.append(this.#template);
-      this.#isMounted = true;
+      this.#hasBeenMountedOnce = true;
     }
     const firstNavigationItem = this.querySelector("web-navigation-item");
     if (firstNavigationItem) {

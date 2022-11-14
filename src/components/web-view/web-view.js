@@ -1,5 +1,5 @@
 class WebView extends HTMLElement {
-  #isMounted = false;
+  #hasBeenMountedOnce = false;
   #webCarPlateView;
   #webInvestigationView;
   #webDispatchView;
@@ -46,9 +46,9 @@ class WebView extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!this.#isMounted) {
+    if (!this.#hasBeenMountedOnce) {
       this.classList.add("webView");
-      this.#isMounted = true;
+      this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("view");
     this.view = "plate-view";
