@@ -1,15 +1,15 @@
-.webDispatchColumn {
+.webDispatchCategory {
   display: block;
   height: 100%;
 }
 
-.webDispatchColumn__container {
+.webDispatchCategory__container {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.webDispatchColumn__title {
+.webDispatchCategory__name {
   flex: none;
   margin-bottom: 20px;
   font-size: 12px;
@@ -20,7 +20,7 @@
   color: var(--color-typo-secondary);
 }
 
-.webDispatchColumn__list {
+.webDispatchCategory__list {
   flex: 1;
   display: grid;
   grid-template-columns: 1fr;

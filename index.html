@@ -140,28 +140,15 @@
   <template id="template-web-dispatch">
     <main class="webDispatch__container">
       <web-bar class="webDispatch__header" data-label="Dispatch des unités" data-js="web-bar"></web-bar>
-      <div class="webDispatch__body">
-        <web-dispatch-column data-label="Hors service"></web-dispatch-column>
-        <web-dispatch-column data-label="En attente de dispatch"></web-dispatch-column>
-        <web-dispatch-column data-label="Lincoln"></web-dispatch-column>
-        <web-dispatch-column data-label="Adam"></web-dispatch-column>
-      </div>
+      <div class="webDispatch__body" data-js="body"></div>
     </main>
   </template>
 
-  <!-- template | web dispatch column -->
-  <template id="template-web-dispatch-column">
-    <section class="webDispatchColumn__container">
-      <h3 class="webDispatchColumn__title" data-js="title"></h3>
-      <ul class="webDispatchColumn__list" data-js="list">
-        <web-dispatch-unit data-number="01" data-name="Jenny Baker" data-role="Capitaine"></web-dispatch-unit>
-        <web-dispatch-group data-name="Adam 01"></web-dispatch-group>
-        <web-dispatch-unit data-number="45" data-name="Zoe Duck" data-role="Inspecteur"></web-dispatch-unit>
-        <web-dispatch-unit data-number="88" data-name="Kate Finley" data-role="Lieutenant"></web-dispatch-unit>
-        <web-dispatch-unit data-number="65" data-name="Lena Silvo" data-role="Inspecteur"></web-dispatch-unit>
-        <web-dispatch-unit data-number="14" data-name="Owen Chapman" data-role="Inspecteur"></web-dispatch-unit>
-        <web-dispatch-unit data-number="32" data-name="Roxanne Val" data-role="Lieutenant"></web-dispatch-unit>
-      </ul>
+  <!-- template | web dispatch category -->
+  <template id="template-web-dispatch-category">
+    <section class="webDispatchCategory__container">
+      <h3 class="webDispatchCategory__name" data-js="name"></h3>
+      <ul class="webDispatchCategory__list" data-js="list"></ul>
     </section>
   </template>
 
