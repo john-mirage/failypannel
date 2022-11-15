@@ -13,10 +13,9 @@
   flex: none;
 }
 
-.webDispatch__body {
+.webDispatch__grid {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(4, 280px);
   grid-template-rows: 100%;
   gap: 24px;
   padding: 24px;

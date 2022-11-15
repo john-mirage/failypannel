@@ -1,7 +1,7 @@
 import WebButton from "../../../components/web-button";
 
 class WebDispatchAddGroupButton extends WebButton {
-  #isMounted = false;
+  #hasBeenMountedOnce = false;
 
   static get observedAttributes() {
     return [...super.observedAttributes];
@@ -14,10 +14,10 @@ class WebDispatchAddGroupButton extends WebButton {
 
   connectedCallback() {
     super.connectedCallback();
-    if (!this.#isMounted) {
+    if (!this.#hasBeenMountedOnce) {
       this.icon = "add";
-      this.label = "Ajouter un équipage";
-      this.#isMounted = true;
+      this.label = "Ajouter un groupe";
+      this.#hasBeenMountedOnce = true;
     }
     this.buttonElement.addEventListener("click", this.handleButtonClick);
   }

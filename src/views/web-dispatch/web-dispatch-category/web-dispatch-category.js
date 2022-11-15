@@ -1,11 +1,13 @@
 import dispatchApi from "../../../api/dispatch-api";
+import Sortable from "sortablejs";
 
 class WebDispatchCategory extends HTMLElement {
-  #isMounted = false;
+  #hasBeenMountedOnce = false;
   #template;
   #nameElement;
   #countElement;
   #listElement;
+  #sortable;
 
   static get observedAttributes() {
     return ["data-id", "data-type", "data-name", "data-count"];
@@ -69,14 +71,24 @@ class WebDispatchCategory extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!this.#isMounted) {
+    if (!this.#hasBeenMountedOnce) {
       this.classList.add("webDispatchCategory");
       this.append(this.#template);
-      this.#isMounted = true;
+      this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("id");
     this.upgradeProperty("type");
     this.upgradeProperty("name");
+    this.#sortable = new Sortable(this.#listElement, {
+      group: this.type,
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.#sortable) {
+      this.#sortable.destroy();
+      console.log(this.#sortable);
+    }
   }
 
   upgradeProperty(prop) {
@@ -127,22 +139,26 @@ class WebDispatchCategory extends HTMLElement {
   handleCategoryCards() {
     if (this.id && this.type) {
       switch (this.type) {
-        case "group":
+        case "group": {
           const groups = dispatchApi.getCategoryGroups(this.id);
-          // console.log(groups);
           const webDispatchGroups = groups.map((group) => {
-            return this.getWebDispatchGroup(group);
+            const listItemElement = document.createElement("li");
+            listItemElement.replaceChildren(this.getWebDispatchGroup(group));
+            return listItemElement;
           });
           this.#listElement.replaceChildren(...webDispatchGroups);
           break;
-        case "unit":
+        }
+        case "unit": {
           const units = dispatchApi.getCategoryUnits(this.id);
-          // console.log(units);
           const webDispatchUnits = units.map((unit) => {
-            return this.getWebDispatchUnit(unit);
+            const listItemElement = document.createElement("li");
+            listItemElement.replaceChildren(this.getWebDispatchUnit(unit));
+            return listItemElement;
           });
           this.#listElement.replaceChildren(...webDispatchUnits);
           break;
+        }
         default:
           throw new Error("The category type is not valid");
       }

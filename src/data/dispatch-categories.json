@@ -18,5 +18,10 @@
     "id": "4",
     "type": "group",
     "name": "Adam"
+  },
+  {
+    "id": "5",
+    "type": "group",
+    "name": "Henry"
   }
 ]

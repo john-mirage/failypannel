@@ -1,10 +1,12 @@
 import dispatchApi from "../../../api/dispatch-api";
+import Sortable from "sortablejs";
 
 class WebDispatchGroup extends HTMLElement {
-  #isMounted = false;
+  #hasBeenMountedOnce = false;
   #template;
   #nameElement;
   #placeholderElement;
+  #sortable;
 
   constructor() {
     super();
@@ -69,15 +71,24 @@ class WebDispatchGroup extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!this.#isMounted) {
+    if (!this.#hasBeenMountedOnce) {
       this.classList.add("webDispatchUnit");
       this.append(this.#template);
-      this.#isMounted = true;
+      this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("id");
     this.upgradeProperty("categoryId");
     this.upgradeProperty("name");
     this.upgradeProperty("size");
+    this.#sortable = new Sortable(this.#placeholderElement, {
+      group: "unit",
+    });
+  }
+
+  disconnectedCallback() {
+    if (this.#sortable) {
+      this.#sortable.destroy();
+    }
   }
 
   upgradeProperty(prop) {
@@ -118,13 +129,11 @@ class WebDispatchGroup extends HTMLElement {
       const units = dispatchApi.getGroupUnits(this.id);
       if (units.length > 0) {
         const webDispatchUnits = units.map((unit) => {
-          return this.getWebDispatchUnit(unit);
+          const listItemElement = document.createElement("li");
+          listItemElement.append(this.getWebDispatchUnit(unit));
+          return listItemElement;
         });
-        if (webDispatchUnits.length < Number(this.size)) {
-          this.#placeholderElement.prepend(...webDispatchUnits);
-        } else {
-          this.#placeholderElement.replaceChildren(...webDispatchUnits);
-        }
+        this.#placeholderElement.replaceChildren(...webDispatchUnits);
       }
     }
   }

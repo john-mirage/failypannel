@@ -4,14 +4,14 @@ class WebDispatch extends HTMLElement {
   #isMounted = false;
   #template;
   #webBar;
-  #bodyElement;
+  #gridElement;
 
   constructor() {
     super();
     const template = document.getElementById("template-web-dispatch");
     this.#template = template.content.cloneNode(true);
     this.#webBar = this.#template.querySelector('[data-js="web-bar"]');
-    this.#bodyElement = this.#template.querySelector('[data-js="body"]');
+    this.#gridElement = this.#template.querySelector('[data-js="grid"]');
   }
 
   connectedCallback() {
@@ -37,7 +37,10 @@ class WebDispatch extends HTMLElement {
       webDispatchCategory.name = category.name;
       return webDispatchCategory;
     });
-    this.#bodyElement.replaceChildren(...webDispatchCategories);
+    this.#gridElement.style.gridTemplateColumns = `repeat(${String(
+      webDispatchCategories.length
+    )}, 280px)`;
+    this.#gridElement.replaceChildren(...webDispatchCategories);
   }
 }
 

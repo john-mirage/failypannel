@@ -14,6 +14,7 @@
 @import "./views/web-dispatch/web-dispatch-category/web-dispatch-category.style.css";
 @import "./views/web-dispatch/web-dispatch-group/web-dispatch-group.style.css";
 @import "./views/web-dispatch/web-dispatch-unit/web-dispatch-unit.style.css";
+@import "./views/web-dispatch/web-dispatch-drop-zone/web-dispatch-drop-zone.style.css";
 
 :root {
   --color-app: hsl(210, 17%, 95%);
@@ -53,8 +54,8 @@
 :root[data-theme="dark"] {
   --color-app: hsl(216, 12%, 8%);
 
-  --color-bar: hsl(210, 11%, 11%);
-  --color-bar-border: hsl(210, 11%, 15%);
+  --color-bar: hsl(210, 11%, 13%);
+  --color-bar-border: hsl(210, 11%, 20%);
 
   --color-toggle-button-track: hsl(210, 10%, 23%);
   --color-toggle-button-icon: hsl(210, 11%, 71%);

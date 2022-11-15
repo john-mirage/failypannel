@@ -1,5 +1,5 @@
 class WebDispatchUnit extends HTMLElement {
-  #isMounted = false;
+  #hasBeenMountedOnce = false;
   #template;
   #numberElement;
   #nameElement;
@@ -98,10 +98,10 @@ class WebDispatchUnit extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!this.#isMounted) {
+    if (!this.#hasBeenMountedOnce) {
       this.classList.add("webDispatchUnit");
       this.append(this.#template);
-      this.#isMounted = true;
+      this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("categoryId");
     this.upgradeProperty("groupId");
