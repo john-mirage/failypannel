@@ -15,7 +15,50 @@ class WebDispatchUnit extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["data-number", "data-name", "data-role"];
+    return [
+      "data-category-id",
+      "data-group-id",
+      "data-id",
+      "data-number",
+      "data-name",
+      "data-role",
+    ];
+  }
+
+  get categoryId() {
+    return this.dataset.categoryId;
+  }
+
+  set categoryId(newCategoryId) {
+    if (typeof newCategoryId === "string") {
+      this.dataset.categoryId = newCategoryId;
+    } else {
+      this.removeAttribute("data-category-id");
+    }
+  }
+
+  get groupId() {
+    return this.dataset.groupId;
+  }
+
+  set groupId(newGroupId) {
+    if (typeof newGroupId === "string") {
+      this.dataset.groupId = newGroupId;
+    } else {
+      this.removeAttribute("data-group-id");
+    }
+  }
+
+  get id() {
+    return this.dataset.id;
+  }
+
+  set id(newId) {
+    if (typeof newId === "string") {
+      this.dataset.id = newId;
+    } else {
+      this.removeAttribute("data-id");
+    }
   }
 
   get number() {
@@ -60,6 +103,9 @@ class WebDispatchUnit extends HTMLElement {
       this.append(this.#template);
       this.#isMounted = true;
     }
+    this.upgradeProperty("categoryId");
+    this.upgradeProperty("groupId");
+    this.upgradeProperty("id");
     this.upgradeProperty("number");
     this.upgradeProperty("name");
     this.upgradeProperty("role");

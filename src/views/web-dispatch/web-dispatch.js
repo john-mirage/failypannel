@@ -22,8 +22,12 @@ class WebDispatch extends HTMLElement {
         "web-dispatch-add-group-button"
       );
       this.#webBar.actions = [addGroupButton];
+      this.handleCategories();
       this.#isMounted = true;
     }
+  }
+
+  handleCategories() {
     const webDispatchCategories = dispatchApi.categories.map((category) => {
       const webDispatchCategory = document.createElement(
         "web-dispatch-category"

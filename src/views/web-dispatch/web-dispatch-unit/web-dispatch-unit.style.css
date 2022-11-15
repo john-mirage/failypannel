@@ -8,10 +8,10 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 16px;
+  padding: 8px 12px;
   background-color: var(--color-bar);
   border-radius: 6px;
-  border-left: 6px solid hsl(132 52% 35% / 0.6);
+  border-left: 6px solid hsl(228, 94%, 67%);
   box-shadow:
     0 1px 3px 0 rgb(0 0 0 / 0.1),
     0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -20,17 +20,17 @@
 .webDispatchUnit__number {
   margin-right: 16px;
   text-align: right;
-  font-size: 40px;
+  font-size: 36px;
   font-weight: 700;
-  line-height: 48px;
+  line-height: 44px;
   text-transform: uppercase;
   letter-spacing: 0.6px;
-  color: #495057;
+  color: hsl(210, 9%, 40%);
 }
 
 .webDispatchUnit__name {
   text-align: right;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 24px;
   color: var(--color-typo-primary);

@@ -4,6 +4,7 @@ class WebDispatchCategory extends HTMLElement {
   #isMounted = false;
   #template;
   #nameElement;
+  #listElement;
 
   static get observedAttributes() {
     return ["data-id", "data-type", "data-name"];
@@ -50,6 +51,7 @@ class WebDispatchCategory extends HTMLElement {
     const template = document.getElementById("template-web-dispatch-category");
     this.#template = template.content.cloneNode(true);
     this.#nameElement = this.#template.querySelector('[data-js="name"]');
+    this.#listElement = this.#template.querySelector('[data-js="list"]');
   }
 
   connectedCallback() {
@@ -85,16 +87,43 @@ class WebDispatchCategory extends HTMLElement {
     }
   }
 
+  getWebDispatchGroup(group) {
+    const webDispatchGroup = document.createElement("web-dispatch-group");
+    webDispatchGroup.categoryId = group.categoryId;
+    webDispatchGroup.id = group.id;
+    webDispatchGroup.name = group.name;
+    return webDispatchGroup;
+  }
+
+  getWebDispatchUnit(unit) {
+    const webDispatchUnit = document.createElement("web-dispatch-unit");
+    webDispatchUnit.categoryId = unit.categoryId;
+    webDispatchUnit.groupId = unit.groupId;
+    webDispatchUnit.id = unit.id;
+    webDispatchUnit.number = unit.number;
+    webDispatchUnit.name = unit.name;
+    webDispatchUnit.role = unit.role;
+    return webDispatchUnit;
+  }
+
   handleCategoryCards() {
     if (this.id && this.type) {
       switch (this.type) {
         case "group":
           const groups = dispatchApi.getCategoryGroups(this.id);
-          console.log(groups);
+          // console.log(groups);
+          const webDispatchGroups = groups.map((group) => {
+            return this.getWebDispatchGroup(group);
+          });
+          this.#listElement.replaceChildren(...webDispatchGroups);
           break;
         case "unit":
           const units = dispatchApi.getCategoryUnits(this.id);
-          console.log(units);
+          // console.log(units);
+          const webDispatchUnits = units.map((unit) => {
+            return this.getWebDispatchUnit(unit);
+          });
+          this.#listElement.replaceChildren(...webDispatchUnits);
           break;
         default:
           throw new Error("The category type is not valid");

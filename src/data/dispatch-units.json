@@ -1,54 +1,54 @@
 [
   {
-    "categoryId": "1",
-    "groupId": null,
+    "categoryId": "3",
+    "groupId": "1",
     "id": "1",
     "number": "22",
     "name": "Jenny Baker",
     "role": "Commissaire"
   },
   {
-    "categoryId": "1",
-    "groupId": null,
+    "categoryId": "4",
+    "groupId": "3",
     "id": "2",
     "number": "32",
     "name": "Kate Finley",
     "role": "Capitaine"
   },
   {
-    "categoryId": "1",
-    "groupId": null,
+    "categoryId": "4",
+    "groupId": "4",
     "id": "3",
     "number": "04",
     "name": "Jonas Delos",
     "role": "Lieutenant"
   },
   {
-    "categoryId": "1",
-    "groupId": null,
+    "categoryId": "4",
+    "groupId": "3",
     "id": "4",
     "number": "46",
     "name": "Micah Finley",
     "role": "Lieutenant"
   },
   {
-    "categoryId": "1",
-    "groupId": null,
+    "categoryId": "4",
+    "groupId": "4",
     "id": "5",
     "number": "38",
     "name": "Zoé Duck",
     "role": "Inspecteur"
   },
   {
-    "categoryId": "1",
-    "groupId": null,
+    "categoryId": "3",
+    "groupId": "2",
     "id": "6",
     "number": "52",
     "name": "Freddy Kidd",
     "role": "Inspecteur"
   },
   {
-    "categoryId": "1",
+    "categoryId": "2",
     "groupId": null,
     "id": "7",
     "number": "14",
@@ -56,7 +56,7 @@
     "role": "Inspecteur"
   },
   {
-    "categoryId": "1",
+    "categoryId": "2",
     "groupId": null,
     "id": "8",
     "number": "59",

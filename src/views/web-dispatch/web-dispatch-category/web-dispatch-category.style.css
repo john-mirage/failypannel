@@ -25,6 +25,6 @@
   display: grid;
   grid-template-columns: 1fr;
   align-content: flex-start;
-  gap: 24px;
+  gap: 16px;
   overflow-y: auto;
 }

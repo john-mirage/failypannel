@@ -94,6 +94,11 @@ class DispatchAPI {
       throw new Error("The category type is not 'unit'");
     }
   }
+
+  getGroupUnits(groupId) {
+    const group = this.#groups.get(groupId);
+    return this.units.filter((unit) => unit.groupId === group.id);
+  }
 }
 
 export default new DispatchAPI(
