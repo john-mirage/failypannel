@@ -4,10 +4,11 @@ class WebDispatchCategory extends HTMLElement {
   #isMounted = false;
   #template;
   #nameElement;
+  #countElement;
   #listElement;
 
   static get observedAttributes() {
-    return ["data-id", "data-type", "data-name"];
+    return ["data-id", "data-type", "data-name", "data-count"];
   }
 
   get id() {
@@ -46,11 +47,24 @@ class WebDispatchCategory extends HTMLElement {
     }
   }
 
+  get count() {
+    return this.dataset.count;
+  }
+
+  set count(newCount) {
+    if (typeof newCount === "string") {
+      this.dataset.count = newCount;
+    } else {
+      this.removeAttribute("data-count");
+    }
+  }
+
   constructor() {
     super();
     const template = document.getElementById("template-web-dispatch-category");
     this.#template = template.content.cloneNode(true);
     this.#nameElement = this.#template.querySelector('[data-js="name"]');
+    this.#countElement = this.#template.querySelector('[data-js="count"]');
     this.#listElement = this.#template.querySelector('[data-js="list"]');
   }
 
@@ -83,6 +97,9 @@ class WebDispatchCategory extends HTMLElement {
         break;
       case "data-name":
         this.#nameElement.textContent = newValue ?? "";
+        break;
+      case "data-count":
+        this.#countElement.textContent = ` (${newValue})` ?? "";
         break;
     }
   }
@@ -129,6 +146,7 @@ class WebDispatchCategory extends HTMLElement {
         default:
           throw new Error("The category type is not valid");
       }
+      this.count = String(this.#listElement.children.length);
     }
   }
 }
