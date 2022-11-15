@@ -92,6 +92,7 @@ class WebDispatchCategory extends HTMLElement {
     webDispatchGroup.categoryId = group.categoryId;
     webDispatchGroup.id = group.id;
     webDispatchGroup.name = group.name;
+    webDispatchGroup.size = group.size;
     return webDispatchGroup;
   }
 

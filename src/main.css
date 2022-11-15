@@ -16,13 +16,13 @@
 @import "./views/web-dispatch/web-dispatch-unit/web-dispatch-unit.style.css";
 
 :root {
-  --color-app: hsl(210, 17%, 97%);
+  --color-app: hsl(210, 17%, 95%);
   --color-app-shadow:
     0 20px 25px -5px rgb(0 0 0 / 0.1),
     0 8px 10px -6px rgb(0 0 0 / 0.1);
 
   --color-bar: hsl(0, 0%, 100%);
-  --color-bar-border: hsl(210, 17%, 92%);
+  --color-bar-border: hsl(210, 17%, 90%);
 
   --color-paper: hsl(0, 0%, 100%);
 

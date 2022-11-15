@@ -17,7 +17,7 @@ class WebDispatchGroup extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["data-category-id", "data-id", "data-name"];
+    return ["data-category-id", "data-id", "data-name", "data-size"];
   }
 
   get categoryId() {
@@ -56,6 +56,18 @@ class WebDispatchGroup extends HTMLElement {
     }
   }
 
+  get size() {
+    return this.dataset.size;
+  }
+
+  set size(newSize) {
+    if (typeof newSize === "string") {
+      this.dataset.size = newSize;
+    } else {
+      this.removeAttribute("data-size");
+    }
+  }
+
   connectedCallback() {
     if (!this.#isMounted) {
       this.classList.add("webDispatchUnit");
@@ -65,6 +77,7 @@ class WebDispatchGroup extends HTMLElement {
     this.upgradeProperty("id");
     this.upgradeProperty("categoryId");
     this.upgradeProperty("name");
+    this.upgradeProperty("size");
   }
 
   upgradeProperty(prop) {
@@ -83,6 +96,9 @@ class WebDispatchGroup extends HTMLElement {
       case "data-name":
         this.#nameElement.textContent = newValue ?? "";
         break;
+      case "data-size":
+        this.handleUnits();
+        break;
     }
   }
 
@@ -98,14 +114,17 @@ class WebDispatchGroup extends HTMLElement {
   }
 
   handleUnits() {
-    if (this.id) {
+    if (this.id && this.size) {
       const units = dispatchApi.getGroupUnits(this.id);
-      console.log(units);
       if (units.length > 0) {
         const webDispatchUnits = units.map((unit) => {
           return this.getWebDispatchUnit(unit);
         });
-        this.#placeholderElement.replaceChildren(...webDispatchUnits);
+        if (webDispatchUnits.length < Number(this.size)) {
+          this.#placeholderElement.prepend(...webDispatchUnits);
+        } else {
+          this.#placeholderElement.replaceChildren(...webDispatchUnits);
+        }
       }
     }
   }

@@ -13,7 +13,7 @@
   flex: none;
   margin-bottom: 20px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 1.4px;
   text-transform: uppercase;
   line-height: 20px;
@@ -25,6 +25,6 @@
   display: grid;
   grid-template-columns: 1fr;
   align-content: flex-start;
-  gap: 16px;
+  gap: 24px;
   overflow-y: auto;
 }

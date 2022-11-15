@@ -64,8 +64,8 @@
     "role": "Sergent-Chef"
   },
   {
-    "categoryId": "1",
-    "groupId": null,
+    "categoryId": "4",
+    "groupId": "5",
     "id": "9",
     "number": "74",
     "name": "Marius Pipoulin",
