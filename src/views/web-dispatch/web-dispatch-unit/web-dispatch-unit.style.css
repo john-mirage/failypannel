@@ -11,7 +11,7 @@
   padding: 16px;
   background-color: var(--color-bar);
   border-radius: 6px;
-  border-left: 6px solid #2b8a3e;
+  border-left: 6px solid hsl(132 52% 35% / 0.6);
   box-shadow:
     0 1px 3px 0 rgb(0 0 0 / 0.1),
     0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -25,7 +25,7 @@
   line-height: 48px;
   text-transform: uppercase;
   letter-spacing: 0.6px;
-  color: var(--color-typo-primary);
+  color: #495057;
 }
 
 .webDispatchUnit__name {

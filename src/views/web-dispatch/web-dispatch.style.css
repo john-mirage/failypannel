@@ -17,8 +17,8 @@
   flex: 1;
   display: grid;
   grid-template-columns: repeat(4, 280px);
+  grid-template-rows: 100%;
   gap: 24px;
-  height: 100%;
   padding: 24px;
-  overflow: auto;
+  overflow-y: hidden;
 }

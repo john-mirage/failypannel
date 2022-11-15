@@ -3,17 +3,28 @@
   height: 100%;
 }
 
+.webDispatchColumn__container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .webDispatchColumn__title {
+  flex: none;
   margin-bottom: 20px;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 1.4px;
   text-transform: uppercase;
+  line-height: 20px;
   color: var(--color-typo-secondary);
 }
 
 .webDispatchColumn__list {
+  flex: 1;
   display: grid;
   grid-template-columns: 1fr;
+  align-content: flex-start;
   gap: 24px;
+  overflow-y: auto;
 }
