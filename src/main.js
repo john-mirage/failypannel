@@ -16,8 +16,7 @@ import WebDispatch from "./views/web-dispatch";
 import WebDispatchCategory from "./views/web-dispatch/web-dispatch-category";
 import WebDispatchGroup from "./views/web-dispatch/web-dispatch-group";
 import WebDispatchUnit from "./views/web-dispatch/web-dispatch-unit";
-import WebDispatchDropZone from "./views/web-dispatch/web-dispatch-drop-zone";
-import WebDispatchAddGroupButton from "./views/web-dispatch/web-dispatch-add-group-button";
+import WebDispatchGroupButton from "./views/web-dispatch/web-dispatch-group-button";
 
 customElements.define("web-app", WebApp);
 customElements.define("web-sidebar", WebSidebar);
@@ -35,11 +34,7 @@ customElements.define("web-dispatch", WebDispatch);
 customElements.define("web-dispatch-category", WebDispatchCategory);
 customElements.define("web-dispatch-group", WebDispatchGroup);
 customElements.define("web-dispatch-unit", WebDispatchUnit);
-customElements.define("web-dispatch-drop-zone", WebDispatchDropZone);
-customElements.define(
-  "web-dispatch-add-group-button",
-  WebDispatchAddGroupButton
-);
+customElements.define("web-dispatch-group-button", WebDispatchGroupButton);
 
 const app = document.getElementById("app");
 const webApp = document.createElement("web-app");

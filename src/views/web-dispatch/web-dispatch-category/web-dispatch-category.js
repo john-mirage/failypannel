@@ -74,21 +74,14 @@ class WebDispatchCategory extends HTMLElement {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webDispatchCategory");
       this.append(this.#template);
+      this.#sortable = new Sortable(this.#listElement, {
+        group: this.type,
+      });
       this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("id");
     this.upgradeProperty("type");
     this.upgradeProperty("name");
-    this.#sortable = new Sortable(this.#listElement, {
-      group: this.type,
-    });
-  }
-
-  disconnectedCallback() {
-    if (this.#sortable) {
-      this.#sortable.destroy();
-      console.log(this.#sortable);
-    }
   }
 
   upgradeProperty(prop) {

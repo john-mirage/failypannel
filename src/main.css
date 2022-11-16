@@ -14,7 +14,6 @@
 @import "./views/web-dispatch/web-dispatch-category/web-dispatch-category.style.css";
 @import "./views/web-dispatch/web-dispatch-group/web-dispatch-group.style.css";
 @import "./views/web-dispatch/web-dispatch-unit/web-dispatch-unit.style.css";
-@import "./views/web-dispatch/web-dispatch-drop-zone/web-dispatch-drop-zone.style.css";
 
 :root {
   --color-app: hsl(210, 17%, 95%);

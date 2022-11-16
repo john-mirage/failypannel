@@ -22,7 +22,7 @@
   color: var(--color-typo-primary);
 }
 
-.webDispatchGroup__placeholder {
+.webDispatchGroup__list {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
@@ -31,4 +31,8 @@
   background-color: var(--color-app);
   border-radius: 8px;
   box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+}
+
+.webDispatchGroup__listEmptyItem {
+  
 }

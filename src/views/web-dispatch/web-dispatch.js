@@ -19,7 +19,7 @@ class WebDispatch extends HTMLElement {
       this.classList.add("webDispatch");
       this.append(this.#template);
       const addGroupButton = document.createElement(
-        "web-dispatch-add-group-button"
+        "web-dispatch-group-button"
       );
       this.#webBar.actions = [addGroupButton];
       this.handleCategories();

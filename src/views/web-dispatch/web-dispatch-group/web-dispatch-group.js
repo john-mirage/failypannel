@@ -5,21 +5,39 @@ class WebDispatchGroup extends HTMLElement {
   #hasBeenMountedOnce = false;
   #template;
   #nameElement;
-  #placeholderElement;
+  #listElement;
+  #listEmptyItemElement;
   #sortable;
+
+  static get observedAttributes() {
+    return ["data-category-id", "data-id", "data-name", "data-size"];
+  }
 
   constructor() {
     super();
     const template = document.getElementById("template-web-dispatch-group");
     this.#template = template.content.cloneNode(true);
     this.#nameElement = this.#template.querySelector('[data-js="name"]');
-    this.#placeholderElement = this.#template.querySelector(
-      '[data-js="placeholder"]'
-    );
+    this.#listElement = this.#template.querySelector('[data-js="list"]');
+    this.#sortable = new Sortable(this.#listElement, {
+      group: "unit",
+      filter: ".webDispatchGroup__listEmptyItem",
+      onSort: () => {
+        this.handleListEmptyItem();
+      },
+    });
   }
 
-  static get observedAttributes() {
-    return ["data-category-id", "data-id", "data-name", "data-size"];
+  get listEmptyItemElement() {
+    if (!this.#listEmptyItemElement) {
+      this.#listEmptyItemElement = document.createElement("li");
+      this.#listEmptyItemElement.classList.add(
+        "webDispatchGroup__listEmptyItem"
+      );
+      this.#listEmptyItemElement.textContent =
+        "Déplacer une unité dans cette emplacement";
+    }
+    return this.#listEmptyItemElement;
   }
 
   get categoryId() {
@@ -80,15 +98,6 @@ class WebDispatchGroup extends HTMLElement {
     this.upgradeProperty("categoryId");
     this.upgradeProperty("name");
     this.upgradeProperty("size");
-    this.#sortable = new Sortable(this.#placeholderElement, {
-      group: "unit",
-    });
-  }
-
-  disconnectedCallback() {
-    if (this.#sortable) {
-      this.#sortable.destroy();
-    }
   }
 
   upgradeProperty(prop) {
@@ -102,13 +111,13 @@ class WebDispatchGroup extends HTMLElement {
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
       case "data-id":
-        this.handleUnits();
+        this.handleDispatchUnits();
         break;
       case "data-name":
         this.#nameElement.textContent = newValue ?? "";
         break;
       case "data-size":
-        this.handleUnits();
+        this.handleDispatchUnits();
         break;
     }
   }
@@ -124,7 +133,36 @@ class WebDispatchGroup extends HTMLElement {
     return webDispatchUnit;
   }
 
-  handleUnits() {
+  handleListEmptyItem() {
+    const listEmptyItems = this.#listElement.querySelectorAll(
+      ".webDispatchGroup__listEmptyItem"
+    );
+    for (const listItem of listEmptyItems) {
+      listItem.remove();
+    }
+    const emptySpots = Number(this.size) - this.#listElement.children.length;
+    if (emptySpots > 0) {
+      for (let index = 0; index < emptySpots; ++index) {
+        const listItemElement = this.listEmptyItemElement.cloneNode(true);
+        this.#listElement.append(listItemElement);
+      }
+    }
+
+    if (emptySpots <= 0) {
+      this.#sortable.option("group", {
+        ...this.#sortable.option("group"),
+        put: false,
+      });
+    } else {
+      this.#sortable.option("group", {
+        ...this.#sortable.option("group"),
+        put: true,
+      });
+    }
+    console.log(this.#sortable.option("group"));
+  }
+
+  handleDispatchUnits() {
     if (this.id && this.size) {
       const units = dispatchApi.getGroupUnits(this.id);
       if (units.length > 0) {
@@ -133,8 +171,9 @@ class WebDispatchGroup extends HTMLElement {
           listItemElement.append(this.getWebDispatchUnit(unit));
           return listItemElement;
         });
-        this.#placeholderElement.replaceChildren(...webDispatchUnits);
+        this.#listElement.replaceChildren(...webDispatchUnits);
       }
+      this.handleListEmptyItem();
     }
   }
 }
