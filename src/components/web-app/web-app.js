@@ -1,19 +1,17 @@
 class WebApp extends HTMLElement {
   #hasBeenMountedOnce = false;
   #template;
-  #webSidebar;
-  #webView;
+  #viewElement;
 
   static get observedAttributes() {
-    return ["data-view", "data-enterprise"];
+    return ["data-view"];
   }
 
   constructor() {
     super();
     const template = document.getElementById("template-web-app");
     this.#template = template.content.cloneNode(true);
-    this.#webSidebar = this.#template.querySelector('[data-js="web-sidebar"]');
-    this.#webView = this.#template.querySelector('[data-js="web-view"]');
+    this.#viewElement = this.#template.querySelector('[data-js="view"]');
     this.handleViewUpdate = this.handleViewUpdate.bind(this);
   }
 
@@ -29,18 +27,6 @@ class WebApp extends HTMLElement {
     }
   }
 
-  get enterprise() {
-    return this.dataset.enterprise;
-  }
-
-  set enterprise(newEnterprise) {
-    if (typeof newEnterprise === "string") {
-      this.dataset.enterprise = newEnterprise;
-    } else {
-      this.removeAttribute("data-enterprise");
-    }
-  }
-
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webApp");
@@ -48,7 +34,6 @@ class WebApp extends HTMLElement {
       this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("view");
-    this.upgradeProperty("enterprise");
     this.addEventListener("active-view-update", this.handleViewUpdate);
   }
 
@@ -67,10 +52,7 @@ class WebApp extends HTMLElement {
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
       case "data-view":
-        this.#webView.view = newValue;
-        break;
-      case "data-enterprise":
-        this.#webSidebar.enterprise = newValue;
+        this.#viewElement.view = newValue;
         break;
     }
   }

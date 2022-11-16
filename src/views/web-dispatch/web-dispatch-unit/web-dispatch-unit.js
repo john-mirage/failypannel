@@ -126,6 +126,7 @@ class WebDispatchUnit extends HTMLElement {
         break;
       case "data-name":
         this.#nameElement.textContent = newValue ?? "";
+        this.#nameElement.setAttribute("title", newValue);
         break;
       case "data-role":
         this.#roleElement.textContent = newValue ?? "";

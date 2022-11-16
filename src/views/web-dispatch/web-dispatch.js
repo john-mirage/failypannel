@@ -39,7 +39,7 @@ class WebDispatch extends HTMLElement {
     });
     this.#gridElement.style.gridTemplateColumns = `repeat(${String(
       webDispatchCategories.length
-    )}, 280px)`;
+    )}, 296px)`;
     this.#gridElement.replaceChildren(...webDispatchCategories);
   }
 }
