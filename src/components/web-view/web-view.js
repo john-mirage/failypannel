@@ -51,7 +51,6 @@ class WebView extends HTMLElement {
       this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("view");
-    this.view = "plate-view";
   }
 
   upgradeProperty(prop) {
@@ -64,7 +63,7 @@ class WebView extends HTMLElement {
 
   switchView(newView) {
     switch (newView) {
-      case "plate-view":
+      case "car-plate-view":
         this.replaceChildren(this.webCarPlateView);
         break;
       case "investigation-view":

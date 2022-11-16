@@ -1,19 +1,20 @@
 @import "./styles/global.css";
 
 @import "./components/web-app/web-app.style.css";
-@import "./components/web-sidebar/web-sidebar.style.css";
 @import "./components/web-bar/web-bar.style.css";
+@import "./components/web-sidebar/web-sidebar.style.css";
 @import "./components/web-navigation/web-navigation.style.css";
 @import "./components/web-navigation-item/web-navigation-item.style.css";
 @import "./components/web-switch/web-switch.style.css";
 @import "./components/web-button/web-button.style.css";
 
-@import "./views/web-car-plate/web-car-plate.style.css";
-@import "./views/web-investigation/web-investigation.style.css";
-@import "./views/web-dispatch/web-dispatch.style.css";
-@import "./views/web-dispatch/web-dispatch-category/web-dispatch-category.style.css";
-@import "./views/web-dispatch/web-dispatch-group/web-dispatch-group.style.css";
-@import "./views/web-dispatch/web-dispatch-unit/web-dispatch-unit.style.css";
+@import "./views/car-plate/web-car-plate/web-car-plate.style.css";
+@import "./views/investigation/web-investigation/web-investigation.style.css";
+@import "./views/dispatch/web-dispatch/web-dispatch.style.css";
+@import "./views/dispatch/web-dispatch-toolbar/web-dispatch-toolbar.style.css";
+@import "./views/dispatch/web-dispatch-category/web-dispatch-category.style.css";
+@import "./views/dispatch/web-dispatch-group/web-dispatch-group.style.css";
+@import "./views/dispatch/web-dispatch-unit/web-dispatch-unit.style.css";
 
 :root {
   --color-app: hsl(210, 17%, 95%);
@@ -35,7 +36,7 @@
   --color-toggle-button-icon-active: #f59f00;
 
   --color-typo-primary: hsl(210, 9%, 31%);
-  --color-typo-secondary: hsl(210, 7%, 50%);
+  --color-typo-secondary: hsl(210, 7%, 60%);
   --color-typo-positive: hsl(162, 68%, 54%);
   --color-typo-negative: hsl(339, 88%, 74%);
 

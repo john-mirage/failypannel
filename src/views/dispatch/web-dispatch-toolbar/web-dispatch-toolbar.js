@@ -1,4 +1,4 @@
-class WebDispatch extends HTMLElement {
+class WebDispatchToolbar extends HTMLElement {
   #hasBeenMountedOnce = false;
   #template;
 
@@ -17,4 +17,4 @@ class WebDispatch extends HTMLElement {
   }
 }
 
-export default WebDispatch;
+export default WebDispatchToolbar;

@@ -1,16 +1,14 @@
-import dispatchApi from "../../api/dispatch-api";
+import dispatchApi from "../../../api/dispatch-api";
 
 class WebDispatch extends HTMLElement {
   #isMounted = false;
   #template;
-  #webBar;
   #gridElement;
 
   constructor() {
     super();
     const template = document.getElementById("template-web-dispatch");
     this.#template = template.content.cloneNode(true);
-    this.#webBar = this.#template.querySelector('[data-js="web-bar"]');
     this.#gridElement = this.#template.querySelector('[data-js="grid"]');
   }
 
@@ -18,10 +16,6 @@ class WebDispatch extends HTMLElement {
     if (!this.#isMounted) {
       this.classList.add("webDispatch");
       this.append(this.#template);
-      const addGroupButton = document.createElement(
-        "web-dispatch-group-button"
-      );
-      this.#webBar.actions = [addGroupButton];
       this.handleCategories();
       this.#isMounted = true;
     }

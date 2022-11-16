@@ -1,10 +1,8 @@
 .webApp {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
+  width: 100%;
+  height: 100%;
   background-color: var(--color-app);
   box-shadow: var(--color-app-shadow);
-  overflow: hidden;
 }
 
 [data-screen="window"] .webApp {
@@ -15,6 +13,25 @@
 [data-screen="full"] .webApp {
   width: 100%;
   height: 100%;
+}
+
+.webApp__container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.webApp__body {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+}
+
+.webApp__bar {
+  flex: none;
 }
 
 .webApp__sidebar {
