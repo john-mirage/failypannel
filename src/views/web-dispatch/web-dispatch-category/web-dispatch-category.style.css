@@ -23,7 +23,7 @@
 .webDispatchCategory__list {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 100%;
   align-content: flex-start;
   gap: 24px;
   overflow-x: hidden;

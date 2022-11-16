@@ -24,7 +24,7 @@
 
 .webDispatchGroup__list {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 100%;
   gap: 12px;
   width: 100%;
   padding: 12px;

@@ -90,7 +90,7 @@ class WebDispatchGroup extends HTMLElement {
 
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
-      this.classList.add("webDispatchUnit");
+      this.classList.add("webDispatchGroup");
       this.append(this.#template);
       this.#hasBeenMountedOnce = true;
     }

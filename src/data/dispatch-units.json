@@ -86,5 +86,13 @@
     "number": "19",
     "name": "Kim Night",
     "role": "Officier Supérieur"
+  },
+  {
+    "categoryId": "1",
+    "groupId": null,
+    "id": "12",
+    "number": "07",
+    "name": "Hubert Bonnisseur de la Bath test",
+    "role": "Officier Supérieur"
   }
 ]
