@@ -9,9 +9,20 @@ class WebDispatchCategory extends HTMLElement {
   #listElement;
   #listItemElement = document.createElement("li");
   #cards = new Map();
+  #sortableInstance;
 
   static get observedAttributes() {
     return ["data-id", "data-count"];
+  }
+
+  constructor() {
+    super();
+    const template = document.getElementById("template-web-dispatch-category");
+    this.#template = template.content.firstElementChild.cloneNode(true);
+    this.#nameElement = this.#template.querySelector('[data-js="name"]');
+    this.#countElement = this.#template.querySelector('[data-js="count"]');
+    this.#listElement = this.#template.querySelector('[data-js="list"]');
+    this.#sortableInstance = new Sortable(this.#listElement);
   }
 
   get id() {
@@ -38,22 +49,10 @@ class WebDispatchCategory extends HTMLElement {
     }
   }
 
-  constructor() {
-    super();
-    const template = document.getElementById("template-web-dispatch-category");
-    this.#template = template.content.firstElementChild.cloneNode(true);
-    this.#nameElement = this.#template.querySelector('[data-js="name"]');
-    this.#countElement = this.#template.querySelector('[data-js="count"]');
-    this.#listElement = this.#template.querySelector('[data-js="list"]');
-  }
-
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webDispatchCategory");
       this.append(this.#template);
-      new Sortable(this.#listElement, {
-        group: this.type,
-      });
       this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("id");
@@ -100,6 +99,9 @@ class WebDispatchCategory extends HTMLElement {
           const category = dispatchApi.getCategoryById(newValue);
           this.#nameElement.textContent = category.name;
           this.handleCategoryCards(category.id, category.type);
+          if (category.type === "unit") {
+            this.#sortableInstance.option("group", category.type);
+          }
         }
         break;
       }

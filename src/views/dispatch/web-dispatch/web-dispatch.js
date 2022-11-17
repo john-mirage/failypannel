@@ -22,11 +22,9 @@ class WebDispatch extends HTMLElement {
     }
   }
 
-  getWebDispatchCategory(id, type, name) {
+  getWebDispatchCategory(id) {
     const webDispatchCategory = this.#webDispatchCategory.cloneNode(true);
     webDispatchCategory.id = id;
-    webDispatchCategory.type = type;
-    webDispatchCategory.name = name;
     return webDispatchCategory;
   }
 
@@ -43,11 +41,7 @@ class WebDispatch extends HTMLElement {
     const categories = dispatchApi.categories;
     if (categories.length > 0) {
       const webDispatchCategories = categories.map((category) => {
-        return this.getWebDispatchCategory(
-          category.id,
-          category.type,
-          category.name
-        );
+        return this.getWebDispatchCategory(category.id);
       });
       this.#listElement.replaceChildren(...webDispatchCategories);
       this.handleGridColumns(webDispatchCategories.length);
