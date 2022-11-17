@@ -1,31 +1,23 @@
 .webSidebar {
   display: block;
   height: 100%;
-  background-color: var(--color-bar);
-  border-right: 1px solid var(--color-bar-border);
 }
 
 .webSidebar__container {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   height: 100%;
   padding: 24px;
-}
-
-.webSidebar__logo {
-  margin-right: 12px;
-  flex: none;
-  width: 48px;
-  height: 48px;
-  border-radius: 9999px;
-  overflow: hidden;
+  background-color: var(--color-bar);
+  border-right: 1px solid var(--color-bar-border);
 }
 
 .webSidebar__section {
   margin-bottom: 48px;
 }
 
-.webSidebar__section:last-child {
+.webSidebar__section--settings {
   margin-top: auto;
   margin-bottom: 0;
 }
@@ -41,7 +33,6 @@
 
 .webSidebar__switch {
   margin-bottom: 20px;
-  width: 100%;
 }
 
 .webSidebar__switch:last-child {

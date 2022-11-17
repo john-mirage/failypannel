@@ -46,6 +46,7 @@ class WebApp extends HTMLElement {
       this.append(this.#template);
       this.#hasBeenMountedOnce = true;
     }
+    this.upgradeProperty("mode");
     this.upgradeProperty("view");
     this.addEventListener("app-view-update", this.handleAppView);
     this.addEventListener("app-mode-update", this.handleAppMode);
