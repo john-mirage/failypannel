@@ -24,6 +24,13 @@ class WebDispatchGroup extends HTMLElement {
     );
     this.#numberElement = this.#template.querySelector('[data-js="number"]');
     this.#listElement = this.#template.querySelector('[data-js="list"]');
+    this.#sortableInstance = new Sortable(this.#listElement, {
+      group: "unit",
+      onSort: () => {
+        this.handleGroupNumber();
+        this.handleSortableFeature();
+      },
+    });
   }
 
   get id() {
@@ -54,12 +61,6 @@ class WebDispatchGroup extends HTMLElement {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webDispatchGroup");
       this.append(this.#template);
-      this.#sortableInstance = new Sortable(this.#listElement, {
-        group: "unit",
-        onSort: () => {
-          this.handleGroupNumber();
-        },
-      });
       this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("id");
@@ -110,6 +111,16 @@ class WebDispatchGroup extends HTMLElement {
     }
   }
 
+  handleSortableFeature() {
+    const group = dispatchApi.getGroupById(this.id);
+    const isSortable = group.size > this.#listElement.children.length;
+    if (isSortable) {
+      this.#sortableInstance.option("group", { name: "unit", put: true });
+    } else {
+      this.#sortableInstance.option("group", { name: "unit", put: false });
+    }
+  }
+
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
       case "data-id": {
@@ -118,6 +129,7 @@ class WebDispatchGroup extends HTMLElement {
           const category = dispatchApi.getCategoryById(group.categoryId);
           this.#categoryElement.textContent = category.name;
           this.handleDispatchUnits(newValue);
+          this.handleSortableFeature();
         }
         break;
       }
