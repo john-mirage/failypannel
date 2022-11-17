@@ -22,7 +22,11 @@ class WebDispatchCategory extends HTMLElement {
     this.#nameElement = this.#template.querySelector('[data-js="name"]');
     this.#countElement = this.#template.querySelector('[data-js="count"]');
     this.#listElement = this.#template.querySelector('[data-js="list"]');
-    this.#sortableInstance = new Sortable(this.#listElement);
+    this.#sortableInstance = new Sortable(this.#listElement, {
+      onSort: () => {
+        this.handleCategoryCardsCount();
+      },
+    });
   }
 
   get id() {
@@ -79,6 +83,10 @@ class WebDispatchCategory extends HTMLElement {
     }
   }
 
+  handleCategoryCardsCount() {
+    this.count = String(this.#listElement.children.length);
+  }
+
   handleCategoryCards(categoryId, categoryType) {
     const cards = dispatchApi.getCategoryCards(categoryId);
     const cardsElements = cards.map((card) => {
@@ -89,7 +97,7 @@ class WebDispatchCategory extends HTMLElement {
       return listItemElement;
     });
     this.#listElement.replaceChildren(...cardsElements);
-    this.count = String(this.#listElement.children.length);
+    this.handleCategoryCardsCount();
   }
 
   attributeChangedCallback(name, _oldValue, newValue) {
