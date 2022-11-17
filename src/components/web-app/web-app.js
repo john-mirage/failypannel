@@ -15,6 +15,7 @@ class WebApp extends HTMLElement {
     this.#viewElement = this.#template.querySelector('[data-js="view"]');
     this.handleAppViewEvent = this.handleAppViewEvent.bind(this);
     this.handleAppModeEvent = this.handleAppModeEvent.bind(this);
+    this.handleAppShutdownEvent = this.handleAppShutdownEvent.bind(this);
     this.addEventListener("app-view", this.handleAppViewEvent);
     this.addEventListener("app-mode", this.handleAppModeEvent);
     this.#hasAppListeners = true;
@@ -57,11 +58,13 @@ class WebApp extends HTMLElement {
       this.addEventListener("app-mode", this.handleAppModeEvent);
       this.#hasAppListeners = true;
     }
+    this.addEventListener("app-shutdown", this.handleAppShutdownEvent);
   }
 
   disconnectedCallback() {
     this.removeEventListener("app-view", this.handleAppViewEvent);
     this.removeEventListener("app-mode", this.handleAppModeEvent);
+    this.removeEventListener("app-shutdown", this.handleAppShutdownEvent);
     this.#hasAppListeners = false;
   }
 
@@ -118,13 +121,16 @@ class WebApp extends HTMLElement {
   }
 
   handleAppModeEvent(customEvent) {
-    console.log("handle app mode event");
     const { mode } = customEvent.detail;
     if (typeof mode === "string") {
       this.handleAppMode(mode);
     } else {
       throw new Error("The mode is not defined in the custom event");
     }
+  }
+
+  handleAppShutdownEvent() {
+    this.remove();
   }
 }
 

@@ -8,6 +8,7 @@ import WebViewNavigationItem from "./components/web-view-navigation-item";
 import WebThemeSwitch from "./components/web-theme-switch";
 import WebModeSwitch from "./components/web-mode-switch";
 import WebButton from "./components/web-button";
+import WebCloseButton from "./components/web-close-button";
 import WebCarPlate from "./views/car-plate/web-car-plate";
 import WebInvestigation from "./views/investigation/web-investigation";
 import WebDispatch from "./views/dispatch/web-dispatch";
@@ -28,6 +29,7 @@ customElements.define("web-view-navigation-item", WebViewNavigationItem);
 customElements.define("web-theme-switch", WebThemeSwitch);
 customElements.define("web-mode-switch", WebModeSwitch);
 customElements.define("web-button", WebButton);
+customElements.define("web-close-button", WebCloseButton);
 
 /**
  * car plate view

@@ -7,10 +7,26 @@ class WebCloseButton extends WebButton {
 
   constructor() {
     super();
+    this.handleButtonClickEvent = this.handleButtonClickEvent.bind(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
+    this.buttonElement.addEventListener("click", this.handleButtonClickEvent);
+  }
+
+  disconnectedCallback() {
+    this.buttonElement.removeEventListener(
+      "click",
+      this.handleButtonClickEvent
+    );
+  }
+
+  handleButtonClickEvent() {
+    const customEvent = new CustomEvent("app-shutdown", {
+      bubbles: true,
+    });
+    this.dispatchEvent(customEvent);
   }
 }
 

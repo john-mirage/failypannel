@@ -66,7 +66,7 @@
         <h2 class="webBar__label" data-js="label"></h2>
       </div>
       <div class="webBar__section webBar__section--right">
-        <web-button data-icon="close" data-label="Fermer"></web-button>
+        <web-close-button data-icon="close" data-label="Fermer"></web-close-button>
       </div>
     </header>
   </template>
@@ -110,7 +110,7 @@
 
   <!-- template | web button -->
   <template id="template-web-button">
-    <button class="webButton__container" data-js="button">
+    <button class="webButton__container" type="button" data-js="button">
       <svg class="webButton__icon">
         <use data-js="icon" />
       </svg>
