@@ -46,9 +46,10 @@ class WebSwitch extends HTMLElement {
 
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
-      case "data-label":
+      case "data-label": {
         this.#labelElement.textContent = newValue ?? "";
         break;
+      }
     }
   }
 }

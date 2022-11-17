@@ -1,6 +1,6 @@
 class WebApp extends HTMLElement {
   #hasBeenMountedOnce = false;
-  #hasAppViewListener = false;
+  #hasAppListeners = false;
   #template;
   #viewElement;
 
@@ -13,10 +13,11 @@ class WebApp extends HTMLElement {
     const template = document.getElementById("template-web-app");
     this.#template = template.content.firstElementChild.cloneNode(true);
     this.#viewElement = this.#template.querySelector('[data-js="view"]');
-    this.handleAppView = this.handleAppView.bind(this);
-    this.handleAppSize = this.handleAppMode.bind(this);
-    this.addEventListener("app-view", this.handleAppView);
-    this.#hasAppViewListener = true;
+    this.handleAppViewEvent = this.handleAppViewEvent.bind(this);
+    this.handleAppModeEvent = this.handleAppModeEvent.bind(this);
+    this.addEventListener("app-view", this.handleAppViewEvent);
+    this.addEventListener("app-mode", this.handleAppModeEvent);
+    this.#hasAppListeners = true;
   }
 
   get mode() {
@@ -51,17 +52,17 @@ class WebApp extends HTMLElement {
     }
     this.upgradeProperty("mode");
     this.upgradeProperty("view");
-    if (!this.#hasAppViewListener) {
-      this.addEventListener("app-view", this.handleAppView);
-      this.#hasAppViewListener = true;
+    if (!this.#hasAppListeners) {
+      this.addEventListener("app-view", this.handleAppViewEvent);
+      this.addEventListener("app-mode", this.handleAppModeEvent);
+      this.#hasAppListeners = true;
     }
-    this.addEventListener("app-mode", this.handleAppMode);
   }
 
   disconnectedCallback() {
-    this.removeEventListener("app-view", this.handleAppView);
-    this.removeEventListener("app-mode", this.handleAppMode);
-    this.#hasAppViewListener = false;
+    this.removeEventListener("app-view", this.handleAppViewEvent);
+    this.removeEventListener("app-mode", this.handleAppModeEvent);
+    this.#hasAppListeners = false;
   }
 
   upgradeProperty(prop) {
@@ -72,17 +73,8 @@ class WebApp extends HTMLElement {
     }
   }
 
-  handleAppView(customEvent) {
-    const { view } = customEvent.detail;
-    if (typeof view === "string") {
-      this.view = view;
-    } else {
-      throw new Error("The view is not defined in the custom event");
-    }
-  }
-
-  handleAppMode(mode) {
-    switch (mode) {
+  handleAppMode(newMode) {
+    switch (newMode) {
       case "window": {
         this.classList.remove("webApp--fullScreen");
         this.classList.add("webApp--window");
@@ -113,6 +105,25 @@ class WebApp extends HTMLElement {
         }
         break;
       }
+    }
+  }
+
+  handleAppViewEvent(customEvent) {
+    const { view } = customEvent.detail;
+    if (typeof view === "string") {
+      this.view = view;
+    } else {
+      throw new Error("The view is not defined in the custom event");
+    }
+  }
+
+  handleAppModeEvent(customEvent) {
+    console.log("handle app mode event");
+    const { mode } = customEvent.detail;
+    if (typeof mode === "string") {
+      this.handleAppMode(mode);
+    } else {
+      throw new Error("The mode is not defined in the custom event");
     }
   }
 }

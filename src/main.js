@@ -6,6 +6,7 @@ import WebView from "./components/web-view";
 import WebViewNavigation from "./components/web-view-navigation";
 import WebViewNavigationItem from "./components/web-view-navigation-item";
 import WebThemeSwitch from "./components/web-theme-switch";
+import WebModeSwitch from "./components/web-mode-switch";
 import WebButton from "./components/web-button";
 import WebCarPlate from "./views/car-plate/web-car-plate";
 import WebInvestigation from "./views/investigation/web-investigation";
@@ -25,6 +26,7 @@ customElements.define("web-view", WebView);
 customElements.define("web-view-navigation", WebViewNavigation);
 customElements.define("web-view-navigation-item", WebViewNavigationItem);
 customElements.define("web-theme-switch", WebThemeSwitch);
+customElements.define("web-mode-switch", WebModeSwitch);
 customElements.define("web-button", WebButton);
 
 /**
@@ -51,5 +53,4 @@ customElements.define("web-dispatch-unit", WebDispatchUnit);
  */
 const app = document.getElementById("app");
 const webApp = document.createElement("web-app");
-webApp.mode = "screen";
 app.replaceChildren(webApp);

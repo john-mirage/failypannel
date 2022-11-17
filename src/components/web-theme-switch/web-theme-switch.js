@@ -13,7 +13,7 @@ class WebThemeSwitch extends WebSwitch {
 
   constructor() {
     super();
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputChangeEvent = this.handleInputChangeEvent.bind(this);
   }
 
   get localTheme() {
@@ -60,11 +60,14 @@ class WebThemeSwitch extends WebSwitch {
       if (this.theme === DARK_THEME) this.inputElement.checked = true;
       this.#hasBeenMountedOnce = true;
     }
-    this.inputElement.addEventListener("change", this.handleInputChange);
+    this.inputElement.addEventListener("change", this.handleInputChangeEvent);
   }
 
   disconnectedCallback() {
-    this.inputElement.removeEventListener("change", this.handleInputChange);
+    this.inputElement.removeEventListener(
+      "change",
+      this.handleInputChangeEvent
+    );
   }
 
   attributeChangedCallback(name, _oldValue, newValue) {
@@ -82,7 +85,7 @@ class WebThemeSwitch extends WebSwitch {
     }
   }
 
-  handleInputChange() {
+  handleInputChangeEvent() {
     if (this.inputElement.checked) {
       this.theme = DARK_THEME;
     } else {
