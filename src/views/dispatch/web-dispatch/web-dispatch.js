@@ -1,9 +1,10 @@
 import dispatchApi from "../../../api/dispatch-api";
 
 class WebDispatch extends HTMLElement {
-  #isMounted = false;
+  #hasBeenMountedOnce = false;
   #template;
   #gridElement;
+  #webDispatchCategory = document.createElement("web-dispatch-category");
 
   constructor() {
     super();
@@ -13,28 +14,47 @@ class WebDispatch extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!this.#isMounted) {
+    if (!this.#hasBeenMountedOnce) {
       this.classList.add("webDispatch");
       this.append(this.#template);
       this.handleCategories();
-      this.#isMounted = true;
+      this.#hasBeenMountedOnce = true;
+    }
+  }
+
+  getWebDispatchCategory(id, type, name) {
+    const webDispatchCategory = this.#webDispatchCategory.cloneNode(true);
+    webDispatchCategory.id = id;
+    webDispatchCategory.type = type;
+    webDispatchCategory.name = name;
+    return webDispatchCategory;
+  }
+
+  handleGridColumns(numberOfColumns) {
+    if (typeof numberOfColumns === "number") {
+      const gridTemplateColumns = `repeat(${String(numberOfColumns)}, 296px)`;
+      this.#gridElement.style.gridTemplateColumns = gridTemplateColumns;
+    } else {
+      throw new Error("The number of columns argument is not a number");
     }
   }
 
   handleCategories() {
-    const webDispatchCategories = dispatchApi.categories.map((category) => {
-      const webDispatchCategory = document.createElement(
-        "web-dispatch-category"
-      );
-      webDispatchCategory.id = category.id;
-      webDispatchCategory.type = category.type;
-      webDispatchCategory.name = category.name;
-      return webDispatchCategory;
-    });
-    this.#gridElement.style.gridTemplateColumns = `repeat(${String(
-      webDispatchCategories.length
-    )}, 296px)`;
-    this.#gridElement.replaceChildren(...webDispatchCategories);
+    const categories = dispatchApi.categories;
+    if (categories.length > 0) {
+      const webDispatchCategories = categories.map((category) => {
+        return this.getWebDispatchCategory(
+          category.id,
+          category.type,
+          category.name
+        );
+      });
+      this.#gridElement.replaceChildren(...webDispatchCategories);
+      this.handleGridColumns(webDispatchCategories.length);
+    } else {
+      this.#gridElement.replaceChildren();
+      this.#gridElement.style.gridTemplateColumns = "none";
+    }
   }
 }
 

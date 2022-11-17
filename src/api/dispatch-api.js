@@ -77,21 +77,27 @@ class DispatchAPI {
     this.#unitsSubscribers.delete(webDispatchUnit);
   }
 
-  getCategoryGroups(categoryId) {
+  getCategoryById(categoryId) {
     const category = this.#categories.get(categoryId);
-    if (category.type === "group") {
-      return this.groups.filter((group) => group.categoryId === category.id);
+    if (category) {
+      return category;
     } else {
-      throw new Error("The category type is not 'group'");
+      throw new Error("The category has not been found");
     }
   }
 
-  getCategoryUnits(categoryId) {
+  getCategoryCards(categoryId) {
     const category = this.#categories.get(categoryId);
-    if (category.type === "unit") {
-      return this.units.filter((unit) => unit.categoryId === category.id);
-    } else {
-      throw new Error("The category type is not 'unit'");
+    switch (category.type) {
+      case "group": {
+        return this.groups.filter((group) => group.categoryId === category.id);
+      }
+      case "unit": {
+        return this.units.filter((unit) => unit.categoryId === category.id);
+      }
+      default: {
+        throw new Error("The category type is not valid");
+      }
     }
   }
 
