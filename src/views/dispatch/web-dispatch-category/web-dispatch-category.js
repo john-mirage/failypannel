@@ -41,7 +41,7 @@ class WebDispatchCategory extends HTMLElement {
   constructor() {
     super();
     const template = document.getElementById("template-web-dispatch-category");
-    this.#template = template.content.cloneNode(true);
+    this.#template = template.content.firstElementChild.cloneNode(true);
     this.#nameElement = this.#template.querySelector('[data-js="name"]');
     this.#countElement = this.#template.querySelector('[data-js="count"]');
     this.#listElement = this.#template.querySelector('[data-js="list"]');
@@ -80,11 +80,11 @@ class WebDispatchCategory extends HTMLElement {
     }
   }
 
-  handleCategoryCards(categoryId) {
+  handleCategoryCards(categoryId, categoryType) {
     const cards = dispatchApi.getCategoryCards(categoryId);
     const cardsElements = cards.map((card) => {
       const listItemElement = this.#listItemElement.cloneNode(true);
-      const cardElement = this.getCategoryCard(categoryType);
+      const cardElement = this.getCategoryCard(categoryType).cloneNode(true);
       cardElement.id = card.id;
       listItemElement.replaceChildren(cardElement);
       return listItemElement;
@@ -99,7 +99,7 @@ class WebDispatchCategory extends HTMLElement {
         if (typeof newValue === "string") {
           const category = dispatchApi.getCategoryById(newValue);
           this.#nameElement.textContent = category.name;
-          this.handleCategoryCards(category.id);
+          this.handleCategoryCards(category.id, category.type);
         }
         break;
       }

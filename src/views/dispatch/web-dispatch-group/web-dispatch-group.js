@@ -17,7 +17,7 @@ class WebDispatchGroup extends HTMLElement {
   constructor() {
     super();
     const template = document.getElementById("template-web-dispatch-group");
-    this.#template = template.content.cloneNode(true);
+    this.#template = template.content.firstElementChild.cloneNode(true);
     this.#categoryElement = this.#template.querySelector(
       '[data-js="category"]'
     );
@@ -70,28 +70,28 @@ class WebDispatchGroup extends HTMLElement {
   }
 
   getWebDispatchUnit(unitId) {
-    if (typeof unitId === "number") {
+    if (typeof unitId === "string") {
       const webDispatchUnit = this.#webDispatchUnit.cloneNode(true);
       webDispatchUnit.id = unitId;
       return webDispatchUnit;
     } else {
-      throw new Error("The unit id is not a number");
+      throw new Error("The unit id is not a string");
     }
   }
 
   handleDispatchUnits(unitId) {
-    if (typeof unitId === "number") {
+    if (typeof unitId === "string") {
       const units = dispatchApi.getGroupUnits(unitId);
       if (units.length > 0) {
         const webDispatchUnits = units.map((unit) => {
           const listItemElement = this.#listItemElement.cloneNode(true);
-          listItemElement.replaceChildren(this.getWebDispatchUnit(unit));
+          listItemElement.replaceChildren(this.getWebDispatchUnit(unit.id));
           return listItemElement;
         });
         this.#listElement.replaceChildren(...webDispatchUnits);
       }
     } else {
-      throw new Error("The unit id is not a number");
+      throw new Error("The unit id is not a string");
     }
   }
 

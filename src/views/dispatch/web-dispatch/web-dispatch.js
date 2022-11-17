@@ -3,14 +3,14 @@ import dispatchApi from "../../../api/dispatch-api";
 class WebDispatch extends HTMLElement {
   #hasBeenMountedOnce = false;
   #template;
-  #gridElement;
+  #listElement;
   #webDispatchCategory = document.createElement("web-dispatch-category");
 
   constructor() {
     super();
     const template = document.getElementById("template-web-dispatch");
-    this.#template = template.content.cloneNode(true);
-    this.#gridElement = this.#template.querySelector('[data-js="grid"]');
+    this.#template = template.content.firstElementChild.cloneNode(true);
+    this.#listElement = this.#template.querySelector('[data-js="list"]');
   }
 
   connectedCallback() {
@@ -33,7 +33,7 @@ class WebDispatch extends HTMLElement {
   handleGridColumns(numberOfColumns) {
     if (typeof numberOfColumns === "number") {
       const gridTemplateColumns = `repeat(${String(numberOfColumns)}, 296px)`;
-      this.#gridElement.style.gridTemplateColumns = gridTemplateColumns;
+      this.#listElement.style.gridTemplateColumns = gridTemplateColumns;
     } else {
       throw new Error("The number of columns argument is not a number");
     }
@@ -49,11 +49,11 @@ class WebDispatch extends HTMLElement {
           category.name
         );
       });
-      this.#gridElement.replaceChildren(...webDispatchCategories);
+      this.#listElement.replaceChildren(...webDispatchCategories);
       this.handleGridColumns(webDispatchCategories.length);
     } else {
-      this.#gridElement.replaceChildren();
-      this.#gridElement.style.gridTemplateColumns = "none";
+      this.#listElement.replaceChildren();
+      this.#listElement.style.gridTemplateColumns = "none";
     }
   }
 }

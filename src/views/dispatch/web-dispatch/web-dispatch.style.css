@@ -13,7 +13,7 @@
   flex: none;
 }
 
-.webDispatch__grid {
+.webDispatch__list {
   flex: 1;
   display: grid;
   grid-template-rows: 100%;

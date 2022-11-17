@@ -5,7 +5,7 @@ class WebDispatchToolbar extends HTMLElement {
   constructor() {
     super();
     const template = document.getElementById("template-web-dispatch-toolbar");
-    this.#template = template.content.cloneNode(true);
+    this.#template = template.content.firstElementChild.cloneNode(true);
   }
 
   connectedCallback() {

@@ -91,7 +91,7 @@ class DispatchAPI {
   }
 
   getGroupById(groupId) {
-    if (typeof categoryId === "string") {
+    if (typeof groupId === "string") {
       const group = this.#groups.get(groupId);
       if (group) {
         return group;

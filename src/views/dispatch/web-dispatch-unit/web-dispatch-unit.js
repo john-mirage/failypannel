@@ -10,7 +10,7 @@ class WebDispatchUnit extends HTMLElement {
   constructor() {
     super();
     const template = document.getElementById("template-web-dispatch-unit");
-    this.#template = template.content.cloneNode(true);
+    this.#template = template.content.firstElementChild.cloneNode(true);
     this.#numberElement = this.#template.querySelector('[data-js="number"]');
     this.#nameElement = this.#template.querySelector('[data-js="name"]');
     this.#roleElement = this.#template.querySelector('[data-js="role"]');
