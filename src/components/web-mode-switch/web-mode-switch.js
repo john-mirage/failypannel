@@ -52,6 +52,7 @@ class WebModeSwitch extends WebSwitch {
     if (!this.#hasBeenMountedOnce) {
       this.mode = this.localMode;
       if (this.mode === SCREEN_MODE) this.inputElement.checked = true;
+      this.label = "Mode plein écran";
       this.#hasBeenMountedOnce = true;
     }
     this.inputElement.addEventListener("change", this.handleInputChangeEvent);

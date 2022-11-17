@@ -61,14 +61,16 @@ class WebPowerButton extends HTMLElement {
 
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
-      case "data-icon":
+      case "data-icon": {
         if (typeof newValue === "string") {
           this.#iconElement.setAttribute("href", `#icon-${newValue}`);
         }
         break;
-      case "data-label":
+      }
+      case "data-label": {
         this.#labelElement.textContent = newValue ?? "";
         break;
+      }
     }
   }
 }

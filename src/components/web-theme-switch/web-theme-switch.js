@@ -58,6 +58,7 @@ class WebThemeSwitch extends WebSwitch {
     if (!this.#hasBeenMountedOnce) {
       this.theme = this.localTheme;
       if (this.theme === DARK_THEME) this.inputElement.checked = true;
+      this.label = "Mode nuit";
       this.#hasBeenMountedOnce = true;
     }
     this.inputElement.addEventListener("change", this.handleInputChangeEvent);
