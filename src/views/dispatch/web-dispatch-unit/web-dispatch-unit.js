@@ -1,3 +1,5 @@
+import dispatchApi from "../../../api/dispatch-api";
+
 class WebDispatchUnit extends HTMLElement {
   #hasBeenMountedOnce = false;
   #template;
@@ -15,38 +17,7 @@ class WebDispatchUnit extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return [
-      "data-category-id",
-      "data-group-id",
-      "data-id",
-      "data-number",
-      "data-name",
-      "data-role",
-    ];
-  }
-
-  get categoryId() {
-    return this.dataset.categoryId;
-  }
-
-  set categoryId(newCategoryId) {
-    if (typeof newCategoryId === "string") {
-      this.dataset.categoryId = newCategoryId;
-    } else {
-      this.removeAttribute("data-category-id");
-    }
-  }
-
-  get groupId() {
-    return this.dataset.groupId;
-  }
-
-  set groupId(newGroupId) {
-    if (typeof newGroupId === "string") {
-      this.dataset.groupId = newGroupId;
-    } else {
-      this.removeAttribute("data-group-id");
-    }
+    return ["data-id"];
   }
 
   get id() {
@@ -61,54 +32,13 @@ class WebDispatchUnit extends HTMLElement {
     }
   }
 
-  get number() {
-    return this.dataset.number;
-  }
-
-  set number(newNumber) {
-    if (typeof newNumber === "string") {
-      this.dataset.number = newNumber;
-    } else {
-      this.removeAttribute("data-number");
-    }
-  }
-
-  get name() {
-    return this.dataset.name;
-  }
-
-  set name(newName) {
-    if (typeof newName === "string") {
-      this.dataset.name = newName;
-    } else {
-      this.removeAttribute("data-name");
-    }
-  }
-
-  get role() {
-    return this.dataset.role;
-  }
-
-  set role(newRole) {
-    if (typeof newRole === "string") {
-      this.dataset.role = newRole;
-    } else {
-      this.removeAttribute("data-role");
-    }
-  }
-
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webDispatchUnit");
       this.append(this.#template);
       this.#hasBeenMountedOnce = true;
     }
-    this.upgradeProperty("categoryId");
-    this.upgradeProperty("groupId");
     this.upgradeProperty("id");
-    this.upgradeProperty("number");
-    this.upgradeProperty("name");
-    this.upgradeProperty("role");
   }
 
   upgradeProperty(prop) {
@@ -121,16 +51,14 @@ class WebDispatchUnit extends HTMLElement {
 
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
-      case "data-number":
-        this.#numberElement.textContent = newValue ?? "";
+      case "data-id": {
+        const unit = dispatchApi.getUnitById(newValue);
+        this.#numberElement.textContent = unit.number;
+        this.#nameElement.textContent = unit.name;
+        this.#nameElement.setAttribute("title", unit.name);
+        this.#roleElement.textContent = unit.role;
         break;
-      case "data-name":
-        this.#nameElement.textContent = newValue ?? "";
-        this.#nameElement.setAttribute("title", newValue);
-        break;
-      case "data-role":
-        this.#roleElement.textContent = newValue ?? "";
-        break;
+      }
     }
   }
 }

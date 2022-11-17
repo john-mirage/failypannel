@@ -78,26 +78,62 @@ class DispatchAPI {
   }
 
   getCategoryById(categoryId) {
-    const category = this.#categories.get(categoryId);
-    if (category) {
-      return category;
+    if (typeof categoryId === "string") {
+      const category = this.#categories.get(categoryId);
+      if (category) {
+        return category;
+      } else {
+        throw new Error("The category has not been found");
+      }
     } else {
-      throw new Error("The category has not been found");
+      throw new Error("The category id is not a string");
+    }
+  }
+
+  getGroupById(groupId) {
+    if (typeof categoryId === "string") {
+      const group = this.#groups.get(groupId);
+      if (group) {
+        return group;
+      } else {
+        throw new Error("The group has not been found");
+      }
+    } else {
+      throw new Error("The group id is not a string");
+    }
+  }
+
+  getUnitById(unitId) {
+    if (typeof unitId === "string") {
+      const unit = this.#units.get(unitId);
+      if (unit) {
+        return unit;
+      } else {
+        throw new Error("The unit has not been found");
+      }
+    } else {
+      throw new Error("The unit id is not a string");
     }
   }
 
   getCategoryCards(categoryId) {
-    const category = this.#categories.get(categoryId);
-    switch (category.type) {
-      case "group": {
-        return this.groups.filter((group) => group.categoryId === category.id);
+    if (typeof categoryId === "string") {
+      const category = this.#categories.get(categoryId);
+      switch (category.type) {
+        case "group": {
+          return this.groups.filter(
+            (group) => group.categoryId === category.id
+          );
+        }
+        case "unit": {
+          return this.units.filter((unit) => unit.categoryId === category.id);
+        }
+        default: {
+          throw new Error("The category type is not valid");
+        }
       }
-      case "unit": {
-        return this.units.filter((unit) => unit.categoryId === category.id);
-      }
-      default: {
-        throw new Error("The category type is not valid");
-      }
+    } else {
+      throw new Error("The category id is not a string");
     }
   }
 
