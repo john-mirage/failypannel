@@ -53,6 +53,16 @@ customElements.define("web-dispatch-unit", WebDispatchUnit);
 /**
  * app mount
  */
-const app = document.getElementById("app");
-const webApp = document.createElement("web-app");
-app.replaceChildren(webApp);
+window.addEventListener("load", () => {
+  const app = document.getElementById("app");
+  const webApp = document.createElement("web-app");
+
+  document.addEventListener("keyup", (keyboardEvent) => {
+    if (keyboardEvent.key === "e") {
+      if (app.children.length <= 0) {
+        console.log("mount app");
+        app.replaceChildren(webApp);
+      }
+    }
+  });
+});
