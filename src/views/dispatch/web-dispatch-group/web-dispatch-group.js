@@ -9,9 +9,10 @@ class WebDispatchGroup extends HTMLElement {
   #listElement;
   #listItemElement = document.createElement("li");
   #webDispatchUnit = document.createElement("web-dispatch-unit");
+  #sortableInstance;
 
   static get observedAttributes() {
-    return ["data-id"];
+    return ["data-id", "data-number"];
   }
 
   constructor() {
@@ -53,12 +54,16 @@ class WebDispatchGroup extends HTMLElement {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webDispatchGroup");
       this.append(this.#template);
-      new Sortable(this.#listElement, {
+      this.#sortableInstance = new Sortable(this.#listElement, {
         group: "unit",
+        onSort: () => {
+          this.handleGroupNumber();
+        },
       });
       this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("id");
+    this.upgradeProperty("number");
   }
 
   upgradeProperty(prop) {
@@ -79,6 +84,15 @@ class WebDispatchGroup extends HTMLElement {
     }
   }
 
+  handleGroupNumber() {
+    const firstUnit = this.#listElement.querySelector("web-dispatch-unit");
+    if (firstUnit) {
+      this.number = dispatchApi.getUnitById(firstUnit.id).number;
+    } else {
+      this.number = undefined;
+    }
+  }
+
   handleDispatchUnits(unitId) {
     if (typeof unitId === "string") {
       const units = dispatchApi.getGroupUnits(unitId);
@@ -90,6 +104,7 @@ class WebDispatchGroup extends HTMLElement {
         });
         this.#listElement.replaceChildren(...webDispatchUnits);
       }
+      this.handleGroupNumber();
     } else {
       throw new Error("The unit id is not a string");
     }
@@ -109,6 +124,8 @@ class WebDispatchGroup extends HTMLElement {
       case "data-number": {
         if (typeof newValue === "string") {
           this.#numberElement.textContent = newValue;
+        } else {
+          this.#numberElement.textContent = null;
         }
         break;
       }
