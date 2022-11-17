@@ -1,8 +1,8 @@
-.webNavigationItem {
+.webViewNavigationItem {
   display: block;
 }
 
-.webNavigationItem__button {
+.webViewNavigationItem__button {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -20,14 +20,14 @@
   color: var(--color-typo-secondary);
 }
 
-.webNavigationItem__button:disabled {
+.webViewNavigationItem__button:disabled {
   background-color: var(--color-accent);
   color: #fff;
   cursor: default;
 }
 
 @media screen and (hover: hover) {
-  .webNavigationItem__button:not(:disabled):hover {
+  .webViewNavigationItem__button:not(:disabled):hover {
     color: #fff;
   }
 }

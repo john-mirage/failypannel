@@ -1,8 +1,0 @@
-.webNavigation {
-  display: block;
-}
-
-.webNavigation__container {
-  display: flex;
-  flex-direction: column;
-}

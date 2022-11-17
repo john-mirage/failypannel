@@ -1,10 +1,10 @@
-class WebNavigationItem extends HTMLElement {
+class WebViewNavigationItem extends HTMLElement {
   #hasBeenMountedOnce = false;
   #template;
   #buttonElement;
 
   static get observedAttributes() {
-    return ["data-view", "data-label", "data-active"];
+    return ["data-label", "data-active"];
   }
 
   get view() {
@@ -45,26 +45,31 @@ class WebNavigationItem extends HTMLElement {
 
   constructor() {
     super();
-    const template = document.getElementById("template-web-navigation-item");
+    const template = document.getElementById(
+      "template-web-view-navigation-item"
+    );
     this.#template = template.content.cloneNode(true);
     this.#buttonElement = this.#template.querySelector('[data-js="button"]');
-    this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.handleButtonClickEvent = this.handleButtonClickEvent.bind(this);
   }
 
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
-      this.classList.add("webNavigationItem");
+      this.classList.add("webViewNavigationItem");
       this.append(this.#template);
       this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("view");
     this.upgradeProperty("label");
     this.upgradeProperty("active");
-    this.#buttonElement.addEventListener("click", this.handleButtonClick);
+    this.#buttonElement.addEventListener("click", this.handleButtonClickEvent);
   }
 
   disconnectedCallback() {
-    this.#buttonElement.removeEventListener("click", this.handleButtonClick);
+    this.#buttonElement.removeEventListener(
+      "click",
+      this.handleButtonClickEvent
+    );
   }
 
   upgradeProperty(prop) {
@@ -75,32 +80,38 @@ class WebNavigationItem extends HTMLElement {
     }
   }
 
-  attributeChangedCallback(name, _oldValue, newValue) {
-    switch (name) {
-      case "data-label":
-        this.#buttonElement.textContent = newValue ?? "";
-        break;
-      case "data-active":
-        if (newValue !== null) {
-          this.#buttonElement.setAttribute("disabled", "");
-        } else {
-          this.#buttonElement.removeAttribute("disabled");
-        }
-        break;
+  handleButtonLabel(newLabel) {
+    if (typeof newLabel === "string") {
+      this.#buttonElement.textContent = newLabel;
+    } else {
+      throw new Error("The new label is not a string");
     }
   }
 
-  sendActiveNavigationItemUpdate() {
-    const customEvent = new CustomEvent("active-navigation-item-update", {
-      bubbles: true,
-      detail: { navigationItem: this },
-    });
-    this.dispatchEvent(customEvent);
+  handleButtonState(isDisabled) {
+    if (isDisabled) {
+      this.#buttonElement.setAttribute("disabled", "");
+    } else {
+      this.#buttonElement.removeAttribute("disabled");
+    }
   }
 
-  sendActiveViewUpdate() {
+  attributeChangedCallback(name, _oldValue, newValue) {
+    switch (name) {
+      case "data-label": {
+        this.handleButtonLabel(newValue ?? "");
+        break;
+      }
+      case "data-active": {
+        this.handleButtonState(typeof newValue === "string");
+        break;
+      }
+    }
+  }
+
+  sendNavigationViewEvent() {
     if (this.view) {
-      const customEvent = new CustomEvent("active-view-update", {
+      const customEvent = new CustomEvent("navigation-view", {
         bubbles: true,
         detail: { view: this.view },
       });
@@ -110,10 +121,9 @@ class WebNavigationItem extends HTMLElement {
     }
   }
 
-  handleButtonClick() {
-    this.sendActiveNavigationItemUpdate();
-    this.sendActiveViewUpdate();
+  handleButtonClickEvent() {
+    this.sendNavigationViewEvent();
   }
 }
 
-export default WebNavigationItem;
+export default WebViewNavigationItem;
