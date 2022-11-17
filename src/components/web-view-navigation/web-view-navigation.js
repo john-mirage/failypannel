@@ -1,7 +1,7 @@
 class WebViewNavigation extends HTMLElement {
   #hasBeenMountedOnce = false;
   #template;
-  #navigationElement;
+  #navElement;
 
   static get observedAttributes() {
     return ["data-view"];
@@ -11,9 +11,7 @@ class WebViewNavigation extends HTMLElement {
     super();
     const template = document.getElementById("template-web-view-navigation");
     this.#template = template.content.cloneNode(true);
-    this.#navigationElement = this.#template.querySelector(
-      '[data-js="navigation"]'
-    );
+    this.#navElement = this.#template.querySelector('[data-js="navigation"]');
     this.handleViewChangeEvent = this.handleViewChangeEvent.bind(this);
   }
 
@@ -51,13 +49,17 @@ class WebViewNavigation extends HTMLElement {
     }
   }
 
+  getDataAttributeSelector(dataName, dataValue) {
+    return `[data-${dataName}="${dataValue}"]`;
+  }
+
   handleInitialViewChange(newView) {
     if (typeof newView === "string") {
-      const newNavigationItem = this.#navigationElement.querySelector(
-        `[data-view="${newView}"]`
+      const newNavItem = this.#navElement.querySelector(
+        this.getDataAttributeSelector("view", newView)
       );
-      if (newNavigationItem instanceof HTMLElement) {
-        newNavigationItem.active = true;
+      if (newNavItem instanceof HTMLElement) {
+        newNavItem.active = true;
       } else {
         throw new Error("The new navigation item is not found");
       }
@@ -68,18 +70,18 @@ class WebViewNavigation extends HTMLElement {
 
   handleViewChange(oldView, newView) {
     if (typeof oldView === "string" && typeof newView === "string") {
-      const oldNavigationItem = this.#navigationElement.querySelector(
-        `[data-view="${oldView}"]`
+      const oldNavItem = this.#navElement.querySelector(
+        this.getDataAttributeSelector("view", oldView)
       );
-      const newNavigationItem = this.#navigationElement.querySelector(
-        `[data-view="${newView}"]`
+      const newNavItem = this.#navElement.querySelector(
+        this.getDataAttributeSelector("view", newView)
       );
       if (
-        oldNavigationItem instanceof HTMLElement &&
-        newNavigationItem instanceof HTMLElement
+        oldNavItem instanceof HTMLElement &&
+        newNavItem instanceof HTMLElement
       ) {
-        oldNavigationItem.active = false;
-        newNavigationItem.active = true;
+        oldNavItem.active = false;
+        newNavItem.active = true;
       } else {
         throw new Error("Old and/or new navigation items are not found");
       }
