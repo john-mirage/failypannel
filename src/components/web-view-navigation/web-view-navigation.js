@@ -34,11 +34,11 @@ class WebViewNavigation extends HTMLElement {
       this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("view");
-    this.addEventListener("navigation-view", this.handleViewChangeEvent);
+    this.addEventListener("app-navigation-view", this.handleViewChangeEvent);
   }
 
   disconnectedCallback() {
-    this.removeEventListener("navigation-view", this.handleViewChangeEvent);
+    this.removeEventListener("app-navigation-view", this.handleViewChangeEvent);
   }
 
   upgradeProperty(prop) {

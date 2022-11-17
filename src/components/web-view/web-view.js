@@ -1,32 +1,13 @@
 class WebView extends HTMLElement {
   #hasBeenMountedOnce = false;
-  #webCarPlateView;
-  #webInvestigationView;
-  #webDispatchView;
+  #views = new Map();
 
   static get observedAttributes() {
     return ["data-view"];
   }
 
-  get webCarPlateView() {
-    if (!(this.#webCarPlateView instanceof HTMLElement)) {
-      this.#webCarPlateView = document.createElement("web-car-plate");
-    }
-    return this.#webCarPlateView;
-  }
-
-  get webInvestigationView() {
-    if (!(this.#webInvestigationView instanceof HTMLElement)) {
-      this.#webInvestigationView = document.createElement("web-investigation");
-    }
-    return this.#webInvestigationView;
-  }
-
-  get webDispatchView() {
-    if (!(this.#webDispatchView instanceof HTMLElement)) {
-      this.#webDispatchView = document.createElement("web-dispatch");
-    }
-    return this.#webDispatchView;
+  constructor() {
+    super();
   }
 
   get view() {
@@ -39,10 +20,6 @@ class WebView extends HTMLElement {
     } else {
       this.removeAttribute("data-view");
     }
-  }
-
-  constructor() {
-    super();
   }
 
   connectedCallback() {
@@ -61,27 +38,31 @@ class WebView extends HTMLElement {
     }
   }
 
-  switchView(newView) {
-    switch (newView) {
-      case "car-plate-view":
-        this.replaceChildren(this.webCarPlateView);
-        break;
-      case "investigation-view":
-        this.replaceChildren(this.webInvestigationView);
-        break;
-      case "dispatch-view":
-        this.replaceChildren(this.webDispatchView);
-        break;
-      default:
-        throw new Error("The view is not valid");
+  getViewElement(viewName) {
+    if (typeof viewName === "string") {
+      if (!this.#views.has(viewName)) {
+        const view = document.createElement(`web-${viewName}`);
+        this.#views.set(viewName, view);
+      }
+      return this.#views.get(viewName);
+    } else {
+      throw new Error("The view name is not a string");
     }
+  }
+
+  handleViewChange(viewName) {
+    const viewElement = this.getViewElement(viewName);
+    this.replaceChildren(viewElement);
   }
 
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
-      case "data-view":
-        this.switchView(newValue);
+      case "data-view": {
+        if (typeof newValue === "string") {
+          this.handleViewChange(newValue);
+        }
         break;
+      }
     }
   }
 }

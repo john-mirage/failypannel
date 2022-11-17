@@ -1,5 +1,6 @@
 class WebApp extends HTMLElement {
   #hasBeenMountedOnce = false;
+  #hasAppViewListener = false;
   #template;
   #viewElement;
 
@@ -14,6 +15,8 @@ class WebApp extends HTMLElement {
     this.#viewElement = this.#template.querySelector('[data-js="view"]');
     this.handleAppView = this.handleAppView.bind(this);
     this.handleAppSize = this.handleAppMode.bind(this);
+    this.addEventListener("app-view", this.handleAppView);
+    this.#hasAppViewListener = true;
   }
 
   get mode() {
@@ -48,13 +51,17 @@ class WebApp extends HTMLElement {
     }
     this.upgradeProperty("mode");
     this.upgradeProperty("view");
-    this.addEventListener("app-view-update", this.handleAppView);
-    this.addEventListener("app-mode-update", this.handleAppMode);
+    if (!this.#hasAppViewListener) {
+      this.addEventListener("app-view", this.handleAppView);
+      this.#hasAppViewListener = true;
+    }
+    this.addEventListener("app-mode", this.handleAppMode);
   }
 
   disconnectedCallback() {
-    this.removeEventListener("app-view-update", this.handleAppView);
-    this.removeEventListener("app-mode-update", this.handleAppMode);
+    this.removeEventListener("app-view", this.handleAppView);
+    this.removeEventListener("app-mode", this.handleAppMode);
+    this.#hasAppViewListener = false;
   }
 
   upgradeProperty(prop) {

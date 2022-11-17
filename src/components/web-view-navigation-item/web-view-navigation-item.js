@@ -80,6 +80,30 @@ class WebViewNavigationItem extends HTMLElement {
     }
   }
 
+  sendEventWithView(eventType) {
+    const customEvent = new CustomEvent(eventType, {
+      bubbles: true,
+      detail: { view: this.view },
+    });
+    this.dispatchEvent(customEvent);
+  }
+
+  sendAppViewEvent() {
+    if (this.view) {
+      this.sendEventWithView("app-view");
+    } else {
+      throw new Error("The view is not defined");
+    }
+  }
+
+  sendAppNavigationViewEvent() {
+    if (this.view) {
+      this.sendEventWithView("app-navigation-view");
+    } else {
+      throw new Error("The view is not defined");
+    }
+  }
+
   handleButtonLabel(newLabel) {
     if (typeof newLabel === "string") {
       this.#buttonElement.textContent = newLabel;
@@ -91,6 +115,7 @@ class WebViewNavigationItem extends HTMLElement {
   handleButtonState(isDisabled) {
     if (isDisabled) {
       this.#buttonElement.setAttribute("disabled", "");
+      this.sendAppViewEvent();
     } else {
       this.#buttonElement.removeAttribute("disabled");
     }
@@ -109,20 +134,8 @@ class WebViewNavigationItem extends HTMLElement {
     }
   }
 
-  sendNavigationViewEvent() {
-    if (this.view) {
-      const customEvent = new CustomEvent("navigation-view", {
-        bubbles: true,
-        detail: { view: this.view },
-      });
-      this.dispatchEvent(customEvent);
-    } else {
-      throw new Error("The view data attribute is not defined");
-    }
-  }
-
   handleButtonClickEvent() {
-    this.sendNavigationViewEvent();
+    this.sendAppNavigationViewEvent();
   }
 }
 
