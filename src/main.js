@@ -51,4 +51,5 @@ customElements.define("web-dispatch-unit", WebDispatchUnit);
  */
 const app = document.getElementById("app");
 const webApp = document.createElement("web-app");
+webApp.mode = "screen";
 app.replaceChildren(webApp);

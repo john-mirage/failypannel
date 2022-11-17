@@ -28,6 +28,6 @@
 
 @media screen and (hover: hover) {
   .webButton__container:hover {
-    color: #5c7cfa;
+    color: #fff;
   }
 }

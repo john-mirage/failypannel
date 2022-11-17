@@ -3,6 +3,7 @@
 @import "./components/web-app/web-app.style.css";
 @import "./components/web-bar/web-bar.style.css";
 @import "./components/web-sidebar/web-sidebar.style.css";
+@import "./components/web-view/web-view.style.css";
 @import "./components/web-navigation/web-navigation.style.css";
 @import "./components/web-navigation-item/web-navigation-item.style.css";
 @import "./components/web-switch/web-switch.style.css";
@@ -36,7 +37,7 @@
   --color-toggle-button-icon-active: #f59f00;
 
   --color-typo-primary: hsl(210, 9%, 31%);
-  --color-typo-secondary: hsl(210, 7%, 60%);
+  --color-typo-secondary: hsl(210, 7%, 42%);
   --color-typo-positive: hsl(162, 68%, 54%);
   --color-typo-negative: hsl(339, 88%, 74%);
 
@@ -63,7 +64,7 @@
   --color-toggle-button-icon-active: #f59f00;
 
   --color-typo-primary: hsl(210, 14%, 80%);
-  --color-typo-secondary: hsl(210, 7%, 60%);
+  --color-typo-secondary: hsl(210, 7%, 64%);
   --color-typo-positive: hsl(162, 87%, 35%);
   --color-typo-negative: hsl(339, 65%, 60%);
 

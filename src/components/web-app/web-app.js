@@ -4,15 +4,28 @@ class WebApp extends HTMLElement {
   #viewElement;
 
   static get observedAttributes() {
-    return ["data-view"];
+    return ["data-mode", "data-view"];
   }
 
   constructor() {
     super();
     const template = document.getElementById("template-web-app");
-    this.#template = template.content.cloneNode(true);
+    this.#template = template.content.firstElementChild.cloneNode(true);
     this.#viewElement = this.#template.querySelector('[data-js="view"]');
-    this.handleViewUpdate = this.handleViewUpdate.bind(this);
+    this.handleAppView = this.handleAppView.bind(this);
+    this.handleAppSize = this.handleAppMode.bind(this);
+  }
+
+  get mode() {
+    return this.dataset.mode;
+  }
+
+  set mode(newMode) {
+    if (typeof newMode === "string") {
+      this.dataset.mode = newMode;
+    } else {
+      this.removeAttribute("data-mode");
+    }
   }
 
   get view() {
@@ -34,11 +47,13 @@ class WebApp extends HTMLElement {
       this.#hasBeenMountedOnce = true;
     }
     this.upgradeProperty("view");
-    this.addEventListener("active-view-update", this.handleViewUpdate);
+    this.addEventListener("app-view-update", this.handleAppView);
+    this.addEventListener("app-mode-update", this.handleAppMode);
   }
 
   disconnectedCallback() {
-    this.removeEventListener("active-view-update", this.handleViewUpdate);
+    this.removeEventListener("app-view-update", this.handleAppView);
+    this.removeEventListener("app-mode-update", this.handleAppMode);
   }
 
   upgradeProperty(prop) {
@@ -49,20 +64,47 @@ class WebApp extends HTMLElement {
     }
   }
 
-  attributeChangedCallback(name, _oldValue, newValue) {
-    switch (name) {
-      case "data-view":
-        this.#viewElement.view = newValue;
-        break;
-    }
-  }
-
-  handleViewUpdate(customEvent) {
+  handleAppView(customEvent) {
     const { view } = customEvent.detail;
     if (typeof view === "string") {
       this.view = view;
     } else {
       throw new Error("The view is not defined in the custom event");
+    }
+  }
+
+  handleAppMode(mode) {
+    switch (mode) {
+      case "window": {
+        this.classList.remove("webApp--fullScreen");
+        this.classList.add("webApp--window");
+        break;
+      }
+      case "screen": {
+        this.classList.remove("webApp--window");
+        this.classList.add("webApp--fullScreen");
+        break;
+      }
+      default: {
+        throw new Error("The app mode is not valid");
+      }
+    }
+  }
+
+  attributeChangedCallback(name, _oldValue, newValue) {
+    switch (name) {
+      case "data-mode": {
+        if (typeof newValue === "string") {
+          this.handleAppMode(newValue);
+        }
+        break;
+      }
+      case "data-view": {
+        if (typeof newValue === "string") {
+          this.#viewElement.view = newValue;
+        }
+        break;
+      }
     }
   }
 }
