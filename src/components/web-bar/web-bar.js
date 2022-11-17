@@ -1,9 +1,7 @@
 class WebBar extends HTMLElement {
   #hasBeenMountedOnce = false;
   #template;
-  #actions;
-  #actionsElement;
-  #titleElement;
+  #labelElement;
 
   static get observedAttributes() {
     return ["data-label"];
@@ -21,21 +19,11 @@ class WebBar extends HTMLElement {
     }
   }
 
-  get actions() {
-    return this.#actions;
-  }
-
-  set actions(newActions) {
-    this.#actions = newActions;
-    this.#actionsElement.replaceChildren(...this.actions);
-  }
-
   constructor() {
     super();
     const template = document.getElementById("template-web-bar");
     this.#template = template.content.cloneNode(true);
-    this.#actionsElement = this.#template.querySelector('[data-js="actions"]');
-    this.#titleElement = this.#template.querySelector('[data-js="title"]');
+    this.#labelElement = this.#template.querySelector('[data-js="label"]');
   }
 
   connectedCallback() {
@@ -58,7 +46,7 @@ class WebBar extends HTMLElement {
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
       case "data-label":
-        this.#titleElement.textContent = newValue;
+        this.#labelElement.textContent = newValue ?? "";
         break;
     }
   }

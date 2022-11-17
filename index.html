@@ -51,7 +51,7 @@
   <!-- template | web app -->
   <template id="template-web-app">
     <div class="webApp__container">
-      <web-bar class="webApp__bar"></web-bar>
+      <web-bar class="webApp__bar" data-label="Los Santos Police Department"></web-bar>
       <main class="webApp__body">
         <web-sidebar class="webApp__sidebar"></web-sidebar>
         <web-view class="webApp__view" data-js="view"></web-view>
@@ -63,7 +63,7 @@
   <template id="template-web-bar">
     <header class="webBar__container">
       <div class="webBar__section webBar__section--left">
-        <h2 class="webBar__name">Los Santos Police Department</h2>
+        <h2 class="webBar__label" data-js="label"></h2>
       </div>
       <div class="webBar__section webBar__section--right">
         <web-button data-icon="resize" data-label="Redimensionner"></web-button>
