@@ -58,6 +58,19 @@ class DispatchAPI {
     this.#unitsSubscribers.delete(webDispatchUnit);
   }
 
+  getCategoryById(categoryId) {
+    if (typeof categoryId === "string") {
+      const category = this.#categories.get(categoryId);
+      if (category) {
+        return category;
+      } else {
+        throw new Error("The category has not been found");
+      }
+    } else {
+      throw new Error("The category id is not a string");
+    }
+  }
+
   getCategoryGroups(categoryId) {
     const category = this.#categories.get(categoryId);
     return this.groups.filter((group) => group.categoryId === category.id);

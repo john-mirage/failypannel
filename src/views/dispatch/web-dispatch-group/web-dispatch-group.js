@@ -41,19 +41,9 @@ class WebDispatchGroup extends HTMLLIElement {
   }
 
   updateGroupName() {
-    const category = dispatchApi.getCategoryById(this.group.id);
+    const category = dispatchApi.getCategoryById(this.group.categoryId);
     if (this.#nameElement.textContent !== category.name) {
       this.#nameElement.textContent = category.name;
-    }
-  }
-
-  updateGroupNumber() {
-    const firstUnitNumber = this.#listElement.firstElementChild?.unit.number;
-    if (
-      firstUnitNumber &&
-      this.#numberElement.textContent !== firstUnitNumber
-    ) {
-      this.#numberElement.textContent = firstUnitNumber;
     }
   }
 
@@ -65,6 +55,17 @@ class WebDispatchGroup extends HTMLLIElement {
       return webDispatchUnit;
     });
     this.#listElement.replaceChildren(...webDispatchUnits);
+  }
+
+  updateGroupNumber() {
+    const firstUnitNumber = this.#listElement.firstElementChild?.unit.number;
+    if (firstUnitNumber) {
+      if (this.#numberElement.textContent !== firstUnitNumber) {
+        this.#numberElement.textContent = firstUnitNumber;
+      }
+    } else if (this.#numberElement.textContent !== null) {
+      this.#numberElement.textContent = null;
+    }
   }
 
   handleSortableFeature() {
@@ -83,7 +84,7 @@ class WebDispatchGroup extends HTMLLIElement {
     const listItemHeightProperty = style.getPropertyValue(
       "--_list-item-height"
     );
-    const gapNumber = String(Number(group.size) - 1);
+    const gapNumber = String(Number(this.group.size) - 1);
     this.#listElement.style.setProperty(
       "--_list-height",
       `calc((${gapProperty} * ${gapNumber}) + (${paddingProperty} * 2) + (${listItemHeightProperty} * ${this.group.size}))`
@@ -92,8 +93,9 @@ class WebDispatchGroup extends HTMLLIElement {
 
   updateGroup() {
     this.updateGroupName();
-    this.updateGroupNumber();
     this.updateGroupUnits();
+    this.updateGroupNumber();
+    this.handleListHeight();
     this.handleSortableFeature();
   }
 

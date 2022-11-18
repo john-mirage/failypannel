@@ -49,7 +49,8 @@ class WebDispatchUnitCategory extends WebDispatchCategory {
     super.connectedCallback();
     if (!this.#hasBeenMountedOnce) {
       this.upgradeProperty("units");
-      this.#sortableInstance = new Sortable(this.#listElement, {
+      this.#sortableInstance = new Sortable(this.listElement, {
+        group: "unit",
         onSort: () => {
           this.updateCategoryCount();
         },

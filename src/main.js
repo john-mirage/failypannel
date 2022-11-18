@@ -13,7 +13,8 @@ import WebCarPlate from "./views/car-plate/web-car-plate";
 import WebInvestigation from "./views/investigation/web-investigation";
 import WebDispatch from "./views/dispatch/web-dispatch";
 import WebDispatchToolbar from "./views/dispatch/web-dispatch-toolbar";
-import WebDispatchCategory from "./views/dispatch/web-dispatch-category";
+import WebDispatchGroupCategory from "./views/dispatch/web-dispatch-group-category";
+import WebDispatchUnitCategory from "./views/dispatch/web-dispatch-unit-category";
 import WebDispatchGroup from "./views/dispatch/web-dispatch-group";
 import WebDispatchUnit from "./views/dispatch/web-dispatch-unit";
 
@@ -46,7 +47,10 @@ customElements.define("web-investigation", WebInvestigation);
  */
 customElements.define("web-dispatch", WebDispatch);
 customElements.define("web-dispatch-toolbar", WebDispatchToolbar);
-customElements.define("web-dispatch-category", WebDispatchCategory, {
+customElements.define("web-dispatch-group-category", WebDispatchGroupCategory, {
+  extends: "li",
+});
+customElements.define("web-dispatch-unit-category", WebDispatchUnitCategory, {
   extends: "li",
 });
 customElements.define("web-dispatch-group", WebDispatchGroup, {

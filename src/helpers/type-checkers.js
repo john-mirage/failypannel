@@ -32,7 +32,7 @@ export const unitIsValid = (unit) => {
     unit.hasOwnProperty("name") &&
     unit.hasOwnProperty("role") &&
     typeof unit.categoryId === "string" &&
-    typeof unit.groupId === "string" &&
+    (typeof unit.groupId === "string" || unit.groupId === null) &&
     typeof unit.id === "string" &&
     typeof unit.number === "string" &&
     typeof unit.name === "string" &&

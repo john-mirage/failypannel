@@ -40,6 +40,7 @@ class WebDispatch extends HTMLElement {
       }
     });
     this.#listElement.replaceChildren(...webDispatchCategories);
+    return webDispatchCategories.length;
   }
 
   updateDispatchGrid(numberOfColumns) {
@@ -52,8 +53,8 @@ class WebDispatch extends HTMLElement {
   }
 
   updateDispatch() {
-    this.updateDispatchCategories();
-    this.updateDispatchGrid();
+    const count = this.updateDispatchCategories();
+    this.updateDispatchGrid(count);
   }
 
   connectedCallback() {
@@ -62,7 +63,7 @@ class WebDispatch extends HTMLElement {
       this.append(this.#template);
       this.#hasBeenMountedOnce = true;
     }
-    this.updateDispatchCategories();
+    this.updateDispatch();
   }
 }
 
