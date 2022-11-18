@@ -1,4 +1,4 @@
-import dispatchApi from "../../../api/dispatch-api";
+import { unitIsValid } from "../../../helpers/type-checkers";
 
 class WebDispatchUnit extends HTMLElement {
   #hasBeenMountedOnce = false;
@@ -6,6 +6,7 @@ class WebDispatchUnit extends HTMLElement {
   #numberElement;
   #nameElement;
   #roleElement;
+  #unit;
 
   constructor() {
     super();
@@ -16,29 +17,53 @@ class WebDispatchUnit extends HTMLElement {
     this.#roleElement = this.#template.querySelector('[data-js="role"]');
   }
 
-  static get observedAttributes() {
-    return ["data-id"];
-  }
-
-  get id() {
-    return this.dataset.id;
-  }
-
-  set id(newId) {
-    if (typeof newId === "string") {
-      this.dataset.id = newId;
+  get unit() {
+    if (this.#unit) {
+      return this.#unit;
     } else {
-      this.removeAttribute("data-id");
+      throw new Error("The unit is not defined");
     }
   }
 
-  connectedCallback() {
-    if (!this.#hasBeenMountedOnce) {
-      this.classList.add("webDispatchUnit");
-      this.append(this.#template);
-      this.#hasBeenMountedOnce = true;
+  set unit(newUnit) {
+    if (unitIsValid(newUnit)) {
+      this.#unit = newUnit;
+      if (this.isConnected) {
+        this.updateUnit();
+      }
+    } else {
+      throw new Error("The new unit is not valid");
     }
-    this.upgradeProperty("id");
+  }
+
+  updateUnitNumber() {
+    const currentUnitNumber = this.unit.number;
+    if (this.#numberElement.textContent !== currentUnitNumber) {
+      this.#numberElement.textContent = currentUnitNumber;
+    }
+  }
+
+  updateUnitName() {
+    const currentUnitName = this.unit.name;
+    if (this.#nameElement.textContent !== currentUnitName) {
+      this.#nameElement.textContent = this.unit.name;
+    }
+    if (this.#nameElement.getAttribute("title") !== currentUnitName) {
+      this.#nameElement.setAttribute("title", currentUnitName);
+    }
+  }
+
+  updateUnitRole() {
+    const newUnitRole = this.unit.role;
+    if (this.#roleElement.textContent !== newUnitRole) {
+      this.#roleElement.textContent = this.unit.role;
+    }
+  }
+
+  updateUnit() {
+    this.updateUnitNumber();
+    this.updateUnitName();
+    this.updateUnitRole();
   }
 
   upgradeProperty(prop) {
@@ -49,17 +74,14 @@ class WebDispatchUnit extends HTMLElement {
     }
   }
 
-  attributeChangedCallback(name, _oldValue, newValue) {
-    switch (name) {
-      case "data-id": {
-        const unit = dispatchApi.getUnitById(newValue);
-        this.#numberElement.textContent = unit.number;
-        this.#nameElement.textContent = unit.name;
-        this.#nameElement.setAttribute("title", unit.name);
-        this.#roleElement.textContent = unit.role;
-        break;
-      }
+  connectedCallback() {
+    if (!this.#hasBeenMountedOnce) {
+      this.classList.add("webDispatchUnit");
+      this.append(this.#template);
+      this.upgradeProperty("unit");
+      this.#hasBeenMountedOnce = true;
     }
+    this.updateUnit();
   }
 }
 
