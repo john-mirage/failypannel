@@ -1,19 +1,11 @@
-import dispatchApi from "../../../api/dispatch-api";
-import Sortable from "sortablejs";
+import { categoryIsValid } from "../../../helpers/type-checkers";
 
-class WebDispatchCategory extends HTMLElement {
+class WebDispatchCategory extends HTMLLIElement {
   #hasBeenMountedOnce = false;
   #template;
   #nameElement;
   #countElement;
-  #listElement;
-  #listItemElement = document.createElement("li");
-  #cards = new Map();
-  #sortableInstance;
-
-  static get observedAttributes() {
-    return ["data-id", "data-count"];
-  }
+  #category;
 
   constructor() {
     super();
@@ -21,46 +13,46 @@ class WebDispatchCategory extends HTMLElement {
     this.#template = template.content.firstElementChild.cloneNode(true);
     this.#nameElement = this.#template.querySelector('[data-js="name"]');
     this.#countElement = this.#template.querySelector('[data-js="count"]');
-    this.#listElement = this.#template.querySelector('[data-js="list"]');
-    this.#sortableInstance = new Sortable(this.#listElement, {
-      onSort: () => {
-        this.handleCategoryCardsCount();
-      },
-    });
+    this.listElement = this.#template.querySelector('[data-js="list"]');
   }
 
-  get id() {
-    return this.dataset.id;
-  }
-
-  set id(id) {
-    if (typeof id === "string") {
-      this.dataset.id = id;
+  get category() {
+    if (this.#category) {
+      return this.#category;
     } else {
-      this.removeAttribute("data-id");
+      throw new Error("The category is not defined");
     }
   }
 
-  get count() {
-    return this.dataset.count;
-  }
-
-  set count(newCount) {
-    if (typeof newCount === "string") {
-      this.dataset.count = newCount;
+  set category(newCategory) {
+    if (categoryIsValid(newCategory)) {
+      this.#category = newCategory;
+      if (this.isConnected) {
+        this.updateCategory();
+      }
     } else {
-      this.removeAttribute("data-count");
+      throw new Error("The new category is not valid");
     }
   }
 
-  connectedCallback() {
-    if (!this.#hasBeenMountedOnce) {
-      this.classList.add("webDispatchCategory");
-      this.append(this.#template);
-      this.#hasBeenMountedOnce = true;
+  updateCategoryName() {
+    const currentCategoryName = this.category.name;
+    if (this.#nameElement.textContent !== currentCategoryName) {
+      this.#nameElement.textContent = currentCategoryName;
     }
-    this.upgradeProperty("id");
-    this.upgradeProperty("count");
+  }
+
+  updateCategoryCount() {
+    const count = this.listElement.children.length;
+    const formatedCount = count > 0 ? ` (${String(count)})` : null;
+    if (this.#countElement.textContent !== formatedCount) {
+      this.#countElement.textContent = formatedCount;
+    }
+  }
+
+  updateCategory() {
+    this.updateCategoryName();
+    this.updateCategoryCount();
   }
 
   upgradeProperty(prop) {
@@ -71,53 +63,14 @@ class WebDispatchCategory extends HTMLElement {
     }
   }
 
-  getCategoryCard(type) {
-    if (typeof type === "string") {
-      if (!this.#cards.has(type)) {
-        const card = document.createElement(`web-dispatch-${type}`);
-        this.#cards.set(type, card);
-      }
-      return this.#cards.get(type);
-    } else {
-      throw new Error("The type is not a string");
+  connectedCallback() {
+    if (!this.#hasBeenMountedOnce) {
+      this.classList.add("webDispatchCategory");
+      this.append(this.#template);
+      this.upgradeProperty("category");
+      this.#hasBeenMountedOnce = true;
     }
-  }
-
-  handleCategoryCardsCount() {
-    this.count = String(this.#listElement.children.length);
-  }
-
-  handleCategoryCards(categoryId, categoryType) {
-    const cards = dispatchApi.getCategoryCards(categoryId);
-    const cardsElements = cards.map((card) => {
-      const listItemElement = this.#listItemElement.cloneNode(true);
-      const cardElement = this.getCategoryCard(categoryType).cloneNode(true);
-      cardElement.id = card.id;
-      listItemElement.replaceChildren(cardElement);
-      return listItemElement;
-    });
-    this.#listElement.replaceChildren(...cardsElements);
-    this.handleCategoryCardsCount();
-  }
-
-  attributeChangedCallback(name, _oldValue, newValue) {
-    switch (name) {
-      case "data-id": {
-        if (typeof newValue === "string") {
-          const category = dispatchApi.getCategoryById(newValue);
-          this.#nameElement.textContent = category.name;
-          this.handleCategoryCards(category.id, category.type);
-          if (category.type === "unit") {
-            this.#sortableInstance.option("group", category.type);
-          }
-        }
-        break;
-      }
-      case "data-count": {
-        this.#countElement.textContent = ` (${newValue})` ?? "";
-        break;
-      }
-    }
+    this.updateCategory();
   }
 }
 

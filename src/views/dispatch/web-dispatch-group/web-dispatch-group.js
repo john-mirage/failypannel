@@ -8,7 +8,7 @@ class WebDispatchGroup extends HTMLLIElement {
   #nameElement;
   #numberElement;
   #listElement;
-  #webDispatchUnit = document.createElement("web-dispatch-unit");
+  #webDispatchUnit = document.createElement("li", { is: "web-dispatch-unit" });
   #sortableInstance;
   #group;
 
