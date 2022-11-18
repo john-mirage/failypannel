@@ -52,7 +52,6 @@ class WebDispatchCategory extends HTMLLIElement {
 
   updateCategory() {
     this.updateCategoryName();
-    this.updateCategoryCount();
   }
 
   upgradeProperty(prop) {

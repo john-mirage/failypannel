@@ -58,6 +58,7 @@ class WebDispatchUnitCategory extends WebDispatchCategory {
       this.#hasBeenMountedOnce = true;
     }
     this.updateCategoryUnits();
+    this.updateCategoryCount();
   }
 }
 

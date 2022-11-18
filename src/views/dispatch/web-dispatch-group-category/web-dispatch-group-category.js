@@ -52,6 +52,7 @@ class WebDispatchGroupCategory extends WebDispatchCategory {
       this.#hasBeenMountedOnce = true;
     }
     this.updateCategoryGroups();
+    this.updateCategoryCount();
   }
 }
 
