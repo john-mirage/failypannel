@@ -46,9 +46,15 @@ customElements.define("web-investigation", WebInvestigation);
  */
 customElements.define("web-dispatch", WebDispatch);
 customElements.define("web-dispatch-toolbar", WebDispatchToolbar);
-customElements.define("web-dispatch-category", WebDispatchCategory);
-customElements.define("web-dispatch-group", WebDispatchGroup);
-customElements.define("web-dispatch-unit", WebDispatchUnit);
+customElements.define("web-dispatch-category", WebDispatchCategory, {
+  extends: "li",
+});
+customElements.define("web-dispatch-group", WebDispatchGroup, {
+  extends: "li",
+});
+customElements.define("web-dispatch-unit", WebDispatchUnit, {
+  extends: "li",
+});
 
 /**
  * app mount

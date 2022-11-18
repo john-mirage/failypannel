@@ -1,6 +1,6 @@
 import { unitIsValid } from "../../../helpers/type-checkers";
 
-class WebDispatchUnit extends HTMLElement {
+class WebDispatchUnit extends HTMLLIElement {
   #hasBeenMountedOnce = false;
   #template;
   #numberElement;

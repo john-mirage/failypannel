@@ -1,71 +1,100 @@
 import dispatchApi from "../../../api/dispatch-api";
+import { groupIsValid } from "../../../helpers/type-checkers";
 import Sortable from "sortablejs";
 
-class WebDispatchGroup extends HTMLElement {
+class WebDispatchGroup extends HTMLLIElement {
   #hasBeenMountedOnce = false;
   #template;
-  #categoryElement;
+  #nameElement;
   #numberElement;
   #listElement;
-  #listItemElement = document.createElement("li");
   #webDispatchUnit = document.createElement("web-dispatch-unit");
   #sortableInstance;
-
-  static get observedAttributes() {
-    return ["data-id", "data-number"];
-  }
+  #group;
 
   constructor() {
     super();
     const template = document.getElementById("template-web-dispatch-group");
     this.#template = template.content.firstElementChild.cloneNode(true);
-    this.#categoryElement = this.#template.querySelector(
-      '[data-js="category"]'
-    );
+    this.#nameElement = this.#template.querySelector('[data-js="name"]');
     this.#numberElement = this.#template.querySelector('[data-js="number"]');
     this.#listElement = this.#template.querySelector('[data-js="list"]');
-    this.#sortableInstance = new Sortable(this.#listElement, {
-      group: "unit",
-      onSort: () => {
-        this.handleGroupNumber();
-        this.handleSortableFeature();
-      },
+  }
+
+  get group() {
+    if (this.#group) {
+      return this.#group;
+    } else {
+      throw new Error("The group is not defined");
+    }
+  }
+
+  set group(newGroup) {
+    if (groupIsValid(newGroup)) {
+      this.#group = newGroup;
+      if (this.isConnected) {
+        this.updateGroup();
+      }
+    } else {
+      throw new Error("The new group is not valid");
+    }
+  }
+
+  updateGroupName() {
+    const category = dispatchApi.getCategoryById(this.group.id);
+    if (this.#nameElement.textContent !== category.name) {
+      this.#nameElement.textContent = category.name;
+    }
+  }
+
+  updateGroupNumber() {
+    const firstUnitNumber = this.#listElement.firstElementChild?.unit.number;
+    if (
+      firstUnitNumber &&
+      this.#numberElement.textContent !== firstUnitNumber
+    ) {
+      this.#numberElement.textContent = firstUnitNumber;
+    }
+  }
+
+  updateGroupUnits() {
+    const units = dispatchApi.getGroupUnits(this.group.id);
+    const webDispatchUnits = units.map((unit) => {
+      const webDispatchUnit = this.#webDispatchUnit.cloneNode(true);
+      webDispatchUnit.unit = unit;
+      return webDispatchUnit;
     });
+    this.#listElement.replaceChildren(...webDispatchUnits);
   }
 
-  get id() {
-    return this.dataset.id;
-  }
-
-  set id(newId) {
-    if (typeof newId === "string") {
-      this.dataset.id = newId;
+  handleSortableFeature() {
+    const isSortable = this.group.size > this.#listElement.children.length;
+    if (isSortable) {
+      this.#sortableInstance.option("group", { name: "unit", put: true });
     } else {
-      this.removeAttribute("data-id");
+      this.#sortableInstance.option("group", { name: "unit", put: false });
     }
   }
 
-  get number() {
-    return this.dataset.number;
+  handleListHeight() {
+    const style = getComputedStyle(this.#listElement);
+    const gapProperty = style.getPropertyValue("--_list-gap");
+    const paddingProperty = style.getPropertyValue("--_list-padding");
+    const listItemHeightProperty = style.getPropertyValue(
+      "--_list-item-height"
+    );
+    const gapNumber = String(Number(group.size) - 1);
+    this.#listElement.style.setProperty(
+      "--_list-height",
+      `calc((${gapProperty} * ${gapNumber}) + (${paddingProperty} * 2) + (${listItemHeightProperty} * ${this.group.size}))`
+    );
   }
 
-  set number(newNumber) {
-    if (typeof newNumber === "string") {
-      this.dataset.number = newNumber;
-    } else {
-      this.removeAttribute("data-number");
-    }
-  }
-
-  connectedCallback() {
-    if (!this.#hasBeenMountedOnce) {
-      this.classList.add("webDispatchGroup");
-      this.append(this.#template);
-      this.#hasBeenMountedOnce = true;
-    }
-    this.upgradeProperty("id");
-    this.upgradeProperty("number");
-    this.handleListHeight();
+  updateGroup() {
+    this.updateGroupName();
+    this.updateGroupNumber();
+    this.updateGroupUnits();
+    this.handleSortableFeature();
   }
 
   upgradeProperty(prop) {
@@ -76,89 +105,21 @@ class WebDispatchGroup extends HTMLElement {
     }
   }
 
-  getWebDispatchUnit(unitId) {
-    if (typeof unitId === "string") {
-      const webDispatchUnit = this.#webDispatchUnit.cloneNode(true);
-      webDispatchUnit.id = unitId;
-      return webDispatchUnit;
-    } else {
-      throw new Error("The unit id is not a string");
-    }
-  }
-
-  handleGroupNumber() {
-    const firstUnit = this.#listElement.querySelector("web-dispatch-unit");
-    if (firstUnit) {
-      this.number = dispatchApi.getUnitById(firstUnit.id).number;
-    } else {
-      this.number = undefined;
-    }
-  }
-
-  handleDispatchUnits(unitId) {
-    if (typeof unitId === "string") {
-      const units = dispatchApi.getGroupUnits(unitId);
-      if (units.length > 0) {
-        const webDispatchUnits = units.map((unit) => {
-          const listItemElement = this.#listItemElement.cloneNode(true);
-          listItemElement.classList.add("webDispatchGroup__listItem");
-          listItemElement.replaceChildren(this.getWebDispatchUnit(unit.id));
-          return listItemElement;
-        });
-        this.#listElement.replaceChildren(...webDispatchUnits);
-      }
-      this.handleGroupNumber();
-    } else {
-      throw new Error("The unit id is not a string");
-    }
-  }
-
-  handleSortableFeature() {
-    const group = dispatchApi.getGroupById(this.id);
-    const isSortable = group.size > this.#listElement.children.length;
-    if (isSortable) {
-      this.#sortableInstance.option("group", { name: "unit", put: true });
-    } else {
-      this.#sortableInstance.option("group", { name: "unit", put: false });
-    }
-  }
-
-  handleListHeight() {
-    const group = dispatchApi.getGroupById(this.id);
-    const style = getComputedStyle(this.#listElement);
-    const gapProperty = style.getPropertyValue("--_list-gap");
-    const paddingProperty = style.getPropertyValue("--_list-padding");
-    const listItemHeightProperty = style.getPropertyValue(
-      "--_list-item-height"
-    );
-    const gapNumber = String(Number(group.size) - 1);
-    this.#listElement.style.setProperty(
-      "--_list-height",
-      `calc((${gapProperty} * ${gapNumber}) + (${paddingProperty} * 2) + (${listItemHeightProperty} * ${group.size}))`
-    );
-  }
-
-  attributeChangedCallback(name, _oldValue, newValue) {
-    switch (name) {
-      case "data-id": {
-        if (typeof newValue === "string") {
-          const group = dispatchApi.getGroupById(newValue);
-          const category = dispatchApi.getCategoryById(group.categoryId);
-          this.#categoryElement.textContent = category.name;
-          this.handleDispatchUnits(newValue);
+  connectedCallback() {
+    if (!this.#hasBeenMountedOnce) {
+      this.classList.add("webDispatchGroup");
+      this.append(this.#template);
+      this.upgradeProperty("group");
+      this.#sortableInstance = new Sortable(this.#listElement, {
+        group: "unit",
+        onSort: () => {
+          this.updateGroupNumber();
           this.handleSortableFeature();
-        }
-        break;
-      }
-      case "data-number": {
-        if (typeof newValue === "string") {
-          this.#numberElement.textContent = newValue;
-        } else {
-          this.#numberElement.textContent = null;
-        }
-        break;
-      }
+        },
+      });
+      this.#hasBeenMountedOnce = true;
     }
+    this.updateGroup();
   }
 }
 
