@@ -34,25 +34,6 @@ class DispatchAPI {
     return [...this.#units.values()];
   }
 
-  /*
-  dispatch(propertyName) {
-    switch (propertyName) {
-      case "jobs":
-        this.#jobsSubscribers.forEach((jobsSubscriber) => {
-          jobsSubscriber.jobs = this.jobs;
-        });
-        break;
-      case "jobFilters":
-        this.#jobFiltersSubscribers.forEach((jobFiltersSubscriber) => {
-          jobFiltersSubscriber.jobFilters = this.jobFilters;
-        });
-        break;
-      default:
-        throw new Error("The property name is not valid");
-    }
-  }
-  */
-
   subscribeToCategory(webDispatchCategory) {
     this.#categoriesSubscribers.add(webDispatchCategory);
   }
@@ -85,19 +66,6 @@ class DispatchAPI {
   getCategoryUnits(categoryId) {
     const category = this.#categories.get(categoryId);
     return this.units.filter((unit) => unit.categoryId === category.id);
-  }
-
-  getCategoryById(categoryId) {
-    if (typeof categoryId === "string") {
-      const category = this.#categories.get(categoryId);
-      if (category) {
-        return category;
-      } else {
-        throw new Error("The category has not been found");
-      }
-    } else {
-      throw new Error("The category id is not a string");
-    }
   }
 
   getGroupUnits(groupId) {

@@ -4,7 +4,12 @@ class WebDispatch extends HTMLElement {
   #hasBeenMountedOnce = false;
   #template;
   #listElement;
-  #webDispatchCategory = document.createElement("web-dispatch-category");
+  #webDispatchGroupCategory = document.createElement("li", {
+    is: "web-dispatch-group-category",
+  });
+  #webDispatchUnitCategory = document.createElement("li", {
+    is: "web-dispatch-unit-category",
+  });
 
   constructor() {
     super();
@@ -13,22 +18,31 @@ class WebDispatch extends HTMLElement {
     this.#listElement = this.#template.querySelector('[data-js="list"]');
   }
 
-  connectedCallback() {
-    if (!this.#hasBeenMountedOnce) {
-      this.classList.add("webDispatch");
-      this.append(this.#template);
-      this.handleCategories();
-      this.#hasBeenMountedOnce = true;
-    }
+  updateDispatchCategories() {
+    const categories = dispatchApi.categories;
+    const webDispatchCategories = categories.map((category) => {
+      switch (category.type) {
+        case "group": {
+          const webDispatchGroupCategory =
+            this.#webDispatchGroupCategory.cloneNode(true);
+          webDispatchGroupCategory.category = category;
+          return webDispatchGroupCategory;
+        }
+        case "unit": {
+          const webDispatchUnitCategory =
+            this.#webDispatchUnitCategory.cloneNode(true);
+          webDispatchUnitCategory.category = category;
+          return webDispatchUnitCategory;
+        }
+        default: {
+          throw new Error("The category type is not valid");
+        }
+      }
+    });
+    this.#listElement.replaceChildren(...webDispatchCategories);
   }
 
-  getWebDispatchCategory(id) {
-    const webDispatchCategory = this.#webDispatchCategory.cloneNode(true);
-    webDispatchCategory.id = id;
-    return webDispatchCategory;
-  }
-
-  handleGridColumns(numberOfColumns) {
+  updateDispatchGrid(numberOfColumns) {
     if (typeof numberOfColumns === "number") {
       const gridTemplateColumns = `repeat(${String(numberOfColumns)}, 296px)`;
       this.#listElement.style.gridTemplateColumns = gridTemplateColumns;
@@ -37,18 +51,18 @@ class WebDispatch extends HTMLElement {
     }
   }
 
-  handleCategories() {
-    const categories = dispatchApi.categories;
-    if (categories.length > 0) {
-      const webDispatchCategories = categories.map((category) => {
-        return this.getWebDispatchCategory(category.id);
-      });
-      this.#listElement.replaceChildren(...webDispatchCategories);
-      this.handleGridColumns(webDispatchCategories.length);
-    } else {
-      this.#listElement.replaceChildren();
-      this.#listElement.style.gridTemplateColumns = "none";
+  updateDispatch() {
+    this.updateDispatchCategories();
+    this.updateDispatchGrid();
+  }
+
+  connectedCallback() {
+    if (!this.#hasBeenMountedOnce) {
+      this.classList.add("webDispatch");
+      this.append(this.#template);
+      this.#hasBeenMountedOnce = true;
     }
+    this.updateDispatchCategories();
   }
 }
 
