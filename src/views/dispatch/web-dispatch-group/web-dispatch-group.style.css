@@ -23,16 +23,22 @@
 }
 
 .webDispatchGroup__list {
+  --_list-height: auto;
+  --_list-gap: 12px;
+  --_list-padding: 12px;
+  --_list-item-height: 64px;
   display: grid;
   grid-template-columns: 100%;
-  gap: 12px;
+  gap: var(--_list-gap);
+  align-content: flex-start;
   width: 100%;
-  padding: 12px;
+  height: var(--_list-height);
+  padding: var(--_list-padding);
   background-color: var(--color-app);
   border-radius: 8px;
   box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
 }
 
-.webDispatchGroup__listEmptyItem {
-  
+.webDispatchGroup__listItem {
+  height: var(--_list-item-height);
 }

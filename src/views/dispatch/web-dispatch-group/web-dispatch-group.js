@@ -65,6 +65,7 @@ class WebDispatchGroup extends HTMLElement {
     }
     this.upgradeProperty("id");
     this.upgradeProperty("number");
+    this.handleListHeight();
   }
 
   upgradeProperty(prop) {
@@ -100,6 +101,7 @@ class WebDispatchGroup extends HTMLElement {
       if (units.length > 0) {
         const webDispatchUnits = units.map((unit) => {
           const listItemElement = this.#listItemElement.cloneNode(true);
+          listItemElement.classList.add("webDispatchGroup__listItem");
           listItemElement.replaceChildren(this.getWebDispatchUnit(unit.id));
           return listItemElement;
         });
@@ -119,6 +121,21 @@ class WebDispatchGroup extends HTMLElement {
     } else {
       this.#sortableInstance.option("group", { name: "unit", put: false });
     }
+  }
+
+  handleListHeight() {
+    const group = dispatchApi.getGroupById(this.id);
+    const style = getComputedStyle(this.#listElement);
+    const gapProperty = style.getPropertyValue("--_list-gap");
+    const paddingProperty = style.getPropertyValue("--_list-padding");
+    const listItemHeightProperty = style.getPropertyValue(
+      "--_list-item-height"
+    );
+    const gapNumber = String(Number(group.size) - 1);
+    this.#listElement.style.setProperty(
+      "--_list-height",
+      `calc((${gapProperty} * ${gapNumber}) + (${paddingProperty} * 2) + (${listItemHeightProperty} * ${group.size}))`
+    );
   }
 
   attributeChangedCallback(name, _oldValue, newValue) {
