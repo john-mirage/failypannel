@@ -1,5 +1,4 @@
 import dispatchApi from "../../../api/dispatch-api";
-import Sortable from "sortablejs";
 import WebDispatchCategory from "../web-dispatch-category";
 import { unitIsValid } from "../../../helpers/type-checkers";
 
@@ -7,7 +6,6 @@ class WebDispatchUnitCategory extends WebDispatchCategory {
   #hasBeenMountedOnce = false;
   #units;
   #webDispatchUnit = document.createElement("li", { is: "web-dispatch-unit" });
-  #sortableInstance;
 
   constructor() {
     super();
@@ -50,10 +48,6 @@ class WebDispatchUnitCategory extends WebDispatchCategory {
     super.connectedCallback();
     if (!this.#hasBeenMountedOnce) {
       this.upgradeProperty("units");
-      this.#sortableInstance = new Sortable(this.listElement, {
-        group: "unit",
-        onSort: this.handleSortingEvent,
-      });
       this.#hasBeenMountedOnce = true;
     }
     this.updateCategoryUnits();

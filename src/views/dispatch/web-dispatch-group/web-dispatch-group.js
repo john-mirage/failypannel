@@ -1,6 +1,5 @@
 import dispatchApi from "../../../api/dispatch-api";
 import { groupIsValid } from "../../../helpers/type-checkers";
-import Sortable from "sortablejs";
 
 class WebDispatchGroup extends HTMLLIElement {
   #hasBeenMountedOnce = false;
@@ -10,7 +9,6 @@ class WebDispatchGroup extends HTMLLIElement {
   #listElement;
   #deleteButtonElement;
   #webDispatchUnit = document.createElement("li", { is: "web-dispatch-unit" });
-  #sortableInstance;
   #group;
 
   constructor() {
@@ -77,9 +75,9 @@ class WebDispatchGroup extends HTMLLIElement {
   handleSortableFeature() {
     const isSortable = this.group.size > this.#listElement.children.length;
     if (isSortable) {
-      this.#sortableInstance.option("group", { name: "unit", put: true });
+      //this.#sortableInstance.option("group", { name: "unit", put: true });
     } else {
-      this.#sortableInstance.option("group", { name: "unit", put: false });
+      //this.#sortableInstance.option("group", { name: "unit", put: false });
     }
   }
 
@@ -118,10 +116,6 @@ class WebDispatchGroup extends HTMLLIElement {
       this.classList.add("webDispatchGroup");
       this.append(this.#template);
       this.upgradeProperty("group");
-      this.#sortableInstance = new Sortable(this.#listElement, {
-        group: "unit",
-        onSort: this.handleSortingEvent,
-      });
       this.#hasBeenMountedOnce = true;
     }
     this.updateGroup();
