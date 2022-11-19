@@ -70,7 +70,6 @@ window.addEventListener("load", () => {
   document.addEventListener("keyup", (keyboardEvent) => {
     if (keyboardEvent.key === "e") {
       if (app.children.length <= 0) {
-        console.log("mount app");
         app.replaceChildren(webApp);
       }
     }

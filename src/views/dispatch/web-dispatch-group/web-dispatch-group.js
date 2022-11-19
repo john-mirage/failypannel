@@ -8,6 +8,7 @@ class WebDispatchGroup extends HTMLLIElement {
   #nameElement;
   #numberElement;
   #listElement;
+  #deleteButtonElement;
   #webDispatchUnit = document.createElement("li", { is: "web-dispatch-unit" });
   #sortableInstance;
   #group;
@@ -19,6 +20,10 @@ class WebDispatchGroup extends HTMLLIElement {
     this.#nameElement = this.#template.querySelector('[data-js="name"]');
     this.#numberElement = this.#template.querySelector('[data-js="number"]');
     this.#listElement = this.#template.querySelector('[data-js="list"]');
+    this.#deleteButtonElement = this.#template.querySelector(
+      '[data-js="delete-button"]'
+    );
+    this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
   }
 
   get group() {
@@ -122,6 +127,41 @@ class WebDispatchGroup extends HTMLLIElement {
       this.#hasBeenMountedOnce = true;
     }
     this.updateGroup();
+    this.#deleteButtonElement.addEventListener(
+      "click",
+      this.handleDeleteButtonClick
+    );
+  }
+
+  disconnectedCallback() {
+    this.#deleteButtonElement.removeEventListener(
+      "click",
+      this.handleDeleteButtonClick
+    );
+  }
+
+  sendDispatchUpdateEvent() {
+    const customEvent = new CustomEvent("dispatch-update", {
+      bubbles: true,
+    });
+    this.dispatchEvent(customEvent);
+  }
+
+  handleDeleteButtonClick() {
+    const webDispatchUnits = this.#listElement.children;
+    if (webDispatchUnits.length > 0) {
+      for (const webDispatchUnit of webDispatchUnits) {
+        const newUnit = {
+          ...webDispatchUnit.unit,
+          categoryId: "2",
+          groupId: null,
+        };
+        webDispatchUnit.unit = newUnit;
+        dispatchApi.updateUnit(newUnit);
+      }
+    }
+    dispatchApi.deleteGroup(this.group.id);
+    this.sendDispatchUpdateEvent();
   }
 }
 
