@@ -74,7 +74,7 @@ class WebDispatchUnitCategory extends WebDispatchCategory {
           ...event.item.unit,
           parentType: "category",
           parentId: this.category.id,
-          parentOrderId: "0",
+          parentOrderId: 0,
         });
         this.sendDispatchUpdateEvent();
       }

@@ -18,7 +18,7 @@ export const groupIsValid = (group) => {
     group.hasOwnProperty("id") &&
     group.hasOwnProperty("size") &&
     typeof group.categoryId === "string" &&
-    typeof group.categoryOrderId === "string" &&
+    typeof group.categoryOrderId === "number" &&
     typeof group.id === "string" &&
     typeof group.size === "string"
   );
@@ -36,7 +36,7 @@ export const unitIsValid = (unit) => {
     unit.hasOwnProperty("role") &&
     typeof unit.parentType === "string" &&
     typeof unit.parentId === "string" &&
-    typeof unit.parentOrderId === "string" &&
+    typeof unit.parentOrderId === "number" &&
     typeof unit.id === "string" &&
     typeof unit.number === "string" &&
     typeof unit.name === "string" &&
