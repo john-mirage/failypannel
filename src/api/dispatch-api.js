@@ -6,9 +6,6 @@ class DispatchAPI {
   #categories = new Map();
   #groups = new Map();
   #units = new Map();
-  #categoriesSubscribers = new Set();
-  #groupsSubscribers = new Set();
-  #unitsSubscribers = new Set();
 
   constructor(categories, groups, units) {
     categories.forEach((category) => {
@@ -32,30 +29,6 @@ class DispatchAPI {
 
   get units() {
     return [...this.#units.values()];
-  }
-
-  subscribeToCategory(webDispatchCategory) {
-    this.#categoriesSubscribers.add(webDispatchCategory);
-  }
-
-  unsubscribeFromCategory(webDispatchCategory) {
-    this.#categoriesSubscribers.delete(webDispatchCategory);
-  }
-
-  subscribeToGroup(webDispatchGroup) {
-    this.#groupsSubscribers.add(webDispatchGroup);
-  }
-
-  unsubscribeFromGroup(webDispatchGroup) {
-    this.#groupsSubscribers.delete(webDispatchGroup);
-  }
-
-  subscribeToUnit(webDispatchUnit) {
-    this.#unitsSubscribers.add(webDispatchUnit);
-  }
-
-  unsubscribeFromUnit(webDispatchUnit) {
-    this.#unitsSubscribers.delete(webDispatchUnit);
   }
 
   getCategoryById(categoryId) {
