@@ -73,7 +73,6 @@ class WebDispatch extends HTMLElement {
   }
 
   handleDispatchUpdateEvent() {
-    console.log("dispatch update");
     this.updateDispatch();
   }
 }
