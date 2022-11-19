@@ -72,8 +72,9 @@ class WebDispatchUnitCategory extends WebDispatchCategory {
       if (this.contains(event.to)) {
         dispatchApi.updateUnit({
           ...event.item.unit,
-          categoryId: this.category.id,
-          groupId: null,
+          parentType: "category",
+          parentId: this.category.id,
+          parentOrderId: "0",
         });
         this.sendDispatchUpdateEvent();
       }
