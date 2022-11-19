@@ -18,6 +18,8 @@ class DispatchAPI {
     units.forEach((unit) => {
       this.#units.set(unit.id, unit);
     });
+    this.compareTwoGroupsByOrderId = this.compareTwoGroupsByOrderId.bind(this);
+    this.compareTwoUnitsByOrderId = this.compareTwoUnitsByOrderId.bind(this);
   }
 
   get categories() {
