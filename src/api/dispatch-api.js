@@ -85,6 +85,14 @@ class DispatchAPI {
     const group = this.#groups.get(groupId);
     return this.units.filter((unit) => unit.groupId === group.id);
   }
+
+  updateUnit(newUnit) {
+    this.#units.set(newUnit.id, newUnit);
+  }
+
+  deleteGroup(groupId) {
+    this.#groups.delete(groupId);
+  }
 }
 
 export default new DispatchAPI(

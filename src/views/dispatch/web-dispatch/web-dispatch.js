@@ -16,6 +16,7 @@ class WebDispatch extends HTMLElement {
     const template = document.getElementById("template-web-dispatch");
     this.#template = template.content.firstElementChild.cloneNode(true);
     this.#listElement = this.#template.querySelector('[data-js="list"]');
+    this.handleDispatchUpdateEvent = this.handleDispatchUpdateEvent.bind(this);
   }
 
   updateDispatchCategories() {
@@ -63,6 +64,16 @@ class WebDispatch extends HTMLElement {
       this.append(this.#template);
       this.#hasBeenMountedOnce = true;
     }
+    this.updateDispatch();
+    this.addEventListener("dispatch-update", this.handleDispatchUpdateEvent);
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener("dispatch-update", this.handleDispatchUpdateEvent);
+  }
+
+  handleDispatchUpdateEvent() {
+    console.log("dispatch update");
     this.updateDispatch();
   }
 }
