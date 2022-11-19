@@ -11,6 +11,7 @@ class WebDispatchUnitCategory extends WebDispatchCategory {
 
   constructor() {
     super();
+    this.handleSortingEvent = this.handleSortingEvent.bind(this);
   }
 
   get units() {
@@ -51,14 +52,32 @@ class WebDispatchUnitCategory extends WebDispatchCategory {
       this.upgradeProperty("units");
       this.#sortableInstance = new Sortable(this.listElement, {
         group: "unit",
-        onSort: () => {
-          this.updateCategoryCount();
-        },
+        onSort: this.handleSortingEvent,
       });
       this.#hasBeenMountedOnce = true;
     }
     this.updateCategoryUnits();
     this.updateCategoryCount();
+  }
+
+  sendDispatchUpdateEvent() {
+    const customEvent = new CustomEvent("dispatch-update", {
+      bubbles: true,
+    });
+    this.dispatchEvent(customEvent);
+  }
+
+  handleSortingEvent(event) {
+    if (this.contains(event.to)) {
+      console.log("card has been added in", this.category.name);
+      dispatchApi.updateUnit({
+        ...event.item.unit,
+        categoryId: this.category.id,
+      });
+    } else {
+      console.log("card has been removed from", this.category.name);
+    }
+    this.sendDispatchUpdateEvent();
   }
 }
 
