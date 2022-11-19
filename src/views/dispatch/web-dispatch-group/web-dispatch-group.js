@@ -24,6 +24,7 @@ class WebDispatchGroup extends HTMLLIElement {
       '[data-js="delete-button"]'
     );
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
+    this.handleSortingEvent = this.handleSortingEvent.bind(this);
   }
 
   get group() {
@@ -119,10 +120,7 @@ class WebDispatchGroup extends HTMLLIElement {
       this.upgradeProperty("group");
       this.#sortableInstance = new Sortable(this.#listElement, {
         group: "unit",
-        onSort: () => {
-          this.updateGroupNumber();
-          this.handleSortableFeature();
-        },
+        onSort: this.handleSortingEvent,
       });
       this.#hasBeenMountedOnce = true;
     }
@@ -162,6 +160,31 @@ class WebDispatchGroup extends HTMLLIElement {
     }
     dispatchApi.deleteGroup(this.group.id);
     this.sendDispatchUpdateEvent();
+  }
+
+  sendDispatchUpdateEvent() {
+    const customEvent = new CustomEvent("dispatch-update", {
+      bubbles: true,
+    });
+    this.dispatchEvent(customEvent);
+  }
+
+  handleSortingEvent(event) {
+    if (event.from !== event.to) {
+      if (this.contains(event.to)) {
+        console.log("card has been added in", this.group);
+        dispatchApi.updateUnit({
+          ...event.item.unit,
+          categoryId: this.group.categoryId,
+          groupId: this.group.id,
+        });
+        this.sendDispatchUpdateEvent();
+      } else {
+        console.log("card has been removed from", this.group);
+      }
+    } else {
+      console.log("cards have been sorted in", this.group);
+    }
   }
 }
 
