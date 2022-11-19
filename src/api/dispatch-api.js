@@ -106,10 +106,18 @@ class DispatchAPI {
   getCategoryUnits(categoryId) {
     if (typeof categoryId === "string") {
       const category = this.#categories.get(categoryId);
-      const units = this.units.filter(
-        (unit) => unit.categoryId === category.id
-      );
-      return units.sort(this.compareTwoUnitsByOrderId);
+      if (category) {
+        const units = this.units.filter(
+          (unit) =>
+            unit.hasCategory &&
+            !unit.hasGroup &&
+            typeof unit.categoryId === "string" &&
+            unit.categoryId === category.id
+        );
+        return units.sort(this.compareTwoUnitsByOrderId);
+      } else {
+        throw new Error("The category has not been found");
+      }
     } else {
       throw new Error("The category id is not a string");
     }
@@ -118,8 +126,18 @@ class DispatchAPI {
   getGroupUnits(groupId) {
     if (typeof groupId === "string") {
       const group = this.#groups.get(groupId);
-      const units = this.units.filter((unit) => unit.groupId === group.id);
-      return units.sort(this.compareTwoUnitsByOrderId);
+      if (group) {
+        const units = this.units.filter(
+          (unit) =>
+            unit.hasGroup &&
+            !unit.hasCategory &&
+            typeof unit.groupId === "string" &&
+            unit.groupId === group.id
+        );
+        return units.sort(this.compareTwoUnitsByOrderId);
+      } else {
+        throw new Error("The group has not been found");
+      }
     } else {
       throw new Error("The group id is not a string");
     }
@@ -127,7 +145,11 @@ class DispatchAPI {
 
   updateUnit(newUnit) {
     if (unitIsValid(newUnit)) {
-      this.#units.set(newUnit.id, newUnit);
+      if (this.#units.has(newUnit.id)) {
+        this.#units.set(newUnit.id, newUnit);
+      } else {
+        throw new Error("The unit you want to modify do not exist");
+      }
     } else {
       throw new Error("The new unit is not valid");
     }
