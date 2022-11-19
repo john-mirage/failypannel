@@ -151,8 +151,9 @@ class WebDispatchGroup extends HTMLLIElement {
       for (const webDispatchUnit of webDispatchUnits) {
         const newUnit = {
           ...webDispatchUnit.unit,
-          categoryId: "2",
-          groupId: null,
+          parentType: "category",
+          parentId: "2",
+          parentOrderId: "0",
         };
         webDispatchUnit.unit = newUnit;
         dispatchApi.updateUnit(newUnit);
@@ -174,8 +175,9 @@ class WebDispatchGroup extends HTMLLIElement {
       if (this.contains(event.to)) {
         dispatchApi.updateUnit({
           ...event.item.unit,
-          categoryId: this.group.categoryId,
-          groupId: this.group.id,
+          parentType: "group",
+          parentId: this.group.id,
+          parentOrderId: "0",
         });
         this.sendDispatchUpdateEvent();
       }

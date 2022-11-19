@@ -71,26 +71,7 @@ class DispatchAPI {
   }
 
   compareTwoUnitsByOrderId(unitA, unitB) {
-    if (
-      unitA.hasCategory &&
-      !unitA.hasGroup &&
-      unitB.hasCategory &&
-      !unitB.hasGroup
-    ) {
-      return this.compareTwoStrings(
-        unitA.categoryOrderId,
-        unitB.categoryOrderId
-      );
-    }
-    if (
-      unitA.hasGroup &&
-      !unitA.hasCategory &&
-      unitB.hasGroup &&
-      !unitB.hasCategory
-    ) {
-      return this.compareTwoStrings(unitA.groupOrderId, unitB.groupOrderId);
-    }
-    throw new Error("Can't compare the two units, there are different");
+    return this.compareTwoStrings(unitA.parentOrderId, unitB.parentOrderId);
   }
 
   getCategoryGroups(categoryId) {
@@ -111,10 +92,10 @@ class DispatchAPI {
       if (category) {
         const units = this.units.filter(
           (unit) =>
-            unit.hasCategory &&
-            !unit.hasGroup &&
-            typeof unit.categoryId === "string" &&
-            unit.categoryId === category.id
+            typeof unit.parentType === "string" &&
+            typeof unit.parentId === "string" &&
+            unit.parentType === "category" &&
+            unit.parentId === category.id
         );
         return units.sort(this.compareTwoUnitsByOrderId);
       } else {
@@ -131,10 +112,10 @@ class DispatchAPI {
       if (group) {
         const units = this.units.filter(
           (unit) =>
-            unit.hasGroup &&
-            !unit.hasCategory &&
-            typeof unit.groupId === "string" &&
-            unit.groupId === group.id
+            typeof unit.parentType === "string" &&
+            typeof unit.parentId === "string" &&
+            unit.parentType === "group" &&
+            unit.parentId === group.id
         );
         return units.sort(this.compareTwoUnitsByOrderId);
       } else {
