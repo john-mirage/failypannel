@@ -1,6 +1,7 @@
 import dispatchApi from "../../../api/dispatch-api";
 import WebDispatchCategory from "../web-dispatch-category";
 import { groupIsValid } from "../../../helpers/type-checkers";
+import Sortable from "sortablejs";
 
 class WebDispatchGroupCategory extends WebDispatchCategory {
   #hasBeenMountedOnce = false;
@@ -8,6 +9,7 @@ class WebDispatchGroupCategory extends WebDispatchCategory {
   #webDispatchGroup = document.createElement("li", {
     is: "web-dispatch-group",
   });
+  #sortableInstance;
 
   constructor() {
     super();
@@ -49,6 +51,7 @@ class WebDispatchGroupCategory extends WebDispatchCategory {
     super.connectedCallback();
     if (!this.#hasBeenMountedOnce) {
       this.upgradeProperty("groups");
+      this.#sortableInstance = new Sortable(this.listElement);
       this.#hasBeenMountedOnce = true;
     }
     this.updateCategoryGroups();
