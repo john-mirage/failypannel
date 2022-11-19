@@ -13,13 +13,34 @@
     0 1px 2px -1px rgb(0 0 0 / 0.1);
 }
 
-.webDispatchGroup__name {
+.webDispatchGroup__header {
   margin-bottom: 12px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.webDispatchGroup__name {
   font-size: 14px;
   font-weight: 600;
   line-height: 24px;
   text-transform: capitalize;
   color: var(--color-typo-primary);
+}
+
+.webDispatchGroup__button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--color-typo-secondary);
+}
+
+.webDispatchGroup__buttonIcon {
+  width: 20px;
+  height: 20px;
 }
 
 .webDispatchGroup__list {
@@ -41,4 +62,10 @@
 
 .webDispatchGroup__listItem {
   height: var(--_list-item-height);
+}
+
+@media screen and (hover: hover) {
+  .webDispatchGroup__button:hover {
+    color: #fff;
+  }
 }
