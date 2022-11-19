@@ -70,18 +70,13 @@ class WebDispatchUnitCategory extends WebDispatchCategory {
   handleSortingEvent(event) {
     if (event.from !== event.to) {
       if (this.contains(event.to)) {
-        console.log("card has been added in", this.category.name);
         dispatchApi.updateUnit({
           ...event.item.unit,
           categoryId: this.category.id,
           groupId: null,
         });
         this.sendDispatchUpdateEvent();
-      } else {
-        console.log("card has been removed from", this.category.name);
       }
-    } else {
-      console.log("cards have been sorted in", this.category.name);
     }
   }
 }
