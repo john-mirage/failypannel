@@ -183,6 +183,7 @@ class WebDispatchGroup extends HTMLLIElement {
         console.log("card has been removed from", this.group);
       }
     } else {
+      this.updateGroupNumber();
       console.log("cards have been sorted in", this.group);
     }
   }
