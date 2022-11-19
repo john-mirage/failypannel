@@ -1,98 +1,146 @@
 [
   {
-    "categoryId": "3",
-    "groupId": "1",
-    "id": "1",
-    "number": "22",
-    "name": "Jenny Baker",
-    "role": "Commissaire"
-  },
-  {
-    "categoryId": "4",
-    "groupId": "3",
-    "id": "2",
-    "number": "32",
-    "name": "Kate Finley",
-    "role": "Capitaine"
-  },
-  {
-    "categoryId": "4",
-    "groupId": "4",
-    "id": "3",
-    "number": "04",
-    "name": "Jonas Delos",
-    "role": "Lieutenant"
-  },
-  {
-    "categoryId": "4",
-    "groupId": "3",
-    "id": "4",
-    "number": "46",
-    "name": "Micah Finley",
-    "role": "Lieutenant"
-  },
-  {
-    "categoryId": "4",
-    "groupId": "4",
-    "id": "5",
-    "number": "38",
-    "name": "Zoé Duck",
-    "role": "Inspecteur"
-  },
-  {
-    "categoryId": "3",
-    "groupId": "2",
-    "id": "6",
-    "number": "52",
-    "name": "Freddy Kidd",
-    "role": "Inspecteur"
-  },
-  {
-    "categoryId": "2",
-    "groupId": null,
-    "id": "7",
-    "number": "14",
-    "name": "Logan Mason",
-    "role": "Inspecteur"
-  },
-  {
-    "categoryId": "2",
-    "groupId": null,
-    "id": "8",
-    "number": "59",
-    "name": "Carl Buckley",
-    "role": "Sergent-Chef"
-  },
-  {
-    "categoryId": "4",
-    "groupId": "5",
-    "id": "9",
-    "number": "74",
-    "name": "Marius Pipoulin",
-    "role": "Sergent"
-  },
-  {
+    "hasCategory": true,
     "categoryId": "1",
+    "categoryOrderId": "1",
+    "hasGroup": false,
     "groupId": null,
+    "groupOrderId": null,
     "id": "10",
     "number": "08",
     "name": "Bernard Brigan",
     "role": "Officier Supérieur"
   },
   {
+    "hasCategory": true,
     "categoryId": "1",
+    "categoryOrderId": "2",
+    "hasGroup": false,
     "groupId": null,
+    "groupOrderId": null,
     "id": "11",
     "number": "19",
     "name": "Kim Night",
     "role": "Officier Supérieur"
   },
   {
+    "hasCategory": true,
     "categoryId": "1",
+    "categoryOrderId": "3",
+    "hasGroup": false,
     "groupId": null,
+    "groupOrderId": null,
     "id": "12",
     "number": "07",
     "name": "Hubert Bonnisseur de la Bath",
     "role": "Officier Supérieur"
+  },
+  {
+    "hasCategory": true,
+    "categoryId": "2",
+    "categoryOrderId": "1",
+    "hasGroup": false,
+    "groupId": null,
+    "groupOrderId": null,
+    "id": "7",
+    "number": "14",
+    "name": "Logan Mason",
+    "role": "Inspecteur"
+  },
+  {
+    "hasCategory": true,
+    "categoryId": "2",
+    "categoryOrderId": "2",
+    "hasGroup": false,
+    "groupId": null,
+    "groupOrderId": null,
+    "id": "8",
+    "number": "59",
+    "name": "Carl Buckley",
+    "role": "Sergent-Chef"
+  },
+  {
+    "hasCategory": false,
+    "categoryId": null,
+    "categoryOrderId": null,
+    "hasGroup": true,
+    "groupId": "1",
+    "groupOrderId": "1",
+    "id": "1",
+    "number": "22",
+    "name": "Jenny Baker",
+    "role": "Commissaire"
+  },
+  {
+    "hasCategory": false,
+    "categoryId": null,
+    "categoryOrderId": null,
+    "hasGroup": true,
+    "groupId": "2",
+    "groupOrderId": "6",
+    "id": "6",
+    "number": "52",
+    "name": "Freddy Kidd",
+    "role": "Inspecteur"
+  },
+  {
+    "hasCategory": false,
+    "categoryId": null,
+    "categoryOrderId": null,
+    "hasGroup": true,
+    "groupId": "3",
+    "groupOrderId": "1",
+    "id": "2",
+    "number": "32",
+    "name": "Kate Finley",
+    "role": "Capitaine"
+  },
+  {
+    "hasCategory": false,
+    "categoryId": null,
+    "categoryOrderId": null,
+    "hasGroup": true,
+    "groupId": "3",
+    "groupOrderId": "2",
+    "id": "4",
+    "number": "46",
+    "name": "Micah Finley",
+    "role": "Lieutenant"
+  },
+  {
+    "hasCategory": false,
+    "categoryId": null,
+    "categoryOrderId": null,
+    "hasGroup": true,
+    "groupId": "4",
+    "groupOrderId": "1",
+    "id": "3",
+    "number": "04",
+    "name": "Jonas Delos",
+    "role": "Lieutenant"
+  },
+  {
+    "hasCategory": false,
+    "categoryId": null,
+    "categoryOrderId": null,
+    "hasGroup": true,
+    "groupId": "4",
+    "groupOrderId": "2",
+    "id": "5",
+    "number": "38",
+    "name": "Zoé Duck",
+    "role": "Inspecteur"
+  },
+  {
+    "hasCategory": false,
+    "categoryId": null,
+    "categoryOrderId": null,
+    "hasGroup": true,
+    "groupId": "5",
+    "groupOrderId": "1",
+    "id": "9",
+    "number": "74",
+    "name": "Marius Pipoulin",
+    "role": "Sergent"
   }
 ]

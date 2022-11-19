@@ -1,6 +1,7 @@
 import dispatchCategories from "../data/dispatch-categories.json";
 import dispatchGroups from "../data/dispatch-groups.json";
 import dispatchUnits from "../data/dispatch-units.json";
+import { unitIsValid } from "../helpers/type-checkers";
 
 class DispatchAPI {
   #categories = new Map();
@@ -44,27 +45,104 @@ class DispatchAPI {
     }
   }
 
+  compareTwoStrings(stringA, stringB) {
+    if (typeof stringA === "string" && typeof stringB === "string") {
+      const formatedStringA = stringA.toUpperCase();
+      const formatedStringB = stringB.toUpperCase();
+      if (formatedStringA < formatedStringB) {
+        return -1;
+      }
+      if (formatedStringA > formatedStringB) {
+        return 1;
+      }
+      return 0;
+    } else {
+      throw new Error("The two arguments are not strings");
+    }
+  }
+
+  compareTwoGroupsByOrderId(groupA, groupB) {
+    return this.compareTwoStrings(
+      groupA.categoryOrderId,
+      groupB.categoryOrderId
+    );
+  }
+
+  compareTwoUnitsByOrderId(unitA, unitB) {
+    if (
+      unitA.hasCategory &&
+      !unitA.hasGroup &&
+      unitB.hasCategory &&
+      !unitB.hasGroup
+    ) {
+      return this.compareTwoStrings(
+        unitA.categoryOrderId,
+        unitB.categoryOrderId
+      );
+    }
+    if (
+      unitA.hasGroup &&
+      !unitA.hasCategory &&
+      unitB.hasGroup &&
+      !unitB.hasCategory
+    ) {
+      return this.compareTwoStrings(unitA.groupOrderId, unitB.groupOrderId);
+    }
+    throw new Error("Can't compare the two units, there are different");
+  }
+
   getCategoryGroups(categoryId) {
-    const category = this.#categories.get(categoryId);
-    return this.groups.filter((group) => group.categoryId === category.id);
+    if (typeof categoryId === "string") {
+      const category = this.#categories.get(categoryId);
+      const groups = this.groups.filter(
+        (group) => group.categoryId === category.id
+      );
+      return groups.sort(this.compareTwoGroupsByOrderId);
+    } else {
+      throw new Error("The category id is not a string");
+    }
   }
 
   getCategoryUnits(categoryId) {
-    const category = this.#categories.get(categoryId);
-    return this.units.filter((unit) => unit.categoryId === category.id);
+    if (typeof categoryId === "string") {
+      const category = this.#categories.get(categoryId);
+      const units = this.units.filter(
+        (unit) => unit.categoryId === category.id
+      );
+      return units.sort(this.compareTwoUnitsByOrderId);
+    } else {
+      throw new Error("The category id is not a string");
+    }
   }
 
   getGroupUnits(groupId) {
-    const group = this.#groups.get(groupId);
-    return this.units.filter((unit) => unit.groupId === group.id);
+    if (typeof groupId === "string") {
+      const group = this.#groups.get(groupId);
+      const units = this.units.filter((unit) => unit.groupId === group.id);
+      return units.sort(this.compareTwoUnitsByOrderId);
+    } else {
+      throw new Error("The group id is not a string");
+    }
   }
 
   updateUnit(newUnit) {
-    this.#units.set(newUnit.id, newUnit);
+    if (unitIsValid(newUnit)) {
+      this.#units.set(newUnit.id, newUnit);
+    } else {
+      throw new Error("The new unit is not valid");
+    }
   }
 
   deleteGroup(groupId) {
-    this.#groups.delete(groupId);
+    if (typeof groupId === "string") {
+      if (this.#groups.has(groupId)) {
+        this.#groups.delete(groupId);
+      } else {
+        throw new Error("The group to delete has not been found");
+      }
+    } else {
+      throw new Error("The group id is not a string");
+    }
   }
 }
 
