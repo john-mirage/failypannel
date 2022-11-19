@@ -47,31 +47,23 @@ class DispatchAPI {
     }
   }
 
-  compareTwoStrings(stringA, stringB) {
-    if (typeof stringA === "string" && typeof stringB === "string") {
-      const formatedStringA = stringA.toUpperCase();
-      const formatedStringB = stringB.toUpperCase();
-      if (formatedStringA < formatedStringB) {
-        return -1;
-      }
-      if (formatedStringA > formatedStringB) {
-        return 1;
-      }
-      return 0;
+  compareTwoNumbers(numberA, numberB) {
+    if (typeof numberA === "number" && typeof numberB === "number") {
+      return numberA - numberB;
     } else {
-      throw new Error("The two arguments are not strings");
+      throw new Error("The two arguments are not numbers");
     }
   }
 
   compareTwoGroupsByOrderId(groupA, groupB) {
-    return this.compareTwoStrings(
+    return this.compareTwoNumbers(
       groupA.categoryOrderId,
       groupB.categoryOrderId
     );
   }
 
   compareTwoUnitsByOrderId(unitA, unitB) {
-    return this.compareTwoStrings(unitA.parentOrderId, unitB.parentOrderId);
+    return this.compareTwoNumbers(unitA.parentOrderId, unitB.parentOrderId);
   }
 
   getCategoryGroups(categoryId) {

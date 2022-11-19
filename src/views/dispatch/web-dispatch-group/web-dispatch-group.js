@@ -153,7 +153,7 @@ class WebDispatchGroup extends HTMLLIElement {
           ...webDispatchUnit.unit,
           parentType: "category",
           parentId: "2",
-          parentOrderId: "0",
+          parentOrderId: 0,
         };
         webDispatchUnit.unit = newUnit;
         dispatchApi.updateUnit(newUnit);
@@ -177,7 +177,7 @@ class WebDispatchGroup extends HTMLLIElement {
           ...event.item.unit,
           parentType: "group",
           parentId: this.group.id,
-          parentOrderId: "0",
+          parentOrderId: 0,
         });
         this.sendDispatchUpdateEvent();
       }
