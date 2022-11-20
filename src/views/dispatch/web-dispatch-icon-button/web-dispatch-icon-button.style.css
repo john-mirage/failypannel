@@ -1,0 +1,17 @@
+.webDispatchIconButton {
+  display: block;
+}
+
+.webDispatchIconButton__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--color-typo-secondary);
+}
+
+.webDispatchIconButton__icon {
+  width: 20px;
+  height: 20px;
+}
