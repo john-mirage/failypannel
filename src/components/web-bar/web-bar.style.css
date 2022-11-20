@@ -8,6 +8,7 @@
 .webBar__container {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   height: 100%;
   padding-left: 24px;
@@ -18,14 +19,6 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-}
-
-.webBar__section--left {
-  flex: 1;
-}
-
-.webBar__section--right {
-  flex: none;
   gap: 32px;
 }
 

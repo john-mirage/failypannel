@@ -62,10 +62,10 @@
   <!-- template | web bar -->
   <template id="template-web-bar">
     <header class="webBar__container">
-      <div class="webBar__section webBar__section--left">
+      <div class="webBar__section">
         <h2 class="webBar__label" data-js="label"></h2>
       </div>
-      <div class="webBar__section webBar__section--right">
+      <div class="webBar__section">
         <web-close-button data-icon="close" data-label="Fermer"></web-close-button>
       </div>
     </header>
@@ -143,10 +143,10 @@
   <!-- template | web dispatch toolbar -->
   <template id="template-web-dispatch-toolbar">
     <header class="webDispatchToolbar__container">
-      <div class="webDispatchToolbar__section webDispatchToolbar__section--left">
+      <div class="webDispatchToolbar__section">
         <h2 class="webDispatchToolbar__name">Dispatch des unités</h2>
       </div>
-      <div class="webDispatchToolbar__section webDispatchToolbar__section--right">
+      <div class="webDispatchToolbar__section">
         <web-button class="webDispatchToolbar__button" data-icon="add" data-label="ajouter une catégorie" data-js="add-category-button"></web-button>
       </div>
     </header>
@@ -167,15 +167,15 @@
   <template id="template-web-dispatch-group">
     <article class="webDispatchGroup__container">
       <header class="webDispatchGroup__header">
-        <h4 class="webDispatchGroup__name">
-          <span data-js="name"></span>
-          <span data-js="number"></span>
-        </h4>
-        <button class="webDispatchGroup__button" data-js="delete-button">
-          <svg class="webDispatchGroup__buttonIcon">
-            <use href="#icon-close" />
-          </svg>
-        </button>
+        <div class="webDispatchGroup__headerSection">
+          <h4 class="webDispatchGroup__name">
+            <span data-js="name"></span>
+            <span data-js="number"></span>
+          </h4>
+        </div>
+        <div class="webDispatchGroup__headerSection">
+          <web-dispatch-icon-button data-icon="close" data-js="delete-button"></web-dispatch-icon-button>
+        </div>
       </header>
       <ul class="webDispatchGroup__list" data-js="list"></ul>
     </article>
@@ -184,12 +184,29 @@
   <!-- template | web dispatch unit -->
   <template id="template-web-dispatch-unit">
     <article class="webDispatchUnit__container">
-      <h4 class="webDispatchUnit__number" data-js="number"></h4>
-      <div class="webDispatchUnit__text">
-        <h5 class="webDispatchUnit__name" data-js="name"></h5>
-        <p class="webDispatchUnit__role" data-js="role"></p>
+      <header class="webDispatchUnit__header">
+        <div class="webDispatchUnit__headerSection"></div>
+        <div class="webDispatchUnit__headerSection">
+          <web-dispatch-icon-button data-icon="close" data-js="delete-button"></web-dispatch-icon-button>
+        </div>
+      </header>
+      <div class="webDispatchUnit__body">
+        <h4 class="webDispatchUnit__number" data-js="number"></h4>
+        <div class="webDispatchUnit__text">
+          <h5 class="webDispatchUnit__name" data-js="name"></h5>
+          <p class="webDispatchUnit__role" data-js="role"></p>
+        </div>
       </div>
     </article>
+  </template>
+
+  <!-- template | web dispatch icon button -->
+  <template id="template-web-dispatch-icon-button">
+    <button class="webDispatchIconButton__container" data-js="button">
+      <svg class="webDispatchIconButton__icon">
+        <use data-js="icon" />
+      </svg>
+    </button>
   </template>
 
   <!-- module -->

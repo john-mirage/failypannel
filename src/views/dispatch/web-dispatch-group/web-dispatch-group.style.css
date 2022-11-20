@@ -21,26 +21,18 @@
   align-items: center;
 }
 
+.webDispatchGroup__headerSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .webDispatchGroup__name {
   font-size: 14px;
   font-weight: 600;
   line-height: 24px;
   text-transform: capitalize;
   color: var(--color-typo-primary);
-}
-
-.webDispatchGroup__button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 24px;
-  height: 24px;
-  color: var(--color-typo-secondary);
-}
-
-.webDispatchGroup__buttonIcon {
-  width: 20px;
-  height: 20px;
 }
 
 .webDispatchGroup__list {
