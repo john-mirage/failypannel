@@ -20,7 +20,7 @@ export const groupIsValid = (group) => {
     typeof group.categoryId === "string" &&
     typeof group.categoryOrderId === "number" &&
     typeof group.id === "string" &&
-    typeof group.size === "string"
+    typeof group.size === "number"
   );
 };
 

@@ -22,7 +22,8 @@ class WebDispatchGroup extends HTMLLIElement {
       '[data-js="delete-button"]'
     );
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
-    this.handleSortingEvent = this.handleSortingEvent.bind(this);
+    this.handleDragOver = this.handleDragOver.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
   }
 
   get group() {
@@ -72,15 +73,6 @@ class WebDispatchGroup extends HTMLLIElement {
     }
   }
 
-  handleSortableFeature() {
-    const isSortable = this.group.size > this.#listElement.children.length;
-    if (isSortable) {
-      //this.#sortableInstance.option("group", { name: "unit", put: true });
-    } else {
-      //this.#sortableInstance.option("group", { name: "unit", put: false });
-    }
-  }
-
   handleListHeight() {
     const style = getComputedStyle(this.#listElement);
     const gapProperty = style.getPropertyValue("--_list-gap");
@@ -88,10 +80,12 @@ class WebDispatchGroup extends HTMLLIElement {
     const listItemHeightProperty = style.getPropertyValue(
       "--_list-item-height"
     );
-    const gapNumber = String(Number(this.group.size) - 1);
+    const gapNumber = String(this.group.size - 1);
     this.#listElement.style.setProperty(
       "--_list-height",
-      `calc((${gapProperty} * ${gapNumber}) + (${paddingProperty} * 2) + (${listItemHeightProperty} * ${this.group.size}))`
+      `calc((${gapProperty} * ${gapNumber}) + (${paddingProperty} * 2) + (${listItemHeightProperty} * ${String(
+        this.group.size
+      )}))`
     );
   }
 
@@ -100,7 +94,6 @@ class WebDispatchGroup extends HTMLLIElement {
     this.updateGroupUnits();
     this.updateGroupNumber();
     this.handleListHeight();
-    this.handleSortableFeature();
   }
 
   upgradeProperty(prop) {
@@ -123,6 +116,8 @@ class WebDispatchGroup extends HTMLLIElement {
       "click",
       this.handleDeleteButtonClick
     );
+    this.#listElement.addEventListener("dragover", this.handleDragOver);
+    this.#listElement.addEventListener("drop", this.handleDrop);
   }
 
   disconnectedCallback() {
@@ -130,6 +125,8 @@ class WebDispatchGroup extends HTMLLIElement {
       "click",
       this.handleDeleteButtonClick
     );
+    this.#listElement.removeEventListener("dragover", this.handleDragOver);
+    this.#listElement.removeEventListener("drop", this.handleDrop);
   }
 
   sendDispatchUpdateEvent() {
@@ -164,20 +161,32 @@ class WebDispatchGroup extends HTMLLIElement {
     this.dispatchEvent(customEvent);
   }
 
-  handleSortingEvent(event) {
-    if (event.from !== event.to) {
-      if (this.contains(event.to)) {
-        dispatchApi.updateUnit({
-          ...event.item.unit,
-          parentType: "group",
-          parentId: this.group.id,
-          parentOrderId: 0,
-        });
-        this.sendDispatchUpdateEvent();
-      }
+  handleDragOver(event) {
+    const hasDataType = event.dataTransfer.types.includes(
+      "failyv/dispatch-unit"
+    );
+    const numberOfUnits = this.#listElement.children.length;
+    const hasAvailableSpots = this.group.size - numberOfUnits > 0;
+    if (hasDataType && hasAvailableSpots) {
+      event.preventDefault();
+      console.log("drop is allowed");
     } else {
-      this.updateGroupNumber();
+      console.log("drop is NOT allowed");
     }
+  }
+
+  handleDrop(event) {
+    event.preventDefault();
+    const unitJSON = event.dataTransfer.getData("failyv/dispatch-unit");
+    const unit = JSON.parse(unitJSON);
+    console.log("dropped successfully");
+    dispatchApi.updateUnit({
+      ...unit,
+      parentType: "group",
+      parentId: this.group.id,
+      parentOrderId: 0,
+    });
+    this.sendDispatchUpdateEvent();
   }
 }
 
