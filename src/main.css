@@ -16,6 +16,7 @@
 @import "./views/dispatch/web-dispatch-category/web-dispatch-category.style.css";
 @import "./views/dispatch/web-dispatch-group/web-dispatch-group.style.css";
 @import "./views/dispatch/web-dispatch-unit/web-dispatch-unit.style.css";
+@import "./views/dispatch/web-dispatch-icon-button/web-dispatch-icon-button.style.css";
 
 :root {
   --color-app: hsl(210, 17%, 95%);

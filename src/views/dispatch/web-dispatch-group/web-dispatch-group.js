@@ -112,7 +112,7 @@ class WebDispatchGroup extends HTMLLIElement {
       this.#hasBeenMountedOnce = true;
     }
     this.updateGroup();
-    this.#deleteButtonElement.addEventListener(
+    this.#deleteButtonElement.buttonElement.addEventListener(
       "click",
       this.handleDeleteButtonClick
     );
@@ -121,7 +121,7 @@ class WebDispatchGroup extends HTMLLIElement {
   }
 
   disconnectedCallback() {
-    this.#deleteButtonElement.removeEventListener(
+    this.#deleteButtonElement.buttonElement.removeEventListener(
       "click",
       this.handleDeleteButtonClick
     );

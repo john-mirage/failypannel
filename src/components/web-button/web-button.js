@@ -35,10 +35,10 @@ class WebPowerButton extends HTMLElement {
   constructor() {
     super();
     const template = document.getElementById("template-web-button");
-    this.#template = template.content.cloneNode(true);
+    this.#template = template.content.firstElementChild.cloneNode(true);
     this.#iconElement = this.#template.querySelector('[data-js="icon"]');
     this.#labelElement = this.#template.querySelector('[data-js="label"]');
-    this.buttonElement = this.#template.querySelector('[data-js="button"]');
+    this.buttonElement = this.#template;
   }
 
   connectedCallback() {

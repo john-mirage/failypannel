@@ -17,6 +17,7 @@ import WebDispatchGroupCategory from "./views/dispatch/web-dispatch-group-catego
 import WebDispatchUnitCategory from "./views/dispatch/web-dispatch-unit-category";
 import WebDispatchGroup from "./views/dispatch/web-dispatch-group";
 import WebDispatchUnit from "./views/dispatch/web-dispatch-unit";
+import WebDispatchIconButton from "./views/dispatch/web-dispatch-icon-button";
 
 /**
  * global components
@@ -59,6 +60,7 @@ customElements.define("web-dispatch-group", WebDispatchGroup, {
 customElements.define("web-dispatch-unit", WebDispatchUnit, {
   extends: "li",
 });
+customElements.define("web-dispatch-icon-button", WebDispatchIconButton);
 
 /**
  * app mount

@@ -39,7 +39,7 @@
   --_list-height: auto;
   --_list-gap: 12px;
   --_list-padding: 12px;
-  --_list-item-height: 64px;
+  --_list-item-height: 104px;
   display: grid;
   grid-template-columns: 100%;
   gap: var(--_list-gap);
@@ -54,10 +54,4 @@
 
 .webDispatchGroup__listItem {
   height: var(--_list-item-height);
-}
-
-@media screen and (hover: hover) {
-  .webDispatchGroup__button:hover {
-    color: #fff;
-  }
 }

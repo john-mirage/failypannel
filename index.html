@@ -43,6 +43,15 @@
     <symbol id="icon-add" viewBox="0 0 512 512">
       <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 112v288M400 256H112"/>
     </symbol>
+    <symbol id="icon-radio" viewBox="0 0 24 24">
+      <path d="M0 0h24v24H0V0z" fill="none"/>
+      <circle fill="currentColor" cx="6.18" cy="17.82" r="2.18"/>
+      <path fill="currentColor" d="M5.59 10.23c-.84-.14-1.59.55-1.59 1.4 0 .71.53 1.28 1.23 1.4 2.92.51 5.22 2.82 5.74 5.74.12.7.69 1.23 1.4 1.23.85 0 1.54-.75 1.41-1.59-.68-4.2-3.99-7.51-8.19-8.18zm-.03-5.71C4.73 4.43 4 5.1 4 5.93c0 .73.55 1.33 1.27 1.4 6.01.6 10.79 5.38 11.39 11.39.07.73.67 1.28 1.4 1.28.84 0 1.5-.73 1.42-1.56-.73-7.34-6.57-13.19-13.92-13.92z"/>
+    </symbol>
+    <symbol id="icon-car" viewBox="0 0 24 24">
+      <path d="M0 0h24v24H0V0z" fill="none"/>
+      <path fill="currentColor" d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01l-1.97 5.67c-.07.21-.11.43-.11.66v7.16c0 .83.67 1.5 1.5 1.5S6 20.33 6 19.5V19h12v.5c0 .82.67 1.5 1.5 1.5.82 0 1.5-.67 1.5-1.5v-7.16c0-.22-.04-.45-.11-.66l-1.97-5.67zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.27-3.82c.14-.4.52-.68.95-.68h9.56c.43 0 .81.28.95.68L19 11H5z"/>
+    </symbol>
   </svg>
 
   <!-- app -->
@@ -88,7 +97,7 @@
 
   <!-- template | web view navigation -->
   <template id="template-web-view-navigation">
-    <nav class="webViewNavigation__container" data-js="navigation">
+    <nav class="webViewNavigation__container">
       <web-view-navigation-item data-view="car-plate" data-label="Plaque d'immatriculation"></web-view-navigation-item>
       <web-view-navigation-item data-view="investigation" data-label="Dossiers et enquêtes"></web-view-navigation-item>
       <web-view-navigation-item data-view="dispatch" data-label="Dispatch des unités"></web-view-navigation-item>
@@ -97,7 +106,7 @@
 
   <!-- template | web view navigation item -->
   <template id="template-web-view-navigation-item">
-    <button class="webViewNavigationItem__button" type="button" data-js="button"></button>
+    <button class="webViewNavigationItem__button" type="button"></button>
   </template>
 
   <!-- template | web switch -->
@@ -110,7 +119,7 @@
 
   <!-- template | web button -->
   <template id="template-web-button">
-    <button class="webButton__container" type="button" data-js="button">
+    <button class="webButton__container" type="button">
       <svg class="webButton__icon">
         <use data-js="icon" />
       </svg>
@@ -185,16 +194,18 @@
   <template id="template-web-dispatch-unit">
     <article class="webDispatchUnit__container">
       <header class="webDispatchUnit__header">
-        <div class="webDispatchUnit__headerSection"></div>
+        <div class="webDispatchUnit__headerSection webDispatchUnit__headerSection--overflow">
+          <h5 class="webDispatchUnit__name" data-js="name"></h5>
+        </div>
         <div class="webDispatchUnit__headerSection">
-          <web-dispatch-icon-button data-icon="close" data-js="delete-button"></web-dispatch-icon-button>
+          <web-dispatch-icon-button class="webDispatchUnit__lastButton" data-icon="close" data-js="delete-button"></web-dispatch-icon-button>
         </div>
       </header>
       <div class="webDispatchUnit__body">
         <h4 class="webDispatchUnit__number" data-js="number"></h4>
         <div class="webDispatchUnit__text">
-          <h5 class="webDispatchUnit__name" data-js="name"></h5>
           <p class="webDispatchUnit__role" data-js="role"></p>
+          <p class="webDispatchUnit__phone" data-js="phone">555-4568</p>
         </div>
       </div>
     </article>
@@ -202,7 +213,7 @@
 
   <!-- template | web dispatch icon button -->
   <template id="template-web-dispatch-icon-button">
-    <button class="webDispatchIconButton__container" data-js="button">
+    <button class="webDispatchIconButton__container">
       <svg class="webDispatchIconButton__icon">
         <use data-js="icon" />
       </svg>

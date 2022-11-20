@@ -48,8 +48,8 @@ class WebViewNavigationItem extends HTMLElement {
     const template = document.getElementById(
       "template-web-view-navigation-item"
     );
-    this.#template = template.content.cloneNode(true);
-    this.#buttonElement = this.#template.querySelector('[data-js="button"]');
+    this.#template = template.content.firstElementChild.cloneNode(true);
+    this.#buttonElement = this.#template;
     this.handleButtonClickEvent = this.handleButtonClickEvent.bind(this);
   }
 

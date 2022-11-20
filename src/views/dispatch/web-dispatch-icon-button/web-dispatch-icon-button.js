@@ -14,7 +14,7 @@ class WebDispatchIconButton extends HTMLElement {
     );
     this.#template = template.content.firstElementChild.cloneNode(true);
     this.#iconElement = this.#template.querySelector('[data-js="icon"]');
-    this.buttonElement = this.#template.querySelector('[data-js="button"]');
+    this.buttonElement = this.#template;
   }
 
   get icon() {
@@ -29,10 +29,19 @@ class WebDispatchIconButton extends HTMLElement {
     }
   }
 
+  upgradeProperty(prop) {
+    if (this.hasOwnProperty(prop)) {
+      let value = this[prop];
+      delete this[prop];
+      this[prop] = value;
+    }
+  }
+
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webDispatchIconButton");
       this.append(this.#template);
+      this.upgradeProperty("icon");
       this.#hasBeenMountedOnce = true;
     }
   }

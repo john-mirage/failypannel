@@ -10,8 +10,8 @@ class WebViewNavigation extends HTMLElement {
   constructor() {
     super();
     const template = document.getElementById("template-web-view-navigation");
-    this.#template = template.content.cloneNode(true);
-    this.#navElement = this.#template.querySelector('[data-js="navigation"]');
+    this.#template = template.content.firstElementChild.cloneNode(true);
+    this.#navElement = this.#template;
     this.handleViewChangeEvent = this.handleViewChangeEvent.bind(this);
   }
 

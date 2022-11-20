@@ -12,6 +12,12 @@
 }
 
 .webDispatchIconButton__icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
+}
+
+@media screen and (hover: hover) {
+  .webDispatchIconButton__container:hover {
+    color: #fff;
+  }
 }
