@@ -15,7 +15,6 @@ class WebDispatchUnit extends HTMLLIElement {
     this.#numberElement = this.#template.querySelector('[data-js="number"]');
     this.#nameElement = this.#template.querySelector('[data-js="name"]');
     this.#roleElement = this.#template.querySelector('[data-js="role"]');
-    this.handleDragStart = this.handleDragStart.bind(this);
   }
 
   get unit() {
@@ -84,16 +83,6 @@ class WebDispatchUnit extends HTMLLIElement {
       this.#hasBeenMountedOnce = true;
     }
     this.updateUnit();
-    this.addEventListener("dragstart", this.handleDragStart);
-  }
-
-  disconnectCallback() {
-    this.removeEventListener("dragstart", this.handleDragStart);
-  }
-
-  handleDragStart(event) {
-    const unitJSON = JSON.stringify(this.unit);
-    event.dataTransfer.setData("failyv/dispatch-unit", unitJSON);
   }
 }
 
