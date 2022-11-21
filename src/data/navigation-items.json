@@ -1,0 +1,14 @@
+[
+  {
+    "label": "Plaque d'immatriculation",
+    "view": "car-plate"
+  },
+  {
+    "label": "Dossiers et enquêtes",
+    "view": "investigation"
+  },
+  {
+    "label": "Dispatch des unités",
+    "view": "dispatch"
+  }
+]

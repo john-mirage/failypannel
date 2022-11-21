@@ -88,9 +88,7 @@
   <template id="template-web-sidebar">
     <section class="webSidebar__section" data-js="menu">
       <h3 class="webSidebar__sectionTitle">Menu</h3>
-      <!--
-        <web-view-navigation data-view="dispatch"></web-view-navigation>
-      -->
+      <nav is="web-navigation"></nav>
     </section>
     <section class="webSidebar__section webSidebar__section--settings" data-js="settings">
       <h3 class="webSidebar__sectionTitle">Paramètres</h3>
@@ -99,22 +97,22 @@
     </section>
   </template>
 
-  <!-- template | web view navigation -->
-  <template id="template-web-view-navigation">
-    <nav class="webViewNavigation__container">
-      <ul class="webViewNavigation__list" data-js="list"></ul>
-    </nav>
-  </template>
-
   <!-- template | web switch -->
   <template id="template-web-switch">
     <span class="webSwitch__label" data-js="label"></span>
     <input class="webSwitch__input" data-js="input" type="checkbox">
   </template>
 
-  <!-- template | web view navigation item -->
-  <template id="template-web-view-navigation-item">
-    <button class="webViewNavigationItem__button" type="button"></button>
+  <!-- template | web navigation -->
+  <template id="template-web-navigation">
+    <ul class="webNavigation__list" data-js="list"></ul>
+  </template>
+
+  <!-- template | web navigation item -->
+  <template id="template-web-navigation-item">
+    <button class="webNavigationItem__button" type="button" data-js="button">
+      <span class="webNavigationItem__label" data-js="label"></span>
+    </button>
   </template>
 
   <!-- template | web car plate -->

@@ -3,8 +3,8 @@ import WebApp from "./components/web-app";
 import WebBar from "./components/web-bar";
 import WebSidebar from "./components/web-sidebar";
 import WebView from "./components/web-view";
-import WebViewNavigation from "./components/web-view-navigation";
-import WebViewNavigationItem from "./components/web-view-navigation-item";
+import WebNavigation from "./components/web-navigation";
+import WebNavigationItem from "./components/web-navigation-item";
 import WebThemeSwitch from "./components/web-theme-switch";
 import WebModeSwitch from "./components/web-mode-switch";
 import WebButton from "./components/web-button";
@@ -27,8 +27,8 @@ customElements.define("web-bar", WebBar, { extends: "header" });
 customElements.define("web-button", WebButton, { extends: "button" });
 customElements.define("web-sidebar", WebSidebar, { extends: "aside" });
 customElements.define("web-view", WebView, { extends: "main" });
-customElements.define("web-view-navigation", WebViewNavigation);
-customElements.define("web-view-navigation-item", WebViewNavigationItem, {
+customElements.define("web-navigation", WebNavigation, { extends: "nav" });
+customElements.define("web-navigation-item", WebNavigationItem, {
   extends: "li",
 });
 customElements.define("web-theme-switch", WebThemeSwitch, { extends: "label" });

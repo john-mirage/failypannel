@@ -1,8 +1,8 @@
-.webViewNavigationItem {
+.webNavigationItem {
   display: block;
 }
 
-.webViewNavigationItem__button {
+.webNavigationItem__button {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -13,21 +13,24 @@
   border-top-right-radius: 9999px;
   border-bottom-right-radius: 9999px;
   background-color: transparent;
+  color: var(--color-typo-secondary);
+}
+
+.webNavigationItem__label {
   text-align: left;
   font-size: 14px;
   font-weight: 500;
   line-height: 24px;
-  color: var(--color-typo-secondary);
 }
 
-.webViewNavigationItem__button:disabled {
+.webNavigationItem__button:disabled {
   background-color: var(--color-accent);
   color: #fff;
   cursor: default;
 }
 
 @media screen and (hover: hover) {
-  .webViewNavigationItem__button:not(:disabled):hover {
+  .webNavigationItem__button:not(:disabled):hover {
     color: #fff;
   }
 }

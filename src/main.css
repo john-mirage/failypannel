@@ -4,8 +4,8 @@
 @import "./components/web-bar/web-bar.style.css";
 @import "./components/web-sidebar/web-sidebar.style.css";
 @import "./components/web-view/web-view.style.css";
-@import "./components/web-view-navigation/web-view-navigation.style.css";
-@import "./components/web-view-navigation-item/web-view-navigation-item.style.css";
+@import "./components/web-navigation/web-navigation.style.css";
+@import "./components/web-navigation-item/web-navigation-item.style.css";
 @import "./components/web-switch/web-switch.style.css";
 @import "./components/web-button/web-button.style.css";
 
