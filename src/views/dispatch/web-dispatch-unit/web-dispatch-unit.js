@@ -77,7 +77,6 @@ class WebDispatchUnit extends HTMLLIElement {
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webDispatchUnit");
-      this.setAttribute("draggable", true);
       this.append(this.#template);
       this.upgradeProperty("unit");
       this.#hasBeenMountedOnce = true;
