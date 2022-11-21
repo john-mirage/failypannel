@@ -1,11 +1,21 @@
-class WebPowerButton extends HTMLElement {
+class WebPowerButton extends HTMLButtonElement {
   #hasBeenMountedOnce = false;
-  #template;
+  #svgElement;
   #iconElement;
   #labelElement;
 
   static get observedAttributes() {
     return ["data-icon", "data-label"];
+  }
+
+  constructor() {
+    super();
+    const template = document
+      .getElementById("template-web-button")
+      .content.cloneNode(true);
+    this.#svgElement = template.querySelector('[data-js="svg"]');
+    this.#iconElement = this.#svgElement.querySelector('[data-js="icon"]');
+    this.#labelElement = template.querySelector('[data-js="label"]');
   }
 
   get icon() {
@@ -32,30 +42,12 @@ class WebPowerButton extends HTMLElement {
     }
   }
 
-  constructor() {
-    super();
-    const template = document.getElementById("template-web-button");
-    this.#template = template.content.firstElementChild.cloneNode(true);
-    this.#iconElement = this.#template.querySelector('[data-js="icon"]');
-    this.#labelElement = this.#template.querySelector('[data-js="label"]');
-    this.buttonElement = this.#template;
-  }
-
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webButton");
-      this.append(this.#template);
+      this.setAttribute("type", "button");
+      this.replaceChildren(this.#svgElement, this.#labelElement);
       this.#hasBeenMountedOnce = true;
-    }
-    this.upgradeProperty("icon");
-    this.upgradeProperty("label");
-  }
-
-  upgradeProperty(prop) {
-    if (this.hasOwnProperty(prop)) {
-      let value = this[prop];
-      delete this[prop];
-      this[prop] = value;
     }
   }
 
@@ -64,6 +56,8 @@ class WebPowerButton extends HTMLElement {
       case "data-icon": {
         if (typeof newValue === "string") {
           this.#iconElement.setAttribute("href", `#icon-${newValue}`);
+        } else {
+          this.#iconElement.removeAttribute("href");
         }
         break;
       }

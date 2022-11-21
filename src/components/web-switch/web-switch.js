@@ -1,10 +1,18 @@
-class WebSwitch extends HTMLElement {
+class WebSwitch extends HTMLLabelElement {
   #hasBeenMountedOnce = false;
-  #template;
   #labelElement;
 
   static get observedAttributes() {
     return ["data-label"];
+  }
+
+  constructor() {
+    super();
+    const template = document
+      .getElementById("template-web-switch")
+      .content.cloneNode(true);
+    this.#labelElement = template.querySelector('[data-js="label"]');
+    this.inputElement = template.querySelector('[data-js="input"]');
   }
 
   get label() {
@@ -19,28 +27,11 @@ class WebSwitch extends HTMLElement {
     }
   }
 
-  constructor() {
-    super();
-    const template = document.getElementById("template-web-switch");
-    this.#template = template.content.cloneNode(true);
-    this.#labelElement = this.#template.querySelector('[data-js="label"]');
-    this.inputElement = this.#template.querySelector('[data-js="input"]');
-  }
-
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webSwitch");
-      this.append(this.#template);
+      this.replaceChildren(this.#labelElement, this.inputElement);
       this.#hasBeenMountedOnce = true;
-    }
-    this.upgradeProperty("label");
-  }
-
-  upgradeProperty(prop) {
-    if (this.hasOwnProperty(prop)) {
-      let value = this[prop];
-      delete this[prop];
-      this[prop] = value;
     }
   }
 

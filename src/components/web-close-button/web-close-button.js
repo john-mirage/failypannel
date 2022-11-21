@@ -12,14 +12,11 @@ class WebCloseButton extends WebButton {
 
   connectedCallback() {
     super.connectedCallback();
-    this.buttonElement.addEventListener("click", this.handleButtonClickEvent);
+    this.addEventListener("click", this.handleButtonClickEvent);
   }
 
   disconnectedCallback() {
-    this.buttonElement.removeEventListener(
-      "click",
-      this.handleButtonClickEvent
-    );
+    this.removeEventListener("click", this.handleButtonClickEvent);
   }
 
   handleButtonClickEvent() {

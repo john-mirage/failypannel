@@ -1,5 +1,8 @@
 .webApp {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-app);
+  box-shadow: var(--color-app-shadow);
 }
 
 :root[data-mode="window"] .webApp {
@@ -10,15 +13,6 @@
 :root[data-mode="screen"] .webApp {
   width: 100%;
   height: 100%;
-}
-
-.webApp__container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-app);
-  box-shadow: var(--color-app-shadow);
 }
 
 .webApp__bar {

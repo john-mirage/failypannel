@@ -22,16 +22,20 @@ import WebDispatchIconButton from "./views/dispatch/web-dispatch-icon-button";
 /**
  * global components
  */
-customElements.define("web-app", WebApp);
-customElements.define("web-bar", WebBar);
-customElements.define("web-sidebar", WebSidebar);
-customElements.define("web-view", WebView);
+customElements.define("web-app", WebApp, { extends: "div" });
+customElements.define("web-bar", WebBar, { extends: "header" });
+customElements.define("web-button", WebButton, { extends: "button" });
+customElements.define("web-sidebar", WebSidebar, { extends: "aside" });
+customElements.define("web-view", WebView, { extends: "main" });
 customElements.define("web-view-navigation", WebViewNavigation);
-customElements.define("web-view-navigation-item", WebViewNavigationItem);
-customElements.define("web-theme-switch", WebThemeSwitch);
-customElements.define("web-mode-switch", WebModeSwitch);
-customElements.define("web-button", WebButton);
-customElements.define("web-close-button", WebCloseButton);
+customElements.define("web-view-navigation-item", WebViewNavigationItem, {
+  extends: "li",
+});
+customElements.define("web-theme-switch", WebThemeSwitch, { extends: "label" });
+customElements.define("web-mode-switch", WebModeSwitch, { extends: "label" });
+customElements.define("web-close-button", WebCloseButton, {
+  extends: "button",
+});
 
 /**
  * car plate view
@@ -65,9 +69,11 @@ customElements.define("web-dispatch-icon-button", WebDispatchIconButton);
 /**
  * app mount
  */
+
 window.addEventListener("load", () => {
   const app = document.getElementById("app");
-  const webApp = document.createElement("web-app");
+  const webApp = document.createElement("div", { is: "web-app" });
+  webApp.view = "dispatch";
 
   document.addEventListener("keyup", (keyboardEvent) => {
     if (keyboardEvent.key === "e") {

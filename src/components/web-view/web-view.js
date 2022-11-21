@@ -27,15 +27,6 @@ class WebView extends HTMLElement {
       this.classList.add("webView");
       this.#hasBeenMountedOnce = true;
     }
-    this.upgradeProperty("view");
-  }
-
-  upgradeProperty(prop) {
-    if (this.hasOwnProperty(prop)) {
-      let value = this[prop];
-      delete this[prop];
-      this[prop] = value;
-    }
   }
 
   getViewElement(viewName) {

@@ -48,7 +48,6 @@ class WebModeSwitch extends WebSwitch {
 
   connectedCallback() {
     super.connectedCallback();
-    this.upgradeProperty("mode");
     if (!this.#hasBeenMountedOnce) {
       this.mode = this.localMode;
       if (this.mode === SCREEN_MODE) this.inputElement.checked = true;

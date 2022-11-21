@@ -1,6 +1,7 @@
 class WebBar extends HTMLElement {
   #hasBeenMountedOnce = false;
-  #template;
+  #leftElement;
+  #rightElement;
   #labelElement;
 
   static get observedAttributes() {
@@ -9,9 +10,12 @@ class WebBar extends HTMLElement {
 
   constructor() {
     super();
-    const template = document.getElementById("template-web-bar");
-    this.#template = template.content.cloneNode(true);
-    this.#labelElement = this.#template.querySelector('[data-js="label"]');
+    const template = document
+      .getElementById("template-web-bar")
+      .content.cloneNode(true);
+    this.#leftElement = template.querySelector('[data-js="left"]');
+    this.#rightElement = template.querySelector('[data-js="right"]');
+    this.#labelElement = this.#leftElement.querySelector('[data-js="label"]');
   }
 
   get label() {
@@ -29,7 +33,7 @@ class WebBar extends HTMLElement {
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webBar");
-      this.replaceChildren(this.#template);
+      this.replaceChildren(this.#leftElement, this.#rightElement);
       this.#hasBeenMountedOnce = true;
     }
   }

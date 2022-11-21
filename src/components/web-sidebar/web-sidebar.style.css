@@ -1,9 +1,4 @@
 .webSidebar {
-  display: block;
-  height: 100%;
-}
-
-.webSidebar__container {
   display: flex;
   flex-direction: column;
   align-items: stretch;

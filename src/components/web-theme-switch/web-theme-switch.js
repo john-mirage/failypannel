@@ -54,7 +54,6 @@ class WebThemeSwitch extends WebSwitch {
 
   connectedCallback() {
     super.connectedCallback();
-    this.upgradeProperty("theme");
     if (!this.#hasBeenMountedOnce) {
       this.theme = this.localTheme;
       if (this.theme === DARK_THEME) this.inputElement.checked = true;

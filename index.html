@@ -59,72 +59,62 @@
 
   <!-- template | web app -->
   <template id="template-web-app">
-    <div class="webApp__container">
-      <web-bar class="webApp__bar" data-label="Los Santos Police Department"></web-bar>
-      <main class="webApp__body">
-        <web-sidebar class="webApp__sidebar"></web-sidebar>
-        <web-view class="webApp__view" data-js="view"></web-view>
-      </main>
+    <header is="web-bar" class="webApp__bar" data-label="Los Santos Police Department" data-js="bar"></header>
+    <div class="webApp__body" data-js="row">
+      <aside is="web-sidebar" class="webApp__sidebar"></aside>
+      <main is="web-view" class="webApp__view" data-js="view"></main>
     </div>
   </template>
 
   <!-- template | web bar -->
   <template id="template-web-bar">
-    <header class="webBar__container">
-      <div class="webBar__section">
-        <h2 class="webBar__label" data-js="label"></h2>
-      </div>
-      <div class="webBar__section">
-        <web-close-button data-icon="close" data-label="Fermer"></web-close-button>
-      </div>
-    </header>
+    <div class="webBar__section" data-js="left">
+      <h2 class="webBar__label" data-js="label"></h2>
+    </div>
+    <div class="webBar__section" data-js="right">
+      <button is="web-close-button" data-icon="close" data-label="Fermer"></button>
+    </div>
+  </template>
+
+  <!-- template | web button -->
+  <template id="template-web-button">
+    <svg class="webButton__icon" data-js="svg">
+      <use data-js="icon" />
+    </svg>
+    <span class="webButton__label" data-js="label"></span>
   </template>
 
   <!-- template | web sidebar -->
   <template id="template-web-sidebar">
-    <aside class="webSidebar__container">
-      <section class="webSidebar__section">
-        <h3 class="webSidebar__sectionTitle">Menu</h3>
+    <section class="webSidebar__section" data-js="menu">
+      <h3 class="webSidebar__sectionTitle">Menu</h3>
+      <!--
         <web-view-navigation data-view="dispatch"></web-view-navigation>
-      </section>
-      <section class="webSidebar__section webSidebar__section--settings">
-        <h3 class="webSidebar__sectionTitle">Paramètres</h3>
-        <web-theme-switch class="webSidebar__switch"></web-theme-switch>
-        <web-mode-switch class="webSidebar__switch"></web-mode-switch>
-      </section>
-    </aside>
+      -->
+    </section>
+    <section class="webSidebar__section webSidebar__section--settings" data-js="settings">
+      <h3 class="webSidebar__sectionTitle">Paramètres</h3>
+      <label is="web-theme-switch" class="webSidebar__switch"></label>
+      <label is="web-mode-switch" class="webSidebar__switch"></label>
+    </section>
   </template>
 
   <!-- template | web view navigation -->
   <template id="template-web-view-navigation">
     <nav class="webViewNavigation__container">
-      <web-view-navigation-item data-view="car-plate" data-label="Plaque d'immatriculation"></web-view-navigation-item>
-      <web-view-navigation-item data-view="investigation" data-label="Dossiers et enquêtes"></web-view-navigation-item>
-      <web-view-navigation-item data-view="dispatch" data-label="Dispatch des unités"></web-view-navigation-item>
+      <ul class="webViewNavigation__list" data-js="list"></ul>
     </nav>
+  </template>
+
+  <!-- template | web switch -->
+  <template id="template-web-switch">
+    <span class="webSwitch__label" data-js="label"></span>
+    <input class="webSwitch__input" data-js="input" type="checkbox">
   </template>
 
   <!-- template | web view navigation item -->
   <template id="template-web-view-navigation-item">
     <button class="webViewNavigationItem__button" type="button"></button>
-  </template>
-
-  <!-- template | web switch -->
-  <template id="template-web-switch">
-    <label class="webSwitch__container">
-      <span class="webSwitch__label" data-js="label"></span>
-      <input class="webSwitch__input" data-js="input" type="checkbox">
-    </label>
-  </template>
-
-  <!-- template | web button -->
-  <template id="template-web-button">
-    <button class="webButton__container" type="button">
-      <svg class="webButton__icon">
-        <use data-js="icon" />
-      </svg>
-      <span class="webButton__label" data-js="label"></span>
-    </button>
   </template>
 
   <!-- template | web car plate -->
@@ -220,6 +210,7 @@
     </button>
   </template>
 
+  <!-- scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js" integrity="sha384-GWpeQQCx59oy0AZxNeVcLrX+Nqpg3dhEoBT/ynclm8lAsrgtZfh/GqUAEuOG1gYA" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/Draggable.min.js" integrity="sha384-5LhvfxbQfONrlJsHdhzPxeju3aglYZBXLsd+ObQ9FPEeltlnkL0p4dREmuPjZb30" crossorigin="anonymous"></script>
   <script type="module" src="/src/main.js"></script>

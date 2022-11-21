@@ -1,6 +1,7 @@
-class WebApp extends HTMLElement {
+class WebApp extends HTMLDivElement {
   #hasBeenMountedOnce = false;
-  #template;
+  #webBar;
+  #rowElement;
   #webView;
 
   static get observedAttributes() {
@@ -9,9 +10,12 @@ class WebApp extends HTMLElement {
 
   constructor() {
     super();
-    const template = document.getElementById("template-web-app");
-    this.#template = template.content.firstElementChild.cloneNode(true);
-    this.#webView = this.#template.querySelector('[data-js="view"]');
+    const template = document
+      .getElementById("template-web-app")
+      .content.cloneNode(true);
+    this.#webBar = template.querySelector('[data-js="bar"]');
+    this.#rowElement = template.querySelector('[data-js="row"]');
+    this.#webView = this.#rowElement.querySelector('[data-js="view"]');
     this.handleAppViewEvent = this.handleAppViewEvent.bind(this);
     this.handleAppModeEvent = this.handleAppModeEvent.bind(this);
     this.handleAppShutdownEvent = this.handleAppShutdownEvent.bind(this);
@@ -47,7 +51,7 @@ class WebApp extends HTMLElement {
     this.addEventListener("app-shutdown", this.handleAppShutdownEvent);
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webApp");
-      this.replaceChildren(this.#template);
+      this.replaceChildren(this.#webBar, this.#rowElement);
       this.#hasBeenMountedOnce = true;
     }
   }
