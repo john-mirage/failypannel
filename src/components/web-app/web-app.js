@@ -1,8 +1,7 @@
 class WebApp extends HTMLElement {
   #hasBeenMountedOnce = false;
-  #hasAppListeners = false;
   #template;
-  #viewElement;
+  #webView;
 
   static get observedAttributes() {
     return ["data-mode", "data-view"];
@@ -12,13 +11,10 @@ class WebApp extends HTMLElement {
     super();
     const template = document.getElementById("template-web-app");
     this.#template = template.content.firstElementChild.cloneNode(true);
-    this.#viewElement = this.#template.querySelector('[data-js="view"]');
+    this.#webView = this.#template.querySelector('[data-js="view"]');
     this.handleAppViewEvent = this.handleAppViewEvent.bind(this);
     this.handleAppModeEvent = this.handleAppModeEvent.bind(this);
     this.handleAppShutdownEvent = this.handleAppShutdownEvent.bind(this);
-    this.addEventListener("app-view", this.handleAppViewEvent);
-    this.addEventListener("app-mode", this.handleAppModeEvent);
-    this.#hasAppListeners = true;
   }
 
   get mode() {
@@ -46,46 +42,30 @@ class WebApp extends HTMLElement {
   }
 
   connectedCallback() {
+    this.addEventListener("app-view", this.handleAppViewEvent);
+    this.addEventListener("app-mode", this.handleAppModeEvent);
+    this.addEventListener("app-shutdown", this.handleAppShutdownEvent);
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webApp");
-      this.append(this.#template);
+      this.replaceChildren(this.#template);
       this.#hasBeenMountedOnce = true;
     }
-    this.upgradeProperty("mode");
-    this.upgradeProperty("view");
-    if (!this.#hasAppListeners) {
-      this.addEventListener("app-view", this.handleAppViewEvent);
-      this.addEventListener("app-mode", this.handleAppModeEvent);
-      this.#hasAppListeners = true;
-    }
-    this.addEventListener("app-shutdown", this.handleAppShutdownEvent);
   }
 
   disconnectedCallback() {
     this.removeEventListener("app-view", this.handleAppViewEvent);
     this.removeEventListener("app-mode", this.handleAppModeEvent);
     this.removeEventListener("app-shutdown", this.handleAppShutdownEvent);
-    this.#hasAppListeners = false;
-  }
-
-  upgradeProperty(prop) {
-    if (this.hasOwnProperty(prop)) {
-      let value = this[prop];
-      delete this[prop];
-      this[prop] = value;
-    }
   }
 
   handleAppMode(newMode) {
     switch (newMode) {
       case "window": {
-        this.classList.remove("webApp--fullScreen");
-        this.classList.add("webApp--window");
+        document.documentElement.dataset.mode = "window";
         break;
       }
       case "screen": {
-        this.classList.remove("webApp--window");
-        this.classList.add("webApp--fullScreen");
+        document.documentElement.dataset.mode = "screen";
         break;
       }
       default: {
@@ -99,12 +79,16 @@ class WebApp extends HTMLElement {
       case "data-mode": {
         if (typeof newValue === "string") {
           this.handleAppMode(newValue);
+        } else {
+          document.documentElement.removeAttribute("data-mode");
         }
         break;
       }
       case "data-view": {
         if (typeof newValue === "string") {
-          this.#viewElement.view = newValue;
+          this.#webView.dataset.view = newValue;
+        } else {
+          this.#webView.removeAttribute("data-view");
         }
         break;
       }
