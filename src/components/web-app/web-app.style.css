@@ -2,12 +2,12 @@
   display: block;
 }
 
-.webApp--window {
+:root[data-mode="window"] .webApp {
   width: 1440px;
   height: 800px;
 }
 
-.webApp--fullScreen {
+:root[data-mode="screen"] .webApp {
   width: 100%;
   height: 100%;
 }
