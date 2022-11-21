@@ -7,6 +7,13 @@ class WebBar extends HTMLElement {
     return ["data-label"];
   }
 
+  constructor() {
+    super();
+    const template = document.getElementById("template-web-bar");
+    this.#template = template.content.cloneNode(true);
+    this.#labelElement = this.#template.querySelector('[data-js="label"]');
+  }
+
   get label() {
     return this.dataset.label;
   }
@@ -19,35 +26,20 @@ class WebBar extends HTMLElement {
     }
   }
 
-  constructor() {
-    super();
-    const template = document.getElementById("template-web-bar");
-    this.#template = template.content.cloneNode(true);
-    this.#labelElement = this.#template.querySelector('[data-js="label"]');
-  }
-
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webBar");
-      this.append(this.#template);
+      this.replaceChildren(this.#template);
       this.#hasBeenMountedOnce = true;
-    }
-    this.upgradeProperty("label");
-  }
-
-  upgradeProperty(prop) {
-    if (this.hasOwnProperty(prop)) {
-      let value = this[prop];
-      delete this[prop];
-      this[prop] = value;
     }
   }
 
   attributeChangedCallback(name, _oldValue, newValue) {
     switch (name) {
-      case "data-label":
+      case "data-label": {
         this.#labelElement.textContent = newValue ?? "";
         break;
+      }
     }
   }
 }
