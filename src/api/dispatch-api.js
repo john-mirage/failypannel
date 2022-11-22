@@ -66,13 +66,70 @@ class DispatchAPI {
     return this.compareTwoNumbers(unitA.parentOrderId, unitB.parentOrderId);
   }
 
+  reorderCategoryUnits(categoryId, unitIds) {
+    if (
+      this.#categories.has(categoryId) &&
+      Array.isArray(unitIds) &&
+      unitIds.every((unitId) => this.#units.has(unitId))
+    ) {
+      const category = this.#categories.get(categoryId);
+      if (category.type === "unit") {
+        unitIds.forEach((unitId, unitIdIndex) => {
+          const unit = this.#units.get(unitId);
+          if (
+            category.type === unit.parentType &&
+            category.id === unit.parentId
+          ) {
+            if (unit.parentOrderId !== unitIdIndex) {
+              unit.parentOrderId = unitIdIndex;
+            }
+          } else {
+            throw new Error("The unit does not belong to the category");
+          }
+        });
+      } else {
+        throw new Error("The category type is not valid");
+      }
+    } else {
+      throw new Error("The category and units have not been found");
+    }
+  }
+
+  reorderGroupUnits(groupId, unitIds) {
+    if (
+      this.#groups.has(groupId) &&
+      Array.isArray(unitIds) &&
+      unitIds.every((unitId) => this.#units.has(unitId))
+    ) {
+      const group = this.#groups.get(groupId);
+      unitIds.forEach((unitId, unitIdIndex) => {
+        const unit = this.#units.get(unitId);
+        if (unit.parentType === "group" && group.id === unit.parentId) {
+          if (unit.parentOrderId !== unitIdIndex) {
+            unit.parentOrderId = unitIdIndex;
+          }
+        } else {
+          throw new Error("The unit does not belong to the group");
+        }
+      });
+    } else {
+      throw new Error("The group and units have not been found");
+    }
+  }
+
   getCategoryGroups(categoryId) {
     if (typeof categoryId === "string") {
       const category = this.#categories.get(categoryId);
-      const groups = this.groups.filter(
-        (group) => group.categoryId === category.id
-      );
-      return groups.sort(this.compareTwoGroupsByOrderId);
+      if (category && category.type === "group") {
+        const groups = this.groups.filter(
+          (group) =>
+            typeof group.categoryId === "string" &&
+            group.categoryId === category.id
+        );
+        return groups.sort(this.compareTwoGroupsByOrderId);
+      } else {
+        throw new Error("The category has not been found or is not valid");
+      }
     } else {
       throw new Error("The category id is not a string");
     }
@@ -81,7 +138,7 @@ class DispatchAPI {
   getCategoryUnits(categoryId) {
     if (typeof categoryId === "string") {
       const category = this.#categories.get(categoryId);
-      if (category) {
+      if (category && category.type === "unit") {
         const units = this.units.filter(
           (unit) =>
             typeof unit.parentType === "string" &&
@@ -91,7 +148,7 @@ class DispatchAPI {
         );
         return units.sort(this.compareTwoUnitsByOrderId);
       } else {
-        throw new Error("The category has not been found");
+        throw new Error("The category has not been found or is not valid");
       }
     } else {
       throw new Error("The category id is not a string");

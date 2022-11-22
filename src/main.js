@@ -28,14 +28,10 @@ customElements.define("web-button", WebButton, { extends: "button" });
 customElements.define("web-sidebar", WebSidebar, { extends: "aside" });
 customElements.define("web-view", WebView, { extends: "main" });
 customElements.define("web-navigation", WebNavigation, { extends: "nav" });
-customElements.define("web-navigation-item", WebNavigationItem, {
-  extends: "li",
-});
+customElements.define("web-navigation-item", WebNavigationItem, { extends: "li" });
 customElements.define("web-theme-switch", WebThemeSwitch, { extends: "label" });
 customElements.define("web-mode-switch", WebModeSwitch, { extends: "label" });
-customElements.define("web-close-button", WebCloseButton, {
-  extends: "button",
-});
+customElements.define("web-close-button", WebCloseButton, { extends: "button" });
 
 /**
  * car plate view
@@ -51,24 +47,12 @@ customElements.define("document-view", DocumentView, { extends: "article" });
  * dispatch view
  */
 customElements.define("dispatch-view", DispatchView, { extends: "article" });
-customElements.define("dispatch-toolbar", DispatchToolbar, {
-  extends: "header",
-});
-customElements.define("dispatch-group-category", DispatchGroupCategory, {
-  extends: "li",
-});
-customElements.define("dispatch-unit-category", DispatchUnitCategory, {
-  extends: "li",
-});
-customElements.define("dispatch-group", DispatchGroup, {
-  extends: "li",
-});
-customElements.define("dispatch-unit", DispatchUnit, {
-  extends: "li",
-});
-customElements.define("dispatch-icon-button", DispatchIconButton, {
-  extends: "button",
-});
+customElements.define("dispatch-toolbar", DispatchToolbar, { extends: "header" });
+customElements.define("dispatch-group-category", DispatchGroupCategory, { extends: "li" });
+customElements.define("dispatch-unit-category", DispatchUnitCategory, { extends: "li" });
+customElements.define("dispatch-group", DispatchGroup, { extends: "li" });
+customElements.define("dispatch-unit", DispatchUnit, { extends: "li" });
+customElements.define("dispatch-icon-button", DispatchIconButton, { extends: "button" });
 
 /**
  * app mount
