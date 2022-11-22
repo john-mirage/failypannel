@@ -7,6 +7,9 @@ class DispatchAPI {
   #categories = new Map();
   #groups = new Map();
   #units = new Map();
+  #categoriesSubscribers = new Set();
+  #groupsSubscribers = new Set();
+  #unitsSubscribers = new Set();
 
   constructor(categories, groups, units) {
     categories.forEach((category) => {
@@ -32,6 +35,18 @@ class DispatchAPI {
 
   get units() {
     return [...this.#units.values()];
+  }
+
+  subscribeToCategories(webDispatchCategory) {
+    
+  }
+
+  subscribeToGroups() {
+
+  }
+
+  subscribeToUnits() {
+
   }
 
   getCategoryById(categoryId) {
