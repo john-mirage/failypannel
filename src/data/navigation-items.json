@@ -1,14 +1,14 @@
 [
   {
     "label": "Plaque d'immatriculation",
-    "view": "car-plate"
+    "view": "car-view"
   },
   {
     "label": "Dossiers et enquêtes",
-    "view": "investigation"
+    "view": "document-view"
   },
   {
     "label": "Dispatch des unités",
-    "view": "dispatch"
+    "view": "dispatch-view"
   }
 ]

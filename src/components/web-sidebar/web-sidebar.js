@@ -5,11 +5,11 @@ class WebSidebar extends HTMLElement {
 
   constructor() {
     super();
-    const template = document
-      .getElementById("template-web-sidebar")
-      .content.cloneNode(true);
-    this.#menuElement = template.querySelector('[data-js="menu"]');
-    this.#settingsElement = template.querySelector('[data-js="settings"]');
+    const templateContent = document.getElementById(
+      "template-web-sidebar"
+    ).content;
+    this.#menuElement = templateContent.firstElementChild.cloneNode(true);
+    this.#settingsElement = templateContent.lastElementChild.cloneNode(true);
   }
 
   connectedCallback() {

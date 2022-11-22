@@ -1,0 +1,19 @@
+.dispatchIconButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--color-typo-secondary);
+}
+
+.dispatchIconButton__icon {
+  width: 18px;
+  height: 18px;
+}
+
+@media screen and (hover: hover) {
+  .dispatchIconButton:hover {
+    color: #fff;
+  }
+}

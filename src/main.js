@@ -9,15 +9,15 @@ import WebThemeSwitch from "./components/web-theme-switch";
 import WebModeSwitch from "./components/web-mode-switch";
 import WebButton from "./components/web-button";
 import WebCloseButton from "./components/web-close-button";
-import WebCarPlate from "./views/car-plate/web-car-plate";
-import WebInvestigation from "./views/investigation/web-investigation";
-import WebDispatch from "./views/dispatch/web-dispatch";
-import WebDispatchToolbar from "./views/dispatch/web-dispatch-toolbar";
-import WebDispatchGroupCategory from "./views/dispatch/web-dispatch-group-category";
-import WebDispatchUnitCategory from "./views/dispatch/web-dispatch-unit-category";
-import WebDispatchGroup from "./views/dispatch/web-dispatch-group";
-import WebDispatchUnit from "./views/dispatch/web-dispatch-unit";
-import WebDispatchIconButton from "./views/dispatch/web-dispatch-icon-button";
+import CarView from "./views/car/car-view";
+import DocumentView from "./views/document/document-view";
+import DispatchView from "./views/dispatch/dispatch-view";
+import DispatchToolbar from "./views/dispatch/dispatch-toolbar";
+import DispatchGroupCategory from "./views/dispatch/dispatch-group-category";
+import DispatchUnitCategory from "./views/dispatch/dispatch-unit-category";
+import DispatchGroup from "./views/dispatch/dispatch-group";
+import DispatchUnit from "./views/dispatch/dispatch-unit";
+import DispatchIconButton from "./views/dispatch/dispatch-icon-button";
 
 /**
  * global components
@@ -40,31 +40,35 @@ customElements.define("web-close-button", WebCloseButton, {
 /**
  * car plate view
  */
-customElements.define("web-car-plate", WebCarPlate);
+customElements.define("car-view", CarView, { extends: "article" });
 
 /**
  * investigation view
  */
-customElements.define("web-investigation", WebInvestigation);
+customElements.define("document-view", DocumentView, { extends: "article" });
 
 /**
  * dispatch view
  */
-customElements.define("web-dispatch", WebDispatch);
-customElements.define("web-dispatch-toolbar", WebDispatchToolbar);
-customElements.define("web-dispatch-group-category", WebDispatchGroupCategory, {
+customElements.define("dispatch-view", DispatchView, { extends: "article" });
+customElements.define("dispatch-toolbar", DispatchToolbar, {
+  extends: "header",
+});
+customElements.define("dispatch-group-category", DispatchGroupCategory, {
   extends: "li",
 });
-customElements.define("web-dispatch-unit-category", WebDispatchUnitCategory, {
+customElements.define("dispatch-unit-category", DispatchUnitCategory, {
   extends: "li",
 });
-customElements.define("web-dispatch-group", WebDispatchGroup, {
+customElements.define("dispatch-group", DispatchGroup, {
   extends: "li",
 });
-customElements.define("web-dispatch-unit", WebDispatchUnit, {
+customElements.define("dispatch-unit", DispatchUnit, {
   extends: "li",
 });
-customElements.define("web-dispatch-icon-button", WebDispatchIconButton);
+customElements.define("dispatch-icon-button", DispatchIconButton, {
+  extends: "button",
+});
 
 /**
  * app mount
@@ -73,7 +77,6 @@ customElements.define("web-dispatch-icon-button", WebDispatchIconButton);
 window.addEventListener("load", () => {
   const app = document.getElementById("app");
   const webApp = document.createElement("div", { is: "web-app" });
-  webApp.view = "dispatch";
 
   document.addEventListener("keyup", (keyboardEvent) => {
     if (keyboardEvent.key === "e") {

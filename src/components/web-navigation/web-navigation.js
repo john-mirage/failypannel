@@ -9,10 +9,10 @@ class WebNavigation extends HTMLElement {
 
   constructor() {
     super();
-    const template = document
-      .getElementById("template-web-navigation")
-      .content.cloneNode(true);
-    this.#listElement = template.querySelector('[data-js="list"]');
+    const templateContent = document.getElementById(
+      "template-web-navigation"
+    ).content;
+    this.#listElement = templateContent.firstElementChild.cloneNode(true);
     this.handleActiveItemEvent = this.handleActiveItemEvent.bind(this);
   }
 
@@ -31,25 +31,25 @@ class WebNavigation extends HTMLElement {
   }
 
   handleInitialItems() {
-    const webNavigationItems = navigationItems.map((navigationItem, index) => {
+    const webNavigationItems = navigationItems.map((navigationItem) => {
       const webNavigationItem = document.createElement("li", {
         is: "web-navigation-item",
       });
       webNavigationItem.item = navigationItem;
-      if (index === DEFAULT_ITEM) this.activeItem = webNavigationItem;
       return webNavigationItem;
     });
     this.#listElement.replaceChildren(...webNavigationItems);
   }
 
   connectedCallback() {
+    this.addEventListener("app-navigation-item", this.handleActiveItemEvent);
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("webNavigation");
       this.replaceChildren(this.#listElement);
       this.handleInitialItems();
+      this.activeItem = this.#listElement.children[DEFAULT_ITEM];
       this.#hasBeenMountedOnce = true;
     }
-    this.addEventListener("app-navigation-item", this.handleActiveItemEvent);
   }
 
   disconnectedCallback() {

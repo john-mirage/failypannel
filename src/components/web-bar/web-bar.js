@@ -10,11 +10,9 @@ class WebBar extends HTMLElement {
 
   constructor() {
     super();
-    const template = document
-      .getElementById("template-web-bar")
-      .content.cloneNode(true);
-    this.#leftElement = template.querySelector('[data-js="left"]');
-    this.#rightElement = template.querySelector('[data-js="right"]');
+    const templateContent = document.getElementById("template-web-bar").content;
+    this.#leftElement = templateContent.firstElementChild.cloneNode(true);
+    this.#rightElement = templateContent.lastElementChild.cloneNode(true);
     this.#labelElement = this.#leftElement.querySelector('[data-js="label"]');
   }
 

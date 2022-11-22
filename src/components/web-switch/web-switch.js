@@ -8,11 +8,11 @@ class WebSwitch extends HTMLLabelElement {
 
   constructor() {
     super();
-    const template = document
-      .getElementById("template-web-switch")
-      .content.cloneNode(true);
-    this.#labelElement = template.querySelector('[data-js="label"]');
-    this.inputElement = template.querySelector('[data-js="input"]');
+    const templateContent = document.getElementById(
+      "template-web-switch"
+    ).content;
+    this.#labelElement = templateContent.firstElementChild.cloneNode(true);
+    this.inputElement = templateContent.lastElementChild.cloneNode(true);
   }
 
   get label() {

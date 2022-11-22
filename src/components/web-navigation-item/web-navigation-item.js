@@ -10,10 +10,10 @@ class WebNavigationItem extends HTMLLIElement {
 
   constructor() {
     super();
-    const template = document
-      .getElementById("template-web-navigation-item")
-      .content.cloneNode(true);
-    this.#buttonElement = template.querySelector('[data-js="button"]');
+    const templateContent = document.getElementById(
+      "template-web-navigation-item"
+    ).content;
+    this.#buttonElement = templateContent.firstElementChild.cloneNode(true);
     this.#labelElement = this.#buttonElement.querySelector('[data-js="label"]');
     this.handleButtonClickEvent = this.handleButtonClickEvent.bind(this);
   }

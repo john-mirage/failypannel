@@ -1,0 +1,25 @@
+.dispatchCategory {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.dispatchCategory__title {
+  flex: none;
+  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  line-height: 16px;
+  color: var(--color-typo-secondary);
+}
+
+.dispatchCategory__list {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 100%;
+  align-content: flex-start;
+  gap: 24px;
+  overflow-x: hidden;
+}

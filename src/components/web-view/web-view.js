@@ -32,7 +32,7 @@ class WebView extends HTMLElement {
   getViewElement(viewName) {
     if (typeof viewName === "string") {
       if (!this.#views.has(viewName)) {
-        const view = document.createElement(`web-${viewName}`);
+        const view = document.createElement("article", { is: viewName });
         this.#views.set(viewName, view);
       }
       return this.#views.get(viewName);

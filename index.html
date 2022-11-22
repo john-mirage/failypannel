@@ -59,8 +59,8 @@
 
   <!-- template | web app -->
   <template id="template-web-app">
-    <header is="web-bar" class="webApp__bar" data-label="Los Santos Police Department" data-js="bar"></header>
-    <div class="webApp__body" data-js="row">
+    <header is="web-bar" class="webApp__bar" data-label="Los Santos Police Department"></header>
+    <div class="webApp__body">
       <aside is="web-sidebar" class="webApp__sidebar"></aside>
       <main is="web-view" class="webApp__view" data-js="view"></main>
     </div>
@@ -68,29 +68,29 @@
 
   <!-- template | web bar -->
   <template id="template-web-bar">
-    <div class="webBar__section" data-js="left">
+    <div class="webBar__section">
       <h2 class="webBar__label" data-js="label"></h2>
     </div>
-    <div class="webBar__section" data-js="right">
+    <div class="webBar__section">
       <button is="web-close-button" data-icon="close" data-label="Fermer"></button>
     </div>
   </template>
 
   <!-- template | web button -->
   <template id="template-web-button">
-    <svg class="webButton__icon" data-js="svg">
+    <svg class="webButton__icon">
       <use data-js="icon" />
     </svg>
-    <span class="webButton__label" data-js="label"></span>
+    <span class="webButton__label"></span>
   </template>
 
   <!-- template | web sidebar -->
   <template id="template-web-sidebar">
-    <section class="webSidebar__section" data-js="menu">
+    <section class="webSidebar__section">
       <h3 class="webSidebar__sectionTitle">Menu</h3>
       <nav is="web-navigation"></nav>
     </section>
-    <section class="webSidebar__section webSidebar__section--settings" data-js="settings">
+    <section class="webSidebar__section webSidebar__section--settings">
       <h3 class="webSidebar__sectionTitle">Paramètres</h3>
       <label is="web-theme-switch" class="webSidebar__switch"></label>
       <label is="web-mode-switch" class="webSidebar__switch"></label>
@@ -99,113 +99,87 @@
 
   <!-- template | web switch -->
   <template id="template-web-switch">
-    <span class="webSwitch__label" data-js="label"></span>
-    <input class="webSwitch__input" data-js="input" type="checkbox">
+    <span class="webSwitch__label"></span>
+    <input class="webSwitch__input" type="checkbox">
   </template>
 
   <!-- template | web navigation -->
   <template id="template-web-navigation">
-    <ul class="webNavigation__list" data-js="list"></ul>
+    <ul class="webNavigation__list"></ul>
   </template>
 
   <!-- template | web navigation item -->
   <template id="template-web-navigation-item">
-    <button class="webNavigationItem__button" type="button" data-js="button">
+    <button class="webNavigationItem__button" type="button">
       <span class="webNavigationItem__label" data-js="label"></span>
     </button>
   </template>
 
-  <!-- template | web car plate -->
-  <template id="template-web-car-plate">
-    <article class="webCarPlate__container">
-      <div class="webCarPlate__body"></div>
-    </article>
+  <!-- template | car view -->
+  <template id="template-car-view">
+    <div class="carView__body"></div>
   </template>
 
-  <!-- template | web investigation -->
-  <template id="template-web-investigation">
-    <article class="webInvestigation__container">
-      <div class="webInvestigation__body"></div>
-    </article>
+  <!-- template | document view -->
+  <template id="template-document-view">
+    <div class="documentView__body"></div>
   </template>
 
-  <!-- template | web dispatch -->
-  <template id="template-web-dispatch">
-    <article class="webDispatch__container">
-      <web-dispatch-toolbar></web-dispatch-toolbar>
-      <ul class="webDispatch__list" data-js="list"></ul>
-    </article>
+  <!-- template | dispatch view -->
+  <template id="template-dispatch-view">
+    <header is="dispatch-toolbar"></header>
+    <ul class="dispatchView__list"></ul>
   </template>
 
-  <!-- template | web dispatch toolbar -->
-  <template id="template-web-dispatch-toolbar">
-    <header class="webDispatchToolbar__container">
-      <div class="webDispatchToolbar__section">
-        <h2 class="webDispatchToolbar__name">Dispatch des unités</h2>
+  <!-- template | dispatch toolbar -->
+  <template id="template-dispatch-toolbar">
+    <div class="dispatchToolbar__section">
+      <h2 class="dispatchToolbar__name">Dispatch des unités</h2>
+    </div>
+    <div class="dispatchToolbar__section">
+      <button class="dispatchToolbar__button" is="web-button" data-icon="add" data-label="ajouter une catégorie" data-js="add-category-button"></button>
+    </div>
+  </template>
+
+  <!-- template | dispatch category -->
+  <template id="template-dispatch-category">
+    <h3 class="dispatchCategory__title">
+      <span data-js="name"></span>
+      <span data-js="count"></span>
+    </h3>
+    <ul class="dispatchCategory__list"></ul>
+  </template>
+
+  <!-- template | dispatch group -->
+  <template id="template-dispatch-group">
+    <header class="dispatchGroup__header">
+      <div class="dispatchGroup__headerSection">
+        <h4 class="dispatchGroup__name">
+          <span data-js="name"></span>
+          <span data-js="number"></span>
+        </h4>
       </div>
-      <div class="webDispatchToolbar__section">
-        <web-button class="webDispatchToolbar__button" data-icon="add" data-label="ajouter une catégorie" data-js="add-category-button"></web-button>
+      <div class="dispatchGroup__headerSection">
+        <button is="dispatch-icon-button" class="dispatchGroup__button" data-icon="close" data-js="delete-button"></button>
       </div>
     </header>
+    <ul class="dispatchGroup__list"></ul>
   </template>
 
-  <!-- template | web dispatch category -->
-  <template id="template-web-dispatch-category">
-    <section class="webDispatchCategory__container">
-      <h3 class="webDispatchCategory__name">
-        <span data-js="name"></span>
-        <span data-js="count"></span>
-      </h3>
-      <ul class="webDispatchCategory__list" data-js="list"></ul>
-    </section>
+  <!-- template | dispatch unit -->
+  <template id="template-dispatch-unit">
+    <h4 class="dispatchUnit__number"></h4>
+    <div class="dispatchUnit__text">
+      <h5 class="dispatchUnit__name" data-js="name"></h5>
+      <p class="dispatchUnit__role" data-js="role"></p>
+    </div>
   </template>
 
-  <!-- template | web dispatch group -->
-  <template id="template-web-dispatch-group">
-    <article class="webDispatchGroup__container">
-      <header class="webDispatchGroup__header">
-        <div class="webDispatchGroup__headerSection">
-          <h4 class="webDispatchGroup__name">
-            <span data-js="name"></span>
-            <span data-js="number"></span>
-          </h4>
-        </div>
-        <div class="webDispatchGroup__headerSection">
-          <web-dispatch-icon-button data-icon="close" data-js="delete-button"></web-dispatch-icon-button>
-        </div>
-      </header>
-      <ul class="webDispatchGroup__list" data-js="list"></ul>
-    </article>
-  </template>
-
-  <!-- template | web dispatch unit -->
-  <template id="template-web-dispatch-unit">
-    <article class="webDispatchUnit__container">
-      <header class="webDispatchUnit__header">
-        <div class="webDispatchUnit__headerSection webDispatchUnit__headerSection--overflow">
-          <h5 class="webDispatchUnit__name" data-js="name"></h5>
-        </div>
-        <div class="webDispatchUnit__headerSection">
-          <web-dispatch-icon-button class="webDispatchUnit__lastButton" data-icon="close" data-js="delete-button"></web-dispatch-icon-button>
-        </div>
-      </header>
-      <div class="webDispatchUnit__body">
-        <h4 class="webDispatchUnit__number" data-js="number"></h4>
-        <div class="webDispatchUnit__text">
-          <p class="webDispatchUnit__role" data-js="role"></p>
-          <p class="webDispatchUnit__phone" data-js="phone">555-4568</p>
-        </div>
-      </div>
-    </article>
-  </template>
-
-  <!-- template | web dispatch icon button -->
-  <template id="template-web-dispatch-icon-button">
-    <button class="webDispatchIconButton__container">
-      <svg class="webDispatchIconButton__icon">
-        <use data-js="icon" />
-      </svg>
-    </button>
+  <!-- template | dispatch icon button -->
+  <template id="template-dispatch-icon-button">
+    <svg class="dispatchIconButton__icon">
+      <use data-js="icon" />
+    </svg>
   </template>
 
   <!-- scripts -->

@@ -1,20 +1,18 @@
-class WebPowerButton extends HTMLButtonElement {
+class DispatchIconButton extends HTMLButtonElement {
   #hasBeenMountedOnce = false;
   #svgElement;
   #iconElement;
-  #labelElement;
 
   static get observedAttributes() {
-    return ["data-icon", "data-label"];
+    return ["data-icon"];
   }
 
   constructor() {
     super();
     const templateContent = document.getElementById(
-      "template-web-button"
+      "template-dispatch-icon-button"
     ).content;
     this.#svgElement = templateContent.firstElementChild.cloneNode(true);
-    this.#labelElement = templateContent.lastElementChild.cloneNode(true);
     this.#iconElement = this.#svgElement.querySelector('[data-js="icon"]');
   }
 
@@ -30,23 +28,10 @@ class WebPowerButton extends HTMLButtonElement {
     }
   }
 
-  get label() {
-    return this.dataset.label;
-  }
-
-  set label(newLabel) {
-    if (typeof newLabel === "string") {
-      this.dataset.label = newLabel;
-    } else {
-      this.removeAttribute("data-label");
-    }
-  }
-
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
-      this.classList.add("webButton");
-      this.setAttribute("type", "button");
-      this.replaceChildren(this.#svgElement, this.#labelElement);
+      this.classList.add("dispatchIconButton");
+      this.append(this.#svgElement);
       this.#hasBeenMountedOnce = true;
     }
   }
@@ -59,14 +44,9 @@ class WebPowerButton extends HTMLButtonElement {
         } else {
           this.#iconElement.removeAttribute("href");
         }
-        break;
-      }
-      case "data-label": {
-        this.#labelElement.textContent = newValue ?? "";
-        break;
       }
     }
   }
 }
 
-export default WebPowerButton;
+export default DispatchIconButton;
