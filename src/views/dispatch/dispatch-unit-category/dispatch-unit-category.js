@@ -1,9 +1,9 @@
 import dispatchApi from "../../../api/dispatch-api";
 import WebDispatchCategory from "../dispatch-category";
-import { unitIsValid } from "../../../helpers/type-checkers";
+import { categoryIsValid } from "../../../helpers/type-checkers";
 
 class DispatchUnitCategory extends WebDispatchCategory {
-  #units;
+  #category;
   #webDispatchUnit = document.createElement("li", { is: "dispatch-unit" });
 
   constructor() {
@@ -11,25 +11,24 @@ class DispatchUnitCategory extends WebDispatchCategory {
     this.handleSortingEvent = this.handleSortingEvent.bind(this);
   }
 
-  get units() {
-    if (this.#units) {
-      return this.#units;
+  get category() {
+    if (this.#category) {
+      return this.#category;
     } else {
-      throw new Error("The units are not defined");
+      throw new Error("The category is not defined");
     }
   }
 
-  set units(newUnits) {
+  set category(newCategory) {
     if (
-      Array.isArray(newUnits) &&
-      newUnits.every((newUnit) => unitIsValid(newUnit))
+      categoryIsValid(newCategory)
     ) {
-      this.#units = newUnits;
+      this.#category = newCategory;
       if (this.isConnected) {
         this.updateCategoryUnits();
       }
     } else {
-      throw new Error("The new units are not valid");
+      throw new Error("The new category is not valid");
     }
   }
 
@@ -41,6 +40,7 @@ class DispatchUnitCategory extends WebDispatchCategory {
       return webDispatchUnit;
     });
     this.listElement.replaceChildren(...webDispatchUnits);
+    console.log(units);
   }
 
   connectedCallback() {

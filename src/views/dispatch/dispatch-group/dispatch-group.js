@@ -1,6 +1,8 @@
 import dispatchApi from "../../../api/dispatch-api";
 import { groupIsValid } from "../../../helpers/type-checkers";
 
+const WAITING_CATEGORY_ID = "2";
+
 class DispatchGroup extends HTMLLIElement {
   #hasBeenMountedOnce = false;
   #headerElement;
@@ -125,28 +127,22 @@ class DispatchGroup extends HTMLLIElement {
   }
 
   handleDeleteButtonClick() {
-    const webDispatchUnits = this.#listElement.children;
+    const webDispatchUnits = [...this.#listElement.children];
     if (webDispatchUnits.length > 0) {
-      for (const webDispatchUnit of webDispatchUnits) {
+      const lastIndex = dispatchApi.getCategoryLastUnitIndex(WAITING_CATEGORY_ID);
+      webDispatchUnits.forEach((webDispatchUnit, index) => {
         const newUnit = {
           ...webDispatchUnit.unit,
           parentType: "category",
-          parentId: "2",
-          parentOrderId: 0,
+          parentId: WAITING_CATEGORY_ID,
+          parentOrderId: lastIndex + (index + 1),
         };
         webDispatchUnit.unit = newUnit;
         dispatchApi.updateUnit(newUnit);
-      }
+      });
     }
     dispatchApi.deleteGroup(this.group.id);
     this.sendDispatchUpdateEvent();
-  }
-
-  sendDispatchUpdateEvent() {
-    const customEvent = new CustomEvent("dispatch-update", {
-      bubbles: true,
-    });
-    this.dispatchEvent(customEvent);
   }
 }
 

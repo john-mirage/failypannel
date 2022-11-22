@@ -1,34 +1,33 @@
 import dispatchApi from "../../../api/dispatch-api";
 import WebDispatchCategory from "../dispatch-category";
-import { groupIsValid } from "../../../helpers/type-checkers";
+import { categoryIsValid } from "../../../helpers/type-checkers";
 
 class DispatchGroupCategory extends WebDispatchCategory {
-  #groups;
+  #category;
   #dispatchGroup = document.createElement("li", { is: "dispatch-group" });
 
   constructor() {
     super();
   }
 
-  get groups() {
-    if (this.#groups) {
-      return this.#groups;
+  get category() {
+    if (this.#category) {
+      return this.#category;
     } else {
-      throw new Error("The groups are not defined");
+      throw new Error("The category is not defined");
     }
   }
 
-  set groups(newGroups) {
+  set category(newCategory) {
     if (
-      Array.isArray(newGroups) &&
-      newGroups.every((newGroup) => groupIsValid(newGroup))
+      categoryIsValid(newCategory)
     ) {
-      this.#groups = newGroups;
+      this.#category = newCategory;
       if (this.isConnected) {
-        this.updateCategoryGroups();
+        this.updateCategoryUnits();
       }
     } else {
-      throw new Error("The new groups are not valid");
+      throw new Error("The new category is not valid");
     }
   }
 

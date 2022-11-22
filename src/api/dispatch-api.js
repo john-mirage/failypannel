@@ -117,6 +117,24 @@ class DispatchAPI {
     }
   }
 
+  getCategoryLastUnitIndex(categoryId) {
+    if (this.#categories.has(categoryId)) {
+      const category = this.#categories.get(categoryId);
+      if (category.type === "unit") {
+        const units = this.getCategoryUnits(category.id);
+        return units.reduce(
+          (lastIndex, unit) =>
+            unit.parentOrderId > lastIndex ? unit.parentOrderId : lastIndex,
+          0
+        );
+      } else {
+        throw new Error("The category type is not unit");
+      }
+    } else {
+      throw new Error("The category has not been found");
+    }
+  }
+
   getCategoryGroups(categoryId) {
     if (typeof categoryId === "string") {
       const category = this.#categories.get(categoryId);
