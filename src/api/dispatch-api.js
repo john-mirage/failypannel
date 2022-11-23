@@ -2,14 +2,17 @@ import dispatchCategories from "../data/dispatch-categories.json";
 import dispatchGroups from "../data/dispatch-groups.json";
 import dispatchUnits from "../data/dispatch-units.json";
 import { unitIsValid } from "../helpers/type-checkers";
+import DispatchCategory from "../views/dispatch/dispatch-category";
+import DispatchGroup from "../views/dispatch/dispatch-group";
+import DispatchUnit from "../views/dispatch/dispatch-unit";
 
 class DispatchAPI {
   #categories = new Map();
   #groups = new Map();
   #units = new Map();
-  #categoriesSubscribers = new Set();
-  #groupsSubscribers = new Set();
-  #unitsSubscribers = new Set();
+  #categoriesSubscribers = new Map();
+  #groupsSubscribers = new Map();
+  #unitsSubscribers = new Map();
 
   constructor(categories, groups, units) {
     categories.forEach((category) => {
@@ -35,18 +38,6 @@ class DispatchAPI {
 
   get units() {
     return [...this.#units.values()];
-  }
-
-  subscribeToCategories(webDispatchCategory) {
-    
-  }
-
-  subscribeToGroups() {
-
-  }
-
-  subscribeToUnits() {
-
   }
 
   getCategoryById(categoryId) {
@@ -229,6 +220,81 @@ class DispatchAPI {
       }
     } else {
       throw new Error("The group id is not a string");
+    }
+  }
+
+  subscribeToCategories(dispatchCategory) {
+    if (dispatchCategory instanceof DispatchCategory) {
+      this.#categoriesSubscribers.set(dispatchCategory.category.id, dispatchCategory);
+    } else {
+      throw new Error("The dispatch category is not valid");
+    }
+  }
+
+  unsubscribeToCategories(dispatchCategoryId) {
+    if (this.#categoriesSubscribers.has(dispatchCategoryId)) {
+      this.#categoriesSubscribers.delete(dispatchCategoryId);
+    } else {
+      throw new Error("The dispatch category to delete has not been found");
+    }
+  }
+
+  subscribeToGroups(dispatchGroup) {
+    if (dispatchGroup instanceof DispatchGroup) {
+      this.#groupsSubscribers.set(dispatchGroup.group.id, dispatchGroup);
+    } else {
+      throw new Error("The dispatch group is not valid");
+    }
+  }
+
+  unsubscribeToGroups(dispatchGroupId) {
+    if (this.#groupsSubscribers.has(dispatchGroupId)) {
+      this.#groupsSubscribers.delete(dispatchGroupId);
+    } else {
+      throw new Error("The dispatch group to delete has not been found");
+    }
+  }
+
+  subscribeToUnits(dispatchUnit) {
+    if (dispatchUnit instanceof DispatchUnit) {
+      this.#unitsSubscribers.set(dispatchUnit.unit.id, dispatchUnit);
+    } else {
+      throw new Error("The dispatch unit is not valid");
+    }
+  }
+
+  unsubscribeToUnits(dispatchUnitId) {
+    if (this.#unitsSubscribers.has(dispatchUnitId)) {
+      this.#unitsSubscribers.delete(dispatchUnitId);
+    } else {
+      throw new Error("The dispatch unit to delete has not been found");
+    }
+  }
+
+  dispatchCategory(categoryId) {
+    if (this.#categories.has(categoryId) && this.#categoriesSubscribers.has(categoryId)) {
+      const dispatchCategory = this.#categoriesSubscribers.get(categoryId);
+      dispatchCategory.category = this.#categories.get(categoryId);
+    } else {
+      throw new Error("The category and/or category subscriber have not been found");
+    }
+  }
+
+  dispatchGroup(groupId) {
+    if (this.#groups.has(groupId) && this.#groupsSubscribers.has(groupId)) {
+      const dispatchGroup = this.#groupsSubscribers.get(groupId);
+      dispatchGroup.group = this.#groups.get(groupId);
+    } else {
+      throw new Error("The group and/or group subscriber have not been found");
+    }
+  }
+
+  dispatchUnit(unitId) {
+    if (this.#units.has(unitId)) {
+      const dispatchUnit = this.#unitsSubscribers.get(unitId);
+      dispatchUnit.unit = this.#units.get(unitId);
+    } else {
+      throw new Error("The unit and/or unit subscriber have not been found");
     }
   }
 }
