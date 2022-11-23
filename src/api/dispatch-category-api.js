@@ -16,6 +16,7 @@ class DispatchCategoryAPI {
       categories.every((category) => categoryIsValid(category))
     ) {
       categories.forEach((category) => {
+        this.#categories.set(category.id, category);
         switch (category.type) {
           case "group": {
             const categoryGroups = this.getCategoryGroups(category.id);
@@ -31,7 +32,6 @@ class DispatchCategoryAPI {
             throw new Error("The category type is not valid");
           }
         }
-        this.#categories.set(category.id, category);
       });
     } else {
       throw new Error("The categories are not valid");

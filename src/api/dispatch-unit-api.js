@@ -1,3 +1,4 @@
+import DispatchUnit from "../views/dispatch/dispatch-unit";
 import units from "../data/dispatch-units.json";
 import { unitIsValid } from "../helpers/type-checkers";
 
@@ -20,6 +21,30 @@ class DispatchUnitAPI {
 
   get units() {
     return [...this.#units.values()];
+  }
+
+  subscribeToUnit(dispatchUnit) {
+    if (dispatchUnit instanceof DispatchUnit) {
+      if (this.#units.has(dispatchUnit.unit.id)) {
+        this.#unitsSubscribers.set(dispatchUnit.unit.id, dispatchUnit);
+      } else {
+        throw new Error("The unit has not been found");
+      }
+    } else {
+      throw new Error("The dispatch unit is not valid");
+    }
+  }
+
+  unsubscribeToUnit(dispatchUnit) {
+    if (dispatchUnit instanceof DispatchUnit) {
+      if (this.#unitsSubscribers.has(dispatchUnit.unit.id)) {
+        this.#unitsSubscribers.delete(dispatchUnit.unit.id);
+      } else {
+        throw new Error("The dispatch unit to delete has not been found");
+      }
+    } else {
+      throw new Error("The unit has not been found");
+    }
   }
 }
 
