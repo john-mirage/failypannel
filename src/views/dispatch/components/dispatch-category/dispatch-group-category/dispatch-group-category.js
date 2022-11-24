@@ -1,5 +1,6 @@
 import DispatchCategory from "../dispatch-category";
 import { groupIsValid } from "../../../types/dispatch-group.type";
+import dispatchGroupApi from "../../../api/dispatch-group.api";
 
 class DispatchGroupCategory extends DispatchCategory {
   #groups;
@@ -33,12 +34,13 @@ class DispatchGroupCategory extends DispatchCategory {
   }
 
   updateCategoryGroups() {
-    const webDispatchGroups = this.groups.map((group) => {
-      const webDispatchGroup = this.#dispatchGroup.cloneNode(true);
-      webDispatchGroup.group = group;
-      return webDispatchGroup;
+    const dispatchGroups = this.groups.map((group) => {
+      const dispatchGroup = this.#dispatchGroup.cloneNode(true);
+      dispatchGroup.group = group;
+      dispatchGroup.units = dispatchGroupApi.getGroupUnits(group.id);
+      return dispatchGroup;
     });
-    this.listElement.replaceChildren(...webDispatchGroups);
+    this.listElement.replaceChildren(...dispatchGroups);
   }
 
   connectedCallback() {

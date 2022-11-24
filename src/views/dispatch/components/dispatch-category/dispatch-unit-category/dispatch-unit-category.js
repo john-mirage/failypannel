@@ -33,12 +33,12 @@ class DispatchUnitCategory extends DispatchCategory {
   }
 
   updateCategoryUnits() {
-    const webDispatchUnits = this.units.map((unit) => {
-      const webDispatchUnit = this.#dispatchUnit.cloneNode(true);
-      webDispatchUnit.unit = unit;
-      return webDispatchUnit;
+    const dispatchUnits = this.units.map((unit) => {
+      const dispatchUnit = this.#dispatchUnit.cloneNode(true);
+      dispatchUnit.unit = unit;
+      return dispatchUnit;
     });
-    this.listElement.replaceChildren(...webDispatchUnits);
+    this.listElement.replaceChildren(...dispatchUnits);
   }
 
   connectedCallback() {

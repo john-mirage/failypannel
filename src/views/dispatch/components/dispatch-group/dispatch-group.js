@@ -2,6 +2,7 @@ import dispatchCategoryAPI from "../../api/dispatch-category.api";
 import dispatchGroupAPI from "../../api/dispatch-group.api";
 import dispatchUnitAPI from "../../api/dispatch-unit.api";
 import { groupIsValid } from "../../types/dispatch-group.type";
+import { unitIsValid } from "../../types/dispatch-unit.type";
 
 const WAITING_CATEGORY_ID = "2";
 
@@ -12,8 +13,9 @@ class DispatchGroup extends HTMLLIElement {
   #numberElement;
   #listElement;
   #deleteButtonElement;
-  #webDispatchUnit = document.createElement("li", { is: "dispatch-unit" });
   #group;
+  #units;
+  #dispatchUnit = document.createElement("li", { is: "dispatch-unit" });
 
   constructor() {
     super();
@@ -50,6 +52,31 @@ class DispatchGroup extends HTMLLIElement {
     }
   }
 
+  get units() {
+    if (this.#units) {
+      return this.#units;
+    } else {
+      throw new Error("The units are not defined");
+    }
+  }
+
+  set units(newUnits) {
+    if (
+      Array.isArray(newUnits) &&
+      newUnits.every((newUnit) => unitIsValid(newUnit))
+    ) {
+      this.#units = newUnits;
+      if (this.isConnected) {
+        this.updateGroupName();
+        this.updateGroupUnits();
+        this.updateGroupNumber();
+        this.handleListHeight();
+      }
+    } else {
+      throw new Error("The new units are not valid");
+    }
+  }
+
   updateGroupName() {
     const category = dispatchCategoryAPI.getCategory(this.group.categoryId);
     if (this.#nameElement.textContent !== category.name) {
@@ -58,13 +85,12 @@ class DispatchGroup extends HTMLLIElement {
   }
 
   updateGroupUnits() {
-    const units = dispatchGroupAPI.getGroupUnits(this.group.id);
-    const webDispatchUnits = units.map((unit) => {
-      const webDispatchUnit = this.#webDispatchUnit.cloneNode(true);
-      webDispatchUnit.unit = unit;
-      return webDispatchUnit;
+    const dispatchUnits = this.units.map((unit) => {
+      const dispatchUnit = this.#dispatchUnit.cloneNode(true);
+      dispatchUnit.unit = unit;
+      return dispatchUnit;
     });
-    this.#listElement.replaceChildren(...webDispatchUnits);
+    this.#listElement.replaceChildren(...dispatchUnits);
   }
 
   updateGroupNumber() {
