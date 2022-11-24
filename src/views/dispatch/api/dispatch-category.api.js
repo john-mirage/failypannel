@@ -36,7 +36,6 @@ class DispatchCategoryAPI {
       });
       this.compareTwoGroupsByOrderId = this.compareTwoGroupsByOrderId.bind(this);
       this.compareTwoUnitsByOrderId = this.compareTwoUnitsByOrderId.bind(this);
-      console.log("dispatch category");
     } else {
       throw new Error("The categories are not valid");
     }

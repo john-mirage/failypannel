@@ -14,7 +14,6 @@ class DispatchUnitAPI {
       units.forEach((unit) => {
         this.#units.set(unit.id, unit);
       });
-      console.log("dispatch unit");
     } else {
       throw new Error("The units are not valid");
     }

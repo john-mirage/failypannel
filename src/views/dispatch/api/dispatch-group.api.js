@@ -17,7 +17,6 @@ class DispatchGroupAPI {
         this.#groupsUnits.set(group.id, groupUnits);
       });
       this.compareTwoUnitsByOrderId = this.compareTwoUnitsByOrderId.bind(this);
-      console.log("dispatch group");
     } else {
       throw new Error("The groups are not valid");
     }
