@@ -16,18 +16,20 @@ class DispatchView extends HTMLElement {
     this.#listElement = templateContent.lastElementChild.cloneNode(true);
   }
 
-  updateDispatchCategories() {
+  updateCategories() {
     const categories = dispatchCategoryAPI.categories;
-    const webDispatchCategories = categories.map((category) => {
+    const dispatchCategories = categories.map((category) => {
       switch (category.type) {
         case "group": {
           const dispatchGroupCategory = this.#dispatchGroupCategory.cloneNode(true);
           dispatchGroupCategory.category = category;
+          dispatchGroupCategory.groups = dispatchCategoryAPI.getCategoryGroups(category.id);
           return dispatchGroupCategory;
         }
         case "unit": {
           const dispatchUnitCategory = this.#dispatchUnitCategory.cloneNode(true);
           dispatchUnitCategory.category = category;
+          dispatchUnitCategory.units = dispatchCategoryAPI.getCategoryUnits(category.id);
           return dispatchUnitCategory;
         }
         default: {
@@ -35,22 +37,18 @@ class DispatchView extends HTMLElement {
         }
       }
     });
-    this.#listElement.replaceChildren(...webDispatchCategories);
-    return webDispatchCategories.length;
+    this.#listElement.replaceChildren(...dispatchCategories);
   }
 
-  updateDispatchGrid(numberOfColumns) {
-    if (typeof numberOfColumns === "number") {
-      const gridTemplateColumns = `repeat(${String(numberOfColumns)}, 296px)`;
-      this.#listElement.style.gridTemplateColumns = gridTemplateColumns;
-    } else {
-      throw new Error("The number of columns argument is not a number");
-    }
+  updateGridSize() {
+    const numberOfColumns = this.#listElement.children.length;
+    const gridTemplateColumns = `repeat(${String(numberOfColumns)}, 296px)`;
+    this.#listElement.style.gridTemplateColumns = gridTemplateColumns;
   }
 
   updateDispatch() {
-    const count = this.updateDispatchCategories();
-    this.updateDispatchGrid(count);
+    this.updateCategories();
+    this.updateGridSize();
   }
 
   connectedCallback() {
