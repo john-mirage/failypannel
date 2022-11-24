@@ -1,6 +1,6 @@
 import DispatchUnit from "../views/dispatch/dispatch-unit";
 import units from "../data/dispatch-units.json";
-import { unitIsValid } from "../helpers/type-checkers";
+import { unitIsValid } from "../helpers/types";
 
 class DispatchUnitAPI {
   #units = new Map();
@@ -21,6 +21,18 @@ class DispatchUnitAPI {
 
   get units() {
     return [...this.#units.values()];
+  }
+
+  getUnit(unitId) {
+    if (this.#units.has(unitId)) {
+      return this.#units.get(unitId);
+    } else {
+      throw new Error("The unit has not been found");
+    }
+  }
+
+  hasUnit(unitId) {
+    return this.#units.has(unitId);
   }
 
   subscribeToUnit(dispatchUnit) {
@@ -44,6 +56,50 @@ class DispatchUnitAPI {
       }
     } else {
       throw new Error("The unit has not been found");
+    }
+  }
+
+  dispatchUnit(unitId) {
+    if (this.#units.has(unitId)) {
+      if (this.#unitsSubscribers.has(unitId)) {
+        const dispatchUnit = this.#unitsSubscribers.get(unitId);
+        dispatchUnit.unit = this.#units.get(unitId);
+      }
+    } else {
+      throw new Error("The unit has not been found");
+    }
+  }
+
+  addUnit(newUnit) {
+    if (unitIsValid(newUnit)) {
+      if (!this.#units.has(newUnit.id)) {
+        this.#units.set(newUnit.id, newUnit);
+      } else {
+        throw new Error("The unit already exist");
+      }
+    } else {
+      throw new Error("The new unit is not valid");
+    }
+  }
+
+  updateUnit(newUnit) {
+    if (unitIsValid(newUnit)) {
+      if (this.#units.has(newUnit.id)) {
+        this.#units.set(newUnit.id, newUnit);
+        this.dispatchUnit(newUnit.id);
+      } else {
+        throw new Error("The old unit has not been found");
+      }
+    } else {
+      throw new Error("The new unit is not valid");
+    }
+  }
+
+  deleteUnit(unitId) {
+    if (this.#units.has(unitId)) {
+      this.#units.delete(unitId);
+    } else {
+      throw new Error("The unit to delete has not been found");
     }
   }
 }

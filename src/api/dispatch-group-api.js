@@ -1,7 +1,8 @@
 import DispatchGroup from "../views/dispatch/dispatch-group";
 import groups from "../data/dispatch-groups.json";
 import dispatchUnitApi from "./dispatch-unit-api";
-import { groupIsValid } from "../helpers/type-checkers";
+import { groupIsValid } from "../helpers/types";
+import { compareTwoNumbers } from "../helpers/comparison";
 
 class DispatchGroupAPI {
   #groups = new Map();
@@ -15,6 +16,7 @@ class DispatchGroupAPI {
         const groupUnits = this.getGroupUnits(group.id);
         this.#groupsUnits.set(group.id, groupUnits);
       });
+      this.compareTwoUnitsByOrderId = this.compareTwoUnitsByOrderId.bind(this);
     } else {
       throw new Error("The groups are not valid");
     }
@@ -24,10 +26,23 @@ class DispatchGroupAPI {
     return [...this.#groups.values()];
   }
 
+  compareTwoUnitsByOrderId(unitA, unitB) {
+    return compareTwoNumbers(unitA.parentOrderId, unitB.parentOrderId);
+  }
+
+  getGroup(groupId) {
+    if (this.#groups.has(groupId)) {
+      return this.#groups.get(groupId);
+    } else {
+      throw new Error("The group has not been found");
+    }
+  }
+
   getGroupUnits(groupId) {
-    return dispatchUnitApi.units.filter((unit) => {
+    const units = dispatchUnitApi.units.filter((unit) => {
       return groupId === unit.parentId;
     });
+    return units.sort(this.compareTwoUnitsByOrderId);
   }
 
   subscribeToGroup(dispatchGroup) {
@@ -73,6 +88,28 @@ class DispatchGroupAPI {
       }
     } else {
       throw new Error("The group units have not been found");
+    }
+  }
+
+  reorderGroupUnits(groupId, unitIds) {
+    if (
+      this.#groups.has(groupId) &&
+      Array.isArray(unitIds) &&
+      unitIds.every((unitId) => dispatchUnitApi.hasUnit(unitId))
+    ) {
+      const group = this.#groups.get(groupId);
+      unitIds.forEach((unitId, unitIdIndex) => {
+        const unit = dispatchUnitApi.getUnit(unitId);
+        if (unit.parentType === "group" && group.id === unit.parentId) {
+          if (unit.parentOrderId !== unitIdIndex) {
+            unit.parentOrderId = unitIdIndex;
+          }
+        } else {
+          throw new Error("The unit does not belong to the group");
+        }
+      });
+    } else {
+      throw new Error("The group and units have not been found");
     }
   }
 

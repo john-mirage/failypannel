@@ -1,5 +1,5 @@
 import dispatchApi from "../../../api/dispatch-api";
-import { groupIsValid } from "../../../helpers/type-checkers";
+import { groupIsValid } from "../../../helpers/types";
 
 const WAITING_CATEGORY_ID = "2";
 

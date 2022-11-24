@@ -1,8 +1,9 @@
 import DispatchCategory from "../views/dispatch/dispatch-category";
 import dispatchGroupApi from "./dispatch-group-api";
 import dispatchUnitApi from "./dispatch-unit-api";
-import { categoryIsValid } from "../helpers/type-checkers";
+import { categoryIsValid } from "../helpers/types";
 import categories from "../data/dispatch-categories.json";
+import { compareTwoNumbers } from "../helpers/comparison";
 
 class DispatchCategoryAPI {
   #categories = new Map();
@@ -33,6 +34,8 @@ class DispatchCategoryAPI {
           }
         }
       });
+      this.compareTwoGroupsByOrderId = this.compareTwoGroupsByOrderId.bind(this);
+      this.compareTwoUnitsByOrderId = this.compareTwoUnitsByOrderId.bind(this);
     } else {
       throw new Error("The categories are not valid");
     }
@@ -42,16 +45,34 @@ class DispatchCategoryAPI {
     return [...this.#categories.values()];
   }
 
+  compareTwoGroupsByOrderId(groupA, groupB) {
+    return compareTwoNumbers(groupA.categoryOrderId, groupB.categoryOrderId);
+  }
+
+  compareTwoUnitsByOrderId(unitA, unitB) {
+    return compareTwoNumbers(unitA.parentOrderId, unitB.parentOrderId);
+  }
+
+  getCategory(categoryId) {
+    if (this.#categories.has(categoryId)) {
+      return this.#categories.get(categoryId);
+    } else {
+      throw new Error("The category has not been found");
+    }
+  }
+
   getCategoryGroups(categoryId) {
-    return dispatchGroupApi.groups.filter((group) => {
+    const groups = dispatchGroupApi.groups.filter((group) => {
       return categoryId === group.categoryId;
     });
+    return groups.sort(this.compareTwoGroupsByOrderId);
   }
 
   getCategoryUnits(categoryId) {
-    return dispatchUnitApi.units.filter((unit) => {
+    const units = dispatchUnitApi.units.filter((unit) => {
       return categoryId === unit.parentId;
     });
+    return units.sort(this.compareTwoUnitsByOrderId);
   }
 
   subscribeToCategory(dispatchCategory) {
@@ -111,6 +132,53 @@ class DispatchCategoryAPI {
       }
     } else {
       throw new Error("The category units have not been found");
+    }
+  }
+
+  reorderCategoryUnits(categoryId, unitIds) {
+    if (
+      this.#categories.has(categoryId) &&
+      Array.isArray(unitIds) &&
+      unitIds.every((unitId) => dispatchUnitApi.hasUnit(unitId))
+    ) {
+      const category = this.#categories.get(categoryId);
+      if (category.type === "unit") {
+        unitIds.forEach((unitId, unitIdIndex) => {
+          const unit = dispatchUnitApi.getUnit(unitId);
+          if (
+            category.type === unit.parentType &&
+            category.id === unit.parentId
+          ) {
+            if (unit.parentOrderId !== unitIdIndex) {
+              unit.parentOrderId = unitIdIndex;
+            }
+          } else {
+            throw new Error("The unit does not belong to the category");
+          }
+        });
+      } else {
+        throw new Error("The category type is not valid");
+      }
+    } else {
+      throw new Error("The category and units have not been found");
+    }
+  }
+
+  getCategoryUnitLastIndex(categoryId) {
+    if (this.#categories.has(categoryId)) {
+      const category = this.#categories.get(categoryId);
+      if (category.type === "unit") {
+        const units = this.getCategoryUnits(category.id);
+        return units.reduce(
+          (lastIndex, unit) =>
+            unit.parentOrderId > lastIndex ? unit.parentOrderId : lastIndex,
+          0
+        );
+      } else {
+        throw new Error("The category type is not unit");
+      }
+    } else {
+      throw new Error("The category has not been found");
     }
   }
 

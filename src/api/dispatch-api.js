@@ -1,7 +1,7 @@
 import dispatchCategories from "../data/dispatch-categories.json";
 import dispatchGroups from "../data/dispatch-groups.json";
 import dispatchUnits from "../data/dispatch-units.json";
-import { unitIsValid } from "../helpers/type-checkers";
+import { unitIsValid } from "../helpers/types";
 import DispatchCategory from "../views/dispatch/dispatch-category";
 import DispatchGroup from "../views/dispatch/dispatch-group";
 import DispatchUnit from "../views/dispatch/dispatch-unit";

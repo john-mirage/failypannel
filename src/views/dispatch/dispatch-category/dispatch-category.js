@@ -1,5 +1,5 @@
 import dispatchApi from "../../../api/dispatch-api";
-import { categoryIsValid } from "../../../helpers/type-checkers";
+import { categoryIsValid } from "../../../helpers/types";
 
 class DispatchCategory extends HTMLLIElement {
   #hasBeenMountedOnce = false;

@@ -1,4 +1,4 @@
-import { unitIsValid } from "../../../helpers/type-checkers";
+import { unitIsValid } from "../../../helpers/types";
 
 class DispatchUnit extends HTMLLIElement {
   #hasBeenMountedOnce = false;
