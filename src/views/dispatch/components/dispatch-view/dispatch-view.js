@@ -4,9 +4,8 @@ class DispatchView extends HTMLElement {
   #hasBeenMountedOnce = false;
   #headerElement;
   #listElement;
-  #webDispatchCategory = document.createElement("li", {
-    is: "dispatch-category",
-  });
+  #dispatchGroupCategory = document.createElement("li", { is: "dispatch-group-category" });
+  #dispatchUnitCategory = document.createElement("li", { is: "dispatch-unit-category" });
 
   constructor() {
     super();
@@ -20,9 +19,21 @@ class DispatchView extends HTMLElement {
   updateDispatchCategories() {
     const categories = dispatchCategoryAPI.categories;
     const webDispatchCategories = categories.map((category) => {
-      const webDispatchCategory = this.#webDispatchCategory.cloneNode(true);
-      webDispatchCategory.category = category;
-      return webDispatchCategory;
+      switch (category.type) {
+        case "group": {
+          const dispatchGroupCategory = this.#dispatchGroupCategory.cloneNode(true);
+          dispatchGroupCategory.category = category;
+          return dispatchGroupCategory;
+        }
+        case "unit": {
+          const dispatchUnitCategory = this.#dispatchUnitCategory.cloneNode(true);
+          dispatchUnitCategory.category = category;
+          return dispatchUnitCategory;
+        }
+        default: {
+          throw new Error("The category type is not valid");
+        }
+      }
     });
     this.#listElement.replaceChildren(...webDispatchCategories);
     return webDispatchCategories.length;
