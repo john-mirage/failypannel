@@ -1,4 +1,4 @@
-import DispatchCategory from "../components/dispatch-category";
+import { DispatchCategory } from "../components/dispatch-category";
 import dispatchGroupAPI from "./dispatch-group.api";
 import dispatchUnitAPI from "./dispatch-unit.api";
 import { categoryIsValid } from "../types/dispatch-category.type";

@@ -15,7 +15,6 @@ class DispatchView extends HTMLElement {
     ).content;
     this.#headerElement = templateContent.firstElementChild.cloneNode(true);
     this.#listElement = templateContent.lastElementChild.cloneNode(true);
-    this.handleDispatchUpdateEvent = this.handleDispatchUpdateEvent.bind(this);
   }
 
   updateDispatchCategories() {
@@ -49,15 +48,6 @@ class DispatchView extends HTMLElement {
       this.replaceChildren(this.#headerElement, this.#listElement);
       this.#hasBeenMountedOnce = true;
     }
-    this.updateDispatch();
-    this.addEventListener("dispatch-update", this.handleDispatchUpdateEvent);
-  }
-
-  disconnectedCallback() {
-    this.removeEventListener("dispatch-update", this.handleDispatchUpdateEvent);
-  }
-
-  handleDispatchUpdateEvent() {
     this.updateDispatch();
   }
 }

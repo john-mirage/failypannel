@@ -144,7 +144,7 @@ class DispatchGroup extends HTMLLIElement {
       });
     }
     dispatchGroupAPI.deleteGroup(this.group.id);
-    this.sendDispatchUpdateEvent();
+    // ask the waiting category to update.
   }
 }
 

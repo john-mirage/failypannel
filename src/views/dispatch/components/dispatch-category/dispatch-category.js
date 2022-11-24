@@ -13,9 +13,7 @@ class DispatchCategory extends HTMLLIElement {
 
   constructor() {
     super();
-    const templateContent = document.getElementById(
-      "template-dispatch-category"
-    ).content;
+    const templateContent = document.getElementById("template-dispatch-category").content;
     this.#textElement = templateContent.firstElementChild.cloneNode(true);
     this.#listElement = templateContent.lastElementChild.cloneNode(true);
     this.#nameElement = this.#textElement.querySelector('[data-js="name"]');
