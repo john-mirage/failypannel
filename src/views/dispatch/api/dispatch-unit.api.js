@@ -1,6 +1,6 @@
-import DispatchUnit from "../views/dispatch/dispatch-unit";
-import units from "../data/dispatch-units.json";
-import { unitIsValid } from "../helpers/types";
+import DispatchUnit from "../components/dispatch-unit";
+import units from "../data/dispatch-unit.data.json";
+import { unitIsValid } from "../types/dispatch-unit.type";
 
 class DispatchUnitAPI {
   #units = new Map();
@@ -13,7 +13,8 @@ class DispatchUnitAPI {
     ) {
       units.forEach((unit) => {
         this.#units.set(unit.id, unit);
-      }); 
+      });
+      console.log("dispatch unit");
     } else {
       throw new Error("The units are not valid");
     }

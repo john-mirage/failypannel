@@ -1,9 +1,9 @@
-import DispatchCategory from "../views/dispatch/dispatch-category";
-import dispatchGroupApi from "./dispatch-group-api";
-import dispatchUnitApi from "./dispatch-unit-api";
-import { categoryIsValid } from "../helpers/types";
-import categories from "../data/dispatch-categories.json";
-import { compareTwoNumbers } from "../helpers/comparison";
+import DispatchCategory from "../components/dispatch-category";
+import dispatchGroupAPI from "./dispatch-group.api";
+import dispatchUnitAPI from "./dispatch-unit.api";
+import { categoryIsValid } from "../types/dispatch-category.type";
+import categories from "../data/dispatch-category.data.json";
+import { compareTwoNumbers } from "../../../utils/comparison";
 
 class DispatchCategoryAPI {
   #categories = new Map();
@@ -36,6 +36,7 @@ class DispatchCategoryAPI {
       });
       this.compareTwoGroupsByOrderId = this.compareTwoGroupsByOrderId.bind(this);
       this.compareTwoUnitsByOrderId = this.compareTwoUnitsByOrderId.bind(this);
+      console.log("dispatch category");
     } else {
       throw new Error("The categories are not valid");
     }
@@ -62,15 +63,15 @@ class DispatchCategoryAPI {
   }
 
   getCategoryGroups(categoryId) {
-    const groups = dispatchGroupApi.groups.filter((group) => {
+    const groups = dispatchGroupAPI.groups.filter((group) => {
       return categoryId === group.categoryId;
     });
     return groups.sort(this.compareTwoGroupsByOrderId);
   }
 
   getCategoryUnits(categoryId) {
-    const units = dispatchUnitApi.units.filter((unit) => {
-      return categoryId === unit.parentId;
+    const units = dispatchUnitAPI.units.filter((unit) => {
+      return unit.parentType === "category" && categoryId === unit.parentId;
     });
     return units.sort(this.compareTwoUnitsByOrderId);
   }
@@ -139,12 +140,12 @@ class DispatchCategoryAPI {
     if (
       this.#categories.has(categoryId) &&
       Array.isArray(unitIds) &&
-      unitIds.every((unitId) => dispatchUnitApi.hasUnit(unitId))
+      unitIds.every((unitId) => dispatchUnitAPI.hasUnit(unitId))
     ) {
       const category = this.#categories.get(categoryId);
       if (category.type === "unit") {
         unitIds.forEach((unitId, unitIdIndex) => {
-          const unit = dispatchUnitApi.getUnit(unitId);
+          const unit = dispatchUnitAPI.getUnit(unitId);
           if (
             category.type === unit.parentType &&
             category.id === unit.parentId

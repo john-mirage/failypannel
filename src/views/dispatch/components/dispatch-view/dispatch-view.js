@@ -1,4 +1,4 @@
-import dispatchApi from "../../../api/dispatch-api";
+import dispatchCategoryAPI from "../../api/dispatch-category.api";
 
 class DispatchView extends HTMLElement {
   #hasBeenMountedOnce = false;
@@ -19,7 +19,7 @@ class DispatchView extends HTMLElement {
   }
 
   updateDispatchCategories() {
-    const categories = dispatchApi.categories;
+    const categories = dispatchCategoryAPI.categories;
     const webDispatchCategories = categories.map((category) => {
       const webDispatchCategory = this.#webDispatchCategory.cloneNode(true);
       webDispatchCategory.category = category;

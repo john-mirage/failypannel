@@ -9,14 +9,14 @@ import WebThemeSwitch from "./components/web-theme-switch";
 import WebModeSwitch from "./components/web-mode-switch";
 import WebButton from "./components/web-button";
 import WebCloseButton from "./components/web-close-button";
-import CarView from "./views/car/car-view";
-import DocumentView from "./views/document/document-view";
-import DispatchView from "./views/dispatch/dispatch-view";
-import DispatchToolbar from "./views/dispatch/dispatch-toolbar";
-import DispatchCategory from "./views/dispatch/dispatch-category";
-import DispatchGroup from "./views/dispatch/dispatch-group";
-import DispatchUnit from "./views/dispatch/dispatch-unit";
-import DispatchIconButton from "./views/dispatch/dispatch-icon-button";
+import CarView from "./views/car/components/car-view";
+import DocumentView from "./views/document/components/document-view";
+import DispatchView from "./views/dispatch/components/dispatch-view";
+import DispatchToolbar from "./views/dispatch/components/dispatch-toolbar";
+import DispatchCategory from "./views/dispatch/components/dispatch-category";
+import DispatchGroup from "./views/dispatch/components/dispatch-group";
+import DispatchUnit from "./views/dispatch/components/dispatch-unit";
+import DispatchIconButton from "./views/dispatch/components/dispatch-icon-button";
 
 /**
  * global components

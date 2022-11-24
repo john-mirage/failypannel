@@ -1,8 +1,8 @@
-import DispatchGroup from "../views/dispatch/dispatch-group";
-import groups from "../data/dispatch-groups.json";
-import dispatchUnitApi from "./dispatch-unit-api";
-import { groupIsValid } from "../helpers/types";
-import { compareTwoNumbers } from "../helpers/comparison";
+import DispatchGroup from "../components/dispatch-group";
+import groups from "../data/dispatch-group.data.json";
+import dispatchUnitAPI from "./dispatch-unit.api";
+import { groupIsValid } from "../types/dispatch-group.type";
+import { compareTwoNumbers } from "../../../utils/comparison";
 
 class DispatchGroupAPI {
   #groups = new Map();
@@ -17,6 +17,7 @@ class DispatchGroupAPI {
         this.#groupsUnits.set(group.id, groupUnits);
       });
       this.compareTwoUnitsByOrderId = this.compareTwoUnitsByOrderId.bind(this);
+      console.log("dispatch group");
     } else {
       throw new Error("The groups are not valid");
     }
@@ -39,8 +40,8 @@ class DispatchGroupAPI {
   }
 
   getGroupUnits(groupId) {
-    const units = dispatchUnitApi.units.filter((unit) => {
-      return groupId === unit.parentId;
+    const units = dispatchUnitAPI.units.filter((unit) => {
+      return unit.parentType === "group" && groupId === unit.parentId;
     });
     return units.sort(this.compareTwoUnitsByOrderId);
   }
@@ -95,11 +96,11 @@ class DispatchGroupAPI {
     if (
       this.#groups.has(groupId) &&
       Array.isArray(unitIds) &&
-      unitIds.every((unitId) => dispatchUnitApi.hasUnit(unitId))
+      unitIds.every((unitId) => dispatchUnitAPI.hasUnit(unitId))
     ) {
       const group = this.#groups.get(groupId);
       unitIds.forEach((unitId, unitIdIndex) => {
-        const unit = dispatchUnitApi.getUnit(unitId);
+        const unit = dispatchUnitAPI.getUnit(unitId);
         if (unit.parentType === "group" && group.id === unit.parentId) {
           if (unit.parentOrderId !== unitIdIndex) {
             unit.parentOrderId = unitIdIndex;

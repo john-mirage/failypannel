@@ -1,5 +1,7 @@
-import dispatchApi from "../../../api/dispatch-api";
-import { groupIsValid } from "../../../helpers/types";
+import dispatchCategoryAPI from "../../api/dispatch-category.api";
+import dispatchGroupAPI from "../../api/dispatch-group.api";
+import dispatchUnitAPI from "../../api/dispatch-unit.api";
+import { groupIsValid } from "../../types/dispatch-group.type";
 
 const WAITING_CATEGORY_ID = "2";
 
@@ -49,14 +51,14 @@ class DispatchGroup extends HTMLLIElement {
   }
 
   updateGroupName() {
-    const category = dispatchApi.getCategoryById(this.group.categoryId);
+    const category = dispatchCategoryAPI.getCategory(this.group.categoryId);
     if (this.#nameElement.textContent !== category.name) {
       this.#nameElement.textContent = category.name;
     }
   }
 
   updateGroupUnits() {
-    const units = dispatchApi.getGroupUnits(this.group.id);
+    const units = dispatchGroupAPI.getGroupUnits(this.group.id);
     const webDispatchUnits = units.map((unit) => {
       const webDispatchUnit = this.#webDispatchUnit.cloneNode(true);
       webDispatchUnit.unit = unit;
@@ -129,7 +131,7 @@ class DispatchGroup extends HTMLLIElement {
   handleDeleteButtonClick() {
     const webDispatchUnits = [...this.#listElement.children];
     if (webDispatchUnits.length > 0) {
-      const lastIndex = dispatchApi.getCategoryLastUnitIndex(WAITING_CATEGORY_ID);
+      const lastIndex = dispatchCategoryAPI.getCategoryUnitLastIndex(WAITING_CATEGORY_ID);
       webDispatchUnits.forEach((webDispatchUnit, index) => {
         const newUnit = {
           ...webDispatchUnit.unit,
@@ -138,10 +140,10 @@ class DispatchGroup extends HTMLLIElement {
           parentOrderId: lastIndex + (index + 1),
         };
         webDispatchUnit.unit = newUnit;
-        dispatchApi.updateUnit(newUnit);
+        dispatchUnitAPI.updateUnit(newUnit);
       });
     }
-    dispatchApi.deleteGroup(this.group.id);
+    dispatchGroupAPI.deleteGroup(this.group.id);
     this.sendDispatchUpdateEvent();
   }
 }

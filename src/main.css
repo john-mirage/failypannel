@@ -9,14 +9,14 @@
 @import "./components/web-switch/web-switch.style.css";
 @import "./components/web-button/web-button.style.css";
 
-@import "./views/car/car-view/car-view.style.css";
-@import "./views/document/document-view/document-view.style.css";
-@import "./views/dispatch/dispatch-view/dispatch-view.style.css";
-@import "./views/dispatch/dispatch-toolbar/dispatch-toolbar.style.css";
-@import "./views/dispatch/dispatch-category/dispatch-category.style.css";
-@import "./views/dispatch/dispatch-group/dispatch-group.style.css";
-@import "./views/dispatch/dispatch-unit/dispatch-unit.style.css";
-@import "./views/dispatch/dispatch-icon-button/dispatch-icon-button.style.css";
+@import "./views/car/components/car-view/car-view.style.css";
+@import "./views/document/components/document-view/document-view.style.css";
+@import "./views/dispatch/components/dispatch-view/dispatch-view.style.css";
+@import "./views/dispatch/components/dispatch-toolbar/dispatch-toolbar.style.css";
+@import "./views/dispatch/components/dispatch-category/dispatch-category.style.css";
+@import "./views/dispatch/components/dispatch-group/dispatch-group.style.css";
+@import "./views/dispatch/components/dispatch-unit/dispatch-unit.style.css";
+@import "./views/dispatch/components/dispatch-icon-button/dispatch-icon-button.style.css";
 
 :root {
   --color-app: hsl(210, 17%, 95%);

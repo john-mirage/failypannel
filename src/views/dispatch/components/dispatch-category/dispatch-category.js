@@ -1,5 +1,5 @@
-import dispatchApi from "../../../api/dispatch-api";
-import { categoryIsValid } from "../../../helpers/types";
+import dispatchCategoryAPI from "../../api/dispatch-category.api";
+import { categoryIsValid } from "../../types/dispatch-category.type";
 
 class DispatchCategory extends HTMLLIElement {
   #hasBeenMountedOnce = false;
@@ -57,7 +57,7 @@ class DispatchCategory extends HTMLLIElement {
   }
 
   updateCategoryUnits() {
-    const units = dispatchApi.getCategoryUnits(this.category.id);
+    const units = dispatchCategoryAPI.getCategoryUnits(this.category.id);
     const webDispatchUnits = units.map((unit) => {
       const webDispatchUnit = this.#dispatchUnit.cloneNode(true);
       webDispatchUnit.unit = unit;
@@ -67,7 +67,7 @@ class DispatchCategory extends HTMLLIElement {
   }
 
   updateCategoryGroups() {
-    const groups = dispatchApi.getCategoryGroups(this.category.id);
+    const groups = dispatchCategoryAPI.getCategoryGroups(this.category.id);
     const webDispatchGroups = groups.map((group) => {
       const webDispatchGroup = this.#dispatchGroup.cloneNode(true);
       webDispatchGroup.group = group;

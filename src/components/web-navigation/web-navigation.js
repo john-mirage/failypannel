@@ -1,4 +1,4 @@
-import navigationItems from "../../data/navigation-items.json";
+import navigationItems from "./web-navigation.data.json";
 
 const DEFAULT_ITEM = 2;
 
