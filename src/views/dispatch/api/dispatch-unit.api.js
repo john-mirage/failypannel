@@ -1,10 +1,9 @@
-import DispatchUnit from "../components/dispatch-unit";
+import { compareTwoNumbers } from "../../../utils/comparison";
 import units from "../data/dispatch-unit.data.json";
 import { unitIsValid } from "../types/dispatch-unit.type";
 
 class DispatchUnitAPI {
   #units = new Map();
-  #unitsSubscribers = new Map();
 
   constructor(units) {
     if (
@@ -14,6 +13,7 @@ class DispatchUnitAPI {
       units.forEach((unit) => {
         this.#units.set(unit.id, unit);
       });
+      this.compareTwoGroupsByOrderId = this.compareTwoGroupsByOrderId.bind(this);
     } else {
       throw new Error("The units are not valid");
     }
@@ -23,7 +23,11 @@ class DispatchUnitAPI {
     return [...this.#units.values()];
   }
 
-  getUnit(unitId) {
+  compareTwoUnitsByOrderId(unitA, unitB) {
+    return compareTwoNumbers(unitA.parentOrderId, unitB.parentOrderId);
+  }
+
+  getUnitById(unitId) {
     if (this.#units.has(unitId)) {
       return this.#units.get(unitId);
     } else {
@@ -31,43 +35,18 @@ class DispatchUnitAPI {
     }
   }
 
-  hasUnit(unitId) {
-    return this.#units.has(unitId);
+  getUnitsByCategoryId(categoryId) {
+    const units = this.units.filter((unit) => {
+      return unit.parentType === "category" && categoryId === unit.parentId;
+    });
+    return units.sort(this.compareTwoUnitsByOrderId);
   }
 
-  subscribeToUnit(dispatchUnit) {
-    if (dispatchUnit instanceof DispatchUnit) {
-      if (this.#units.has(dispatchUnit.unit.id)) {
-        this.#unitsSubscribers.set(dispatchUnit.unit.id, dispatchUnit);
-      } else {
-        throw new Error("The unit has not been found");
-      }
-    } else {
-      throw new Error("The dispatch unit is not valid");
-    }
-  }
-
-  unsubscribeToUnit(dispatchUnit) {
-    if (dispatchUnit instanceof DispatchUnit) {
-      if (this.#unitsSubscribers.has(dispatchUnit.unit.id)) {
-        this.#unitsSubscribers.delete(dispatchUnit.unit.id);
-      } else {
-        throw new Error("The dispatch unit to delete has not been found");
-      }
-    } else {
-      throw new Error("The unit has not been found");
-    }
-  }
-
-  dispatchUnit(unitId) {
-    if (this.#units.has(unitId)) {
-      if (this.#unitsSubscribers.has(unitId)) {
-        const dispatchUnit = this.#unitsSubscribers.get(unitId);
-        dispatchUnit.unit = this.#units.get(unitId);
-      }
-    } else {
-      throw new Error("The unit has not been found");
-    }
+  getUnitsByGroupId(groupId) {
+    const units = this.units.filter((unit) => {
+      return unit.parentType === "group" && groupId === unit.parentId;
+    });
+    return units.sort(this.compareTwoUnitsByOrderId);
   }
 
   addUnit(newUnit) {
@@ -86,7 +65,6 @@ class DispatchUnitAPI {
     if (unitIsValid(newUnit)) {
       if (this.#units.has(newUnit.id)) {
         this.#units.set(newUnit.id, newUnit);
-        this.dispatchUnit(newUnit.id);
       } else {
         throw new Error("The old unit has not been found");
       }
