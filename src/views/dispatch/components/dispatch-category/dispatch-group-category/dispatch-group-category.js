@@ -1,52 +1,54 @@
 import DispatchCategory from "../dispatch-category";
-import { groupIsValid } from "../../../types/dispatch-group.type";
-import dispatchGroupApi from "../../../api/dispatch-group.api";
+import dispatchGroupAPI from "../../../api/dispatch-group.api";
 
 class DispatchGroupCategory extends DispatchCategory {
-  #groups;
   #dispatchGroup = document.createElement("li", { is: "dispatch-group" });
 
   constructor() {
     super();
   }
 
-  get groups() {
-    if (this.#groups) {
-      return this.#groups;
+  updateCategoryGroups() {
+    if (typeof this.category === "string") {
+      const groups = dispatchGroupAPI.getGroupsByCategoryId(this.category);
+      const dispatchGroups = groups.map((group) => {
+        const dispatchGroup = this.#dispatchGroup.cloneNode(true);
+        dispatchGroup.dataset.group = group.id;
+        return dispatchGroup;
+      });
+      this.listElement.replaceChildren(...dispatchGroups);
     } else {
-      throw new Error("The groups are not defined");
+      throw new Error("The category is not defined");
     }
   }
 
-  set groups(newGroups) {
-    if (
-      Array.isArray(newGroups) &&
-      newGroups.every((newGroup) => groupIsValid(newGroup))
-    ) {
-      this.#groups = newGroups;
-      if (this.isConnected) {
-        this.updateCategoryGroups();
-        this.updateCategoryCount();
+  reorderCategoryGroups() {
+    if (typeof this.category === "string") {
+      const dispatchGroups = [...this.listElement.children];
+      if (dispatchGroups.length > 0) {
+        dispatchGroups.forEach((dispatchGroup, dispatchGroupIndex) => {
+          const group = dispatchGroupAPI.getGroupById(dispatchGroup.group);
+          dispatchGroupAPI.updateGroup({
+            ...group,
+            categoryId: this.category,
+            categoryOrderId: dispatchGroupIndex,
+          });
+        });
+        console.log(dispatchGroupAPI.groups);
       }
     } else {
-      throw new Error("The new groups are not valid");
+      throw new Error("The category is not defined");
     }
   }
 
-  updateCategoryGroups() {
-    const dispatchGroups = this.groups.map((group) => {
-      const dispatchGroup = this.#dispatchGroup.cloneNode(true);
-      dispatchGroup.group = group;
-      dispatchGroup.units = dispatchGroupApi.getGroupUnits(group.id);
-      return dispatchGroup;
-    });
-    this.listElement.replaceChildren(...dispatchGroups);
+  updateCategory() {
+    super.updateCategory();
+    this.updateCategoryGroups();
+    this.updateCategoryCount();
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.updateCategoryGroups();
-    this.updateCategoryCount();
   }
 }
 

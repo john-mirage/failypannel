@@ -1,4 +1,4 @@
-import { unitIsValid } from "../../types/dispatch-unit.type";
+import dispatchUnitApi from "../../api/dispatch-unit.api";
 
 class DispatchUnit extends HTMLLIElement {
   #hasBeenMountedOnce = false;
@@ -6,13 +6,14 @@ class DispatchUnit extends HTMLLIElement {
   #textElement;
   #nameElement;
   #roleElement;
-  #unit;
+
+  static get observedAttributes() {
+    return ["data-unit"];
+  }
 
   constructor() {
     super();
-    const templateContent = document.getElementById(
-      "template-dispatch-unit"
-    ).content;
+    const templateContent = document.getElementById("template-dispatch-unit").content;
     this.#numberElement = templateContent.firstElementChild.cloneNode(true);
     this.#textElement = templateContent.lastElementChild.cloneNode(true);
     this.#nameElement = this.#textElement.querySelector('[data-js="name"]');
@@ -20,52 +21,66 @@ class DispatchUnit extends HTMLLIElement {
   }
 
   get unit() {
-    if (this.#unit) {
-      return this.#unit;
+    return this.dataset.unit;
+  }
+
+  set unit(newUnit) {
+    if (typeof newUnit === "string") {
+      this.dataset.unit = newUnit;
+    } else {
+      this.removeAttribute("data-unit");
+    }
+  }
+
+  updateUnitNumber(unitNumber) {
+    if (typeof unitNumber === "string") {
+      if (this.#numberElement.textContent !== unitNumber) {
+        this.#numberElement.textContent = unitNumber;
+      }
+    } else {
+      throw new Error("The unit number is not a string");
+    }
+  }
+
+  updateUnitName(unitName) {
+    if (typeof unitName === "string") {
+      if (this.#nameElement.textContent !== unitName) {
+        this.#nameElement.textContent = unitName;
+      }
+      if (this.#nameElement.getAttribute("title") !== unitName) {
+        this.#nameElement.setAttribute("title", unitName);
+      }
+    } else {
+      throw new Error("The unit name is not a string");
+    }
+  }
+
+  updateUnitRole(unitRole) {
+    if (typeof unitRole === "string") {
+      if (this.#roleElement.textContent !== unitRole) {
+        this.#roleElement.textContent = unitRole;
+      }
+    } else {
+      throw new Error("The unit role is not a string");
+    }
+  }
+
+  updateUnit() {
+    if (typeof this.unit === "string") {
+      const unit = dispatchUnitApi.getUnitById(this.unit);
+      this.updateUnitNumber(unit.number);
+      this.updateUnitName(unit.name);
+      this.updateUnitRole(unit.role);
     } else {
       throw new Error("The unit is not defined");
     }
   }
 
-  set unit(newUnit) {
-    if (unitIsValid(newUnit)) {
-      this.#unit = newUnit;
-      if (this.isConnected) {
-        this.updateUnit();
-      }
-    } else {
-      throw new Error("The new unit is not valid");
-    }
-  }
-
-  updateUnitNumber() {
-    const currentUnitNumber = this.unit.number;
-    if (this.#numberElement.textContent !== currentUnitNumber) {
-      this.#numberElement.textContent = currentUnitNumber;
-    }
-  }
-
-  updateUnitName() {
-    const currentUnitName = this.unit.name;
-    if (this.#nameElement.textContent !== currentUnitName) {
-      this.#nameElement.textContent = this.unit.name;
-    }
-    if (this.#nameElement.getAttribute("title") !== currentUnitName) {
-      this.#nameElement.setAttribute("title", currentUnitName);
-    }
-  }
-
-  updateUnitRole() {
-    const newUnitRole = this.unit.role;
-    if (this.#roleElement.textContent !== newUnitRole) {
-      this.#roleElement.textContent = this.unit.role;
-    }
-  }
-
-  updateUnit() {
-    this.updateUnitNumber();
-    this.updateUnitName();
-    this.updateUnitRole();
+  clearUnit() {
+    this.#numberElement.textContent = null;
+    this.#nameElement.textContent = null;
+    this.#nameElement.removeAttribute("title");
+    this.#roleElement.textContent = null;
   }
 
   connectedCallback() {
@@ -74,7 +89,19 @@ class DispatchUnit extends HTMLLIElement {
       this.replaceChildren(this.#numberElement, this.#textElement);
       this.#hasBeenMountedOnce = true;
     }
-    this.updateUnit();
+  }
+
+  attributeChangedCallback(name, _oldValue, newValue) {
+    switch (name) {
+      case "data-unit": {
+        if (typeof newValue === "string") {
+          this.updateUnit();
+        } else {
+          this.clearUnit();
+        }
+        break;
+      }
+    }
   }
 }
 

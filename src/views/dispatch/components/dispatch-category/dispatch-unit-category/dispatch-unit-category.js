@@ -1,50 +1,52 @@
 import DispatchCategory from "../dispatch-category";
-import { unitIsValid } from "../../../types/dispatch-unit.type";
+import dispatchUnitApi from "../../../api/dispatch-unit.api";
 
 class DispatchUnitCategory extends DispatchCategory {
-  #units;
   #dispatchUnit = document.createElement("li", { is: "dispatch-unit" });
 
   constructor() {
     super();
   }
 
-  get units() {
-    if (this.#units) {
-      return this.#units;
-    } else {
-      throw new Error("The units are not defined");
-    }
-  }
-
-  set units(newUnits) {
-    if (
-      Array.isArray(newUnits) &&
-      newUnits.every((newUnit) => unitIsValid(newUnit))
-    ) {
-      this.#units = newUnits;
-      if (this.isConnected) {
-        this.updateCategoryUnits();
-        this.updateCategoryCount();
-      }
-    } else {
-      throw new Error("The new units are not valid");
-    }
-  }
-
   updateCategoryUnits() {
-    const dispatchUnits = this.units.map((unit) => {
-      const dispatchUnit = this.#dispatchUnit.cloneNode(true);
-      dispatchUnit.unit = unit;
-      return dispatchUnit;
-    });
-    this.listElement.replaceChildren(...dispatchUnits);
+    if (typeof this.category === "string") {
+      const units = dispatchUnitApi.getUnitsByCategoryId(this.category);
+      const dispatchUnits = units.map((unit) => {
+        const dispatchUnit = this.#dispatchUnit.cloneNode(true);
+        dispatchUnit.dataset.unit = unit.id;
+        return dispatchUnit;
+      });
+      this.listElement.replaceChildren(...dispatchUnits);
+    } else {
+      throw new Error("The category is not defined");
+    }
+  }
+
+  reorderCategoryUnits() {
+    if (typeof this.category === "string") {
+      const dispatchUnits = [...this.listElement.children];
+      dispatchUnits.forEach((dispatchUnit, dispatchUnitIndex) => {
+        const unit = dispatchUnitApi.getUnitById(dispatchUnit.unit);
+        dispatchUnitApi.updateUnit({
+          ...unit,
+          parentType: "category",
+          parentId: this.category,
+          parentOrderId: dispatchUnitIndex,
+        });
+      });
+    } else {
+      throw new Error("The category is not defined");
+    }
+  }
+
+  updateCategory() {
+    super.updateCategory();
+    this.updateCategoryUnits();
+    this.updateCategoryCount();
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.updateCategoryUnits();
-    this.updateCategoryCount();
   }
 }
 

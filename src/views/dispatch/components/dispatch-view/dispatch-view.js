@@ -22,14 +22,12 @@ class DispatchView extends HTMLElement {
       switch (category.type) {
         case "group": {
           const dispatchGroupCategory = this.#dispatchGroupCategory.cloneNode(true);
-          dispatchGroupCategory.category = category;
-          dispatchGroupCategory.groups = dispatchCategoryAPI.getCategoryGroups(category.id);
+          dispatchGroupCategory.dataset.category = category.id;
           return dispatchGroupCategory;
         }
         case "unit": {
           const dispatchUnitCategory = this.#dispatchUnitCategory.cloneNode(true);
-          dispatchUnitCategory.category = category;
-          dispatchUnitCategory.units = dispatchCategoryAPI.getCategoryUnits(category.id);
+          dispatchUnitCategory.dataset.category = category.id;
           return dispatchUnitCategory;
         }
         default: {
