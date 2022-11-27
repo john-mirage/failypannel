@@ -1,4 +1,4 @@
-import dispatchCategoryApi from "../../api/dispatch-category.api";
+import { categoryIsValid } from "../../types/dispatch-category.type";
 
 class DispatchCategory extends HTMLLIElement {
   #hasBeenMountedOnce = false;
@@ -6,10 +6,7 @@ class DispatchCategory extends HTMLLIElement {
   #nameElement;
   #countElement;
   listElement;
-
-  static get observedAttributes() {
-    return ["data-category"];
-  }
+  #category;
 
   constructor() {
     super();
@@ -21,24 +18,27 @@ class DispatchCategory extends HTMLLIElement {
   }
 
   get category() {
-    return this.dataset.category;
-  }
-
-  set category(newCategory) {
-    if (typeof newCategory === "string") {
-      this.dataset.category = newCategory;
+    if (categoryIsValid(this.#category)) {
+      return this.#category;
     } else {
-      this.removeAttribute("data-category");
+      throw new Error("The category is not valid");
     }
   }
 
-  updateCategoryName(categoryName) {
-    if (typeof categoryName === "string") {
-      if (this.#nameElement.textContent !== categoryName) {
-        this.#nameElement.textContent = categoryName;
+  set category(newCategory) {
+    if (categoryIsValid(newCategory)) {
+      this.#category = newCategory;
+      if (this.isConnected) {
+        this.updateCategory();
       }
     } else {
-      throw new Error("The category name is not a string");
+      throw new Error("The new category is not valid");
+    }
+  }
+
+  updateCategoryName() {
+    if (this.#nameElement.textContent !== this.category.name) {
+      this.#nameElement.textContent = this.category.name;
     }
   }
 
@@ -51,17 +51,7 @@ class DispatchCategory extends HTMLLIElement {
   }
 
   updateCategory() {
-    if (typeof this.category === "string") {
-      const category = dispatchCategoryApi.getCategoryById(this.category);
-      this.updateCategoryName(category.name);
-    } else {
-      throw new Error("The category is not defined");
-    }
-  }
-
-  clearCategory() {
-    this.#nameElement.textContent = null;
-    this.#countElement.textContent = null;
+    this.updateCategoryName(this.category.name);
   }
 
   connectedCallback() {
@@ -70,19 +60,7 @@ class DispatchCategory extends HTMLLIElement {
       this.replaceChildren(this.#textElement, this.listElement);
       this.#hasBeenMountedOnce = true;
     }
-  }
-
-  attributeChangedCallback(name, _oldValue, newValue) {
-    switch (name) {
-      case "data-category": {
-        if (typeof newValue === "string") {
-          this.updateCategory();
-        } else {
-          this.clearCategory();
-        }
-        break;
-      }
-    }
+    this.updateCategory();
   }
 }
 

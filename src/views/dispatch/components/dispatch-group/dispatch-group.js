@@ -1,8 +1,6 @@
-import dispatchCategoryAPI from "../../api/dispatch-category.api";
-import dispatchGroupAPI from "../../api/dispatch-group.api";
-import dispatchUnitApi from "../../api/dispatch-unit.api";
-
-const WAITING_CATEGORY_ID = "2";
+import DispatchCategoryAPI from "../../api/dispatch-category.api";
+import DispatchUnitAPI from "../../api/dispatch-unit.api";
+import { groupIsValid } from "../../types/dispatch-group.type";
 
 class DispatchGroup extends HTMLLIElement {
   #hasBeenMountedOnce = false;
@@ -11,11 +9,7 @@ class DispatchGroup extends HTMLLIElement {
   #numberElement;
   #listElement;
   #deleteButtonElement;
-  #dispatchUnit = document.createElement("li", { is: "dispatch-unit" });
-
-  static get observedAttributes() {
-    return ["data-group"];
-  }
+  #group;
 
   constructor() {
     super();
@@ -29,49 +23,42 @@ class DispatchGroup extends HTMLLIElement {
   }
 
   get group() {
-    return this.dataset.group;
+    if (groupIsValid(this.#group)) {
+      return this.#group;
+    } else {
+      throw new Error("The group is not valid");
+    }
   }
 
   set group(newGroup) {
-    if (typeof newGroup === "string") {
-      this.dataset.group = newGroup;
+    if (groupIsValid(newGroup)) {
+      this.#group = newGroup;
+      if (this.isConnected) {
+        this.updateGroup();
+      }
     } else {
-      this.removeAttribute("data-group");
+      throw new Error("The new group is not valid");
     }
   }
 
   updateGroupName() {
-    if (typeof this.group === "string") {
-      const group = dispatchGroupAPI.getGroupById(this.group);
-      const category = dispatchCategoryAPI.getCategoryById(group.categoryId);
-      if (this.#nameElement.textContent !== category.name) {
-        this.#nameElement.textContent = category.name;
-      }
-    } else {
-      throw new Error("The group is not defined");
+    const dispatchCategory = DispatchCategoryAPI.getDispatchCategoryById(this.group.categoryId);
+    if (this.#nameElement.textContent !== dispatchCategory.category.name) {
+      this.#nameElement.textContent = dispatchCategory.category.name;
     }
   }
 
   updateGroupUnits() {
-    if (typeof this.group === "string") {
-      const units = dispatchUnitApi.getUnitsByGroupId(this.group);
-      const dispatchUnits = units.map((unit) => {
-        const dispatchUnit = this.#dispatchUnit.cloneNode(true);
-        dispatchUnit.dataset.unit = unit.id;
-        return dispatchUnit;
-      });
-      this.#listElement.replaceChildren(...dispatchUnits);
-    } else {
-      throw new Error("The group is not defined");
-    }
+    this.#listElement.replaceChildren(
+      ...DispatchUnitAPI.getDispatchUnitsByGroupId(this.group.id)
+    );
   }
 
   updateGroupNumber() {
     const firstUnit = this.#listElement.firstElementChild;
     if (firstUnit) {
-      const unit = dispatchUnitApi.getUnitById(firstUnit.unit);
-      if (this.#numberElement.textContent !== unit.number) {
-        this.#numberElement.textContent = unit.number;
+      if (this.#numberElement.textContent !== firstUnit.unit.number) {
+        this.#numberElement.textContent = firstUnit.unit.number;
       }
     } else if (this.#numberElement.textContent !== null) {
       this.#numberElement.textContent = null;
@@ -84,18 +71,13 @@ class DispatchGroup extends HTMLLIElement {
     this.updateGroupNumber();
   }
 
-  clearGroup() {
-    this.#nameElement.textContent = null;
-    this.#listElement.replaceChildren();
-    this.updateGroupNumber();
-  }
-
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("dispatchGroup");
       this.replaceChildren(this.#headerElement, this.#listElement);
       this.#hasBeenMountedOnce = true;
     }
+    this.updateGroup();
     this.#deleteButtonElement.addEventListener("click", this.handleDeleteButtonClick);
   }
 
@@ -103,35 +85,12 @@ class DispatchGroup extends HTMLLIElement {
     this.#deleteButtonElement.removeEventListener("click", this.handleDeleteButtonClick);
   }
 
-  attributeChangedCallback(name, _oldValue, newValue) {
-    switch (name) {
-      case "data-group": {
-        if (typeof newValue === "string") {
-          this.updateGroup();
-        } else {
-          this.clearGroup();
-        }
-        break;
-      }
-    }
-  }
-
   handleDeleteButtonClick() {
-    if (typeof this.group === "string") {
-      const group = dispatchGroupAPI.getGroupById(this.group);
-      const fromCategory = document.querySelector(`li[data-category="${group.categoryId}"]`);
-      const toCategory = document.querySelector(`li[data-category="${WAITING_CATEGORY_ID}"]`);
-      const dispatchUnits = [...this.#listElement.children];
-      if (dispatchUnits.length > 0) {
-        toCategory.listElement.append(...dispatchUnits);
-        toCategory.reorderCategoryUnits();
-      }
-      dispatchGroupAPI.deleteGroup(this.group);
-      this.remove();
-      fromCategory.reorderCategoryGroups();
-    } else {
-      throw new Error("The group is not defined");
-    }
+    const customEvent = new CustomEvent("dispatch-delete-group", {
+      bubbles: true,
+      detail: { groupId: this.group.id }
+    });
+    this.dispatchEvent(customEvent);
   }
 }
 

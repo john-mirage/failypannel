@@ -1,4 +1,4 @@
-import dispatchUnitApi from "../../api/dispatch-unit.api";
+import { unitIsValid } from "../../types/dispatch-unit.type";
 
 class DispatchUnit extends HTMLLIElement {
   #hasBeenMountedOnce = false;
@@ -6,10 +6,7 @@ class DispatchUnit extends HTMLLIElement {
   #textElement;
   #nameElement;
   #roleElement;
-
-  static get observedAttributes() {
-    return ["data-unit"];
-  }
+  #unit;
 
   constructor() {
     super();
@@ -21,66 +18,49 @@ class DispatchUnit extends HTMLLIElement {
   }
 
   get unit() {
-    return this.dataset.unit;
+    if (unitIsValid(this.#unit)) {
+      return this.#unit;
+    } else {
+      throw new Error("The unit is not valid");
+    }
   }
 
   set unit(newUnit) {
-    if (typeof newUnit === "string") {
-      this.dataset.unit = newUnit;
+    if (unitIsValid(newUnit)) {
+      this.#unit = newUnit;
+      if (this.isConnected) {
+        this.updateUnit();
+      }
     } else {
-      this.removeAttribute("data-unit");
+      throw new Error("The new unit is not valid");
     }
   }
 
-  updateUnitNumber(unitNumber) {
-    if (typeof unitNumber === "string") {
-      if (this.#numberElement.textContent !== unitNumber) {
-        this.#numberElement.textContent = unitNumber;
-      }
-    } else {
-      throw new Error("The unit number is not a string");
+  updateUnitNumber() {
+    if (this.#numberElement.textContent !== this.unit.number) {
+      this.#numberElement.textContent = this.unit.number;
     }
   }
 
-  updateUnitName(unitName) {
-    if (typeof unitName === "string") {
-      if (this.#nameElement.textContent !== unitName) {
-        this.#nameElement.textContent = unitName;
-      }
-      if (this.#nameElement.getAttribute("title") !== unitName) {
-        this.#nameElement.setAttribute("title", unitName);
-      }
-    } else {
-      throw new Error("The unit name is not a string");
+  updateUnitName() {
+    if (this.#nameElement.textContent !== this.unit.name) {
+      this.#nameElement.textContent = this.unit.name;
+    }
+    if (this.#nameElement.getAttribute("title") !== this.unit.name) {
+      this.#nameElement.setAttribute("title", this.unit.name);
     }
   }
 
-  updateUnitRole(unitRole) {
-    if (typeof unitRole === "string") {
-      if (this.#roleElement.textContent !== unitRole) {
-        this.#roleElement.textContent = unitRole;
-      }
-    } else {
-      throw new Error("The unit role is not a string");
+  updateUnitRole() {
+    if (this.#roleElement.textContent !== this.unit.role) {
+      this.#roleElement.textContent = this.unit.role;
     }
   }
 
   updateUnit() {
-    if (typeof this.unit === "string") {
-      const unit = dispatchUnitApi.getUnitById(this.unit);
-      this.updateUnitNumber(unit.number);
-      this.updateUnitName(unit.name);
-      this.updateUnitRole(unit.role);
-    } else {
-      throw new Error("The unit is not defined");
-    }
-  }
-
-  clearUnit() {
-    this.#numberElement.textContent = null;
-    this.#nameElement.textContent = null;
-    this.#nameElement.removeAttribute("title");
-    this.#roleElement.textContent = null;
+    this.updateUnitNumber();
+    this.updateUnitName();
+    this.updateUnitRole();
   }
 
   connectedCallback() {
@@ -89,19 +69,7 @@ class DispatchUnit extends HTMLLIElement {
       this.replaceChildren(this.#numberElement, this.#textElement);
       this.#hasBeenMountedOnce = true;
     }
-  }
-
-  attributeChangedCallback(name, _oldValue, newValue) {
-    switch (name) {
-      case "data-unit": {
-        if (typeof newValue === "string") {
-          this.updateUnit();
-        } else {
-          this.clearUnit();
-        }
-        break;
-      }
-    }
+    this.updateUnit();
   }
 }
 

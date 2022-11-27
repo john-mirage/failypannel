@@ -1,63 +1,72 @@
 import { compareTwoNumbers } from "../../../utils/comparison";
-import groups from "../data/dispatch-group.data.json";
 import { groupIsValid } from "../types/dispatch-group.type";
+import DispatchGroupCategory from "../components/dispatch-category/dispatch-group-category";
+import DispatchCategoryAPI from "./dispatch-category.api";
+import DispatchUnitAPI from "./dispatch-unit.api";
+
+const WAITING_CATEGORY_ID = "2";
 
 class DispatchGroupAPI {
-  #groups = new Map();
+  static #dispatchGroup = document.createElement("li", { is: "dispatch-group" });
+  static #dispatchGroups = new Map();
 
-  constructor(groups) {
+  static get dispatchGroups() {
+    return [...this.#dispatchGroups.values()];
+  }
+
+  static set dispatchGroups(newGroups) {
     if (
-      Array.isArray(groups) &&
-      groups.every((group) => groupIsValid(group))
+      Array.isArray(newGroups) &&
+      newGroups.every((group) => groupIsValid(group))
     ) {
-      groups.forEach((group) => {
-        this.#groups.set(group.id, group);
-      });
-      this.compareTwoGroupsByOrderId = this.compareTwoGroupsByOrderId.bind(this);
+      newGroups.forEach(this.createDispatchGroup.bind(this));
     } else {
       throw new Error("The groups are not valid");
     }
   }
 
-  get groups() {
-    return [...this.#groups.values()];
+  static compareTwoDispatchGroupsByOrderId(dispatchGroupA, dispatchGroupB) {
+    return compareTwoNumbers(
+      dispatchGroupA.group.categoryOrderId,
+      dispatchGroupB.group.categoryOrderId
+    );
   }
 
-  compareTwoGroupsByOrderId(groupA, groupB) {
-    return compareTwoNumbers(groupA.categoryOrderId, groupB.categoryOrderId);
-  }
-
-  getGroupById(groupId) {
-    if (this.#groups.has(groupId)) {
-      return this.#groups.get(groupId);
+  static getDispatchGroupById(groupId) {
+    if (this.#dispatchGroups.has(groupId)) {
+      return this.#dispatchGroups.get(groupId);
     } else {
-      throw new Error("The group has not been found");
+      throw new Error("The group element has not been found");
     }
   }
 
-  getGroupsByCategoryId(categoryId) {
-    const groups = this.groups.filter((group) => {
-      return categoryId === group.categoryId;
+  static getDispatchGroupsByCategoryId(categoryId) {
+    const dispatchGroups = this.dispatchGroups.filter((dispatchGroup) => {
+      return categoryId === dispatchGroup.group.categoryId;
     });
-    return groups.sort(this.compareTwoGroupsByOrderId);
+    dispatchGroups.sort(this.compareTwoDispatchGroupsByOrderId.bind(this));
+    return dispatchGroups;
   }
 
-  addGroup(newGroup) {
+  static createDispatchGroup(newGroup) {
     if (groupIsValid(newGroup)) {
-      if (!this.#groups.has(newGroup.id)) {
-        this.#groups.set(newGroup.id, newGroup);
+      if (!this.#dispatchGroups.has(newGroup.id)) {
+        const dispatchGroup = this.#dispatchGroup.cloneNode(true);
+        dispatchGroup.group = newGroup;
+        this.#dispatchGroups.set(newGroup.id, dispatchGroup);
       } else {
-        throw new Error("The group already exist");
+        throw new Error("The dispatch group already exist");
       }
     } else {
       throw new Error("The new group is not valid");
     }
   }
 
-  updateGroup(newGroup) {
+  static updateDispatchGroup(newGroup) {
     if (groupIsValid(newGroup)) {
-      if (this.#groups.has(newGroup.id)) {
-        this.#groups.set(newGroup.id, newGroup);
+      if (this.#dispatchGroups.has(newGroup.id)) {
+        const dispatchGroup = this.#dispatchGroups.get(newGroup.id);
+        dispatchGroup.group = newGroup;
       } else {
         throw new Error("The old group has not been found");
       }
@@ -66,13 +75,38 @@ class DispatchGroupAPI {
     }
   }
 
-  deleteGroup(groupId) {
-    if (this.#groups.has(groupId)) {
-      this.#groups.delete(groupId);
+  static updateDispatchGroupsCategory(dispatchGroupCategory) {
+    if (dispatchGroupCategory instanceof DispatchGroupCategory) {
+      const dispatchGroups = [...dispatchGroupCategory.listElement.children];
+      if (dispatchGroups.length > 0) {
+        dispatchGroups.forEach((dispatchGroup, dispatchGroupIndex) => {
+          DispatchGroupAPI.updateDispatchGroup({
+            ...dispatchGroup.group,
+            categoryId: dispatchGroupCategory.category.id,
+            categoryOrderId: dispatchGroupIndex,
+          });
+        });
+      }
     } else {
-      throw new Error("The group to delete has not been found");
+      throw new Error("The dispatch category is not valid");
+    }
+  }
+
+  static deleteDispatchGroup(groupId) {
+    if (this.#dispatchGroups.has(groupId)) {
+      const dispatchGroup = this.#dispatchGroups.get(groupId);
+      const dispatchUnits = DispatchUnitAPI.getDispatchUnitsByGroupId(groupId);
+      const fromDispatchCategory = DispatchCategoryAPI.getDispatchCategoryById(dispatchGroup.group.categoryId);
+      const toDispatchCategory = DispatchCategoryAPI.getDispatchCategoryById(WAITING_CATEGORY_ID);
+      dispatchGroup.remove();
+      toDispatchCategory.listElement.append(...dispatchUnits);
+      this.#dispatchGroups.delete(groupId);
+      this.updateDispatchGroupsCategory(fromDispatchCategory);
+      DispatchUnitAPI.updateDispatchUnitsCategory(toDispatchCategory);
+    } else {
+      throw new Error("The dispatch group to delete has not been found");
     }
   }
 }
 
-export default new DispatchGroupAPI(groups);
+export default DispatchGroupAPI;
