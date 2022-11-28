@@ -9,6 +9,7 @@ class DispatchGroup extends HTMLLIElement {
   #numberElement;
   #listElement;
   #deleteButtonElement;
+  #categoryName;
   #group;
   #dispatchUnits;
 
@@ -21,6 +22,23 @@ class DispatchGroup extends HTMLLIElement {
     this.#numberElement = this.#headerElement.querySelector('[data-js="number"]');
     this.#deleteButtonElement = this.#headerElement.querySelector('[data-js="delete-button"]');
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
+  }
+
+  get categoryName() {
+    if (typeof this.#categoryName === "string") {
+      return this.#categoryName;
+    } else {
+      throw new Error("The category name is not valid");
+    }
+  }
+
+  set categoryName(newCategoryName) {
+    if (typeof newCategoryName === "string") {
+      this.#categoryName = newCategoryName;
+      this.updateDispatchGroupName();
+    } else {
+      throw new Error("The category name is not valid");
+    }
   }
 
   get group() {
@@ -64,9 +82,8 @@ class DispatchGroup extends HTMLLIElement {
   }
 
   updateDispatchGroupName() {
-    const dispatchCategory = DispatchCategoryAPI.getDispatchCategoryById(this.group.categoryId);
-    if (this.#nameElement.textContent !== dispatchCategory.category.name) {
-      this.#nameElement.textContent = dispatchCategory.category.name;
+    if (this.#nameElement.textContent !== this.categoryName) {
+      this.#nameElement.textContent = this.categoryName;
     }
   }
 
@@ -91,7 +108,6 @@ class DispatchGroup extends HTMLLIElement {
   }
 
   updateDispatchGroup() {
-    //this.updateDispatchGroupName();
     this.updateDispatchGroupListHeight();
   }
 

@@ -40,6 +40,7 @@ class DispatchAPI {
   insertDispatchCategoriesGroups() {
     this.#dispatchCategoryAPI.dispatchCategoryArray.forEach((dispatchCategory) => {
       const dispatchGroups = this.#dispatchGroupAPI.getDispatchGroupsByCategoryId(dispatchCategory.category.id);
+      dispatchGroups.forEach((dispatchGroup) => dispatchGroup.categoryName = dispatchCategory.category.name);
       dispatchCategory.dispatchGroups = dispatchGroups;
     });
   }
