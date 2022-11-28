@@ -91,6 +91,7 @@ class DispatchUnitAPI {
       const dispatchUnits = [...dispatchUnitCategory.listElement.children];
       if (dispatchUnits.length > 0) {
         dispatchUnits.forEach((dispatchUnit, dispatchUnitIndex) => {
+          console.log(dispatchUnit);
           this.updateDispatchUnit({
             ...dispatchUnit.unit,
             parentType: "category",

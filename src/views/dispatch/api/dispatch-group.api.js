@@ -1,10 +1,6 @@
 import { compareTwoNumbers } from "../../../utils/comparison";
 import { groupIsValid } from "../types/dispatch-group.type";
 import DispatchGroupCategory from "../components/dispatch-category/dispatch-group-category";
-import DispatchCategoryAPI from "./dispatch-category.api";
-import DispatchUnitAPI from "./dispatch-unit.api";
-
-const WAITING_CATEGORY_ID = "2";
 
 class DispatchGroupAPI {
   static #dispatchGroup = document.createElement("li", { is: "dispatch-group" });
@@ -94,15 +90,7 @@ class DispatchGroupAPI {
 
   static deleteDispatchGroup(groupId) {
     if (this.#dispatchGroups.has(groupId)) {
-      const dispatchGroup = this.#dispatchGroups.get(groupId);
-      const dispatchUnits = DispatchUnitAPI.getDispatchUnitsByGroupId(groupId);
-      const fromDispatchCategory = DispatchCategoryAPI.getDispatchCategoryById(dispatchGroup.group.categoryId);
-      const toDispatchCategory = DispatchCategoryAPI.getDispatchCategoryById(WAITING_CATEGORY_ID);
-      dispatchGroup.remove();
-      toDispatchCategory.listElement.append(...dispatchUnits);
       this.#dispatchGroups.delete(groupId);
-      this.updateDispatchGroupsCategory(fromDispatchCategory);
-      DispatchUnitAPI.updateDispatchUnitsCategory(toDispatchCategory);
     } else {
       throw new Error("The dispatch group to delete has not been found");
     }

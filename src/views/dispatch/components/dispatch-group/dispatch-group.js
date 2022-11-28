@@ -65,10 +65,20 @@ class DispatchGroup extends HTMLLIElement {
     }
   }
 
+  updateGroupListHeight() {
+    if (this.group.size) {
+      const gridTemplateRows = `repeat(${this.group.size}, 72px)`;
+      this.#listElement.style.gridTemplateRows = gridTemplateRows;
+    } else {
+      throw new Error("The group size is not defined");
+    }
+  }
+
   updateGroup() {
     this.updateGroupName();
     this.updateGroupUnits();
     this.updateGroupNumber();
+    this.updateGroupListHeight();
   }
 
   connectedCallback() {
@@ -88,7 +98,7 @@ class DispatchGroup extends HTMLLIElement {
   handleDeleteButtonClick() {
     const customEvent = new CustomEvent("dispatch-delete-group", {
       bubbles: true,
-      detail: { groupId: this.group.id }
+      detail: { dispatchGroup: this }
     });
     this.dispatchEvent(customEvent);
   }
