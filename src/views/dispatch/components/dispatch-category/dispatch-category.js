@@ -28,21 +28,19 @@ class DispatchCategory extends HTMLLIElement {
   set category(newCategory) {
     if (categoryIsValid(newCategory)) {
       this.#category = newCategory;
-      if (this.isConnected) {
-        this.updateCategory();
-      }
+      this.updateDispatchCategory();
     } else {
       throw new Error("The new category is not valid");
     }
   }
 
-  updateCategoryName() {
+  updateDispatchCategoryName() {
     if (this.#nameElement.textContent !== this.category.name) {
       this.#nameElement.textContent = this.category.name;
     }
   }
 
-  updateCategoryCount() {
+  updateDispatchCategoryCount() {
     const count = this.listElement.children.length;
     const formatedCount = count > 0 ? ` (${String(count)})` : null;
     if (this.#countElement.textContent !== formatedCount) {
@@ -50,8 +48,8 @@ class DispatchCategory extends HTMLLIElement {
     }
   }
 
-  updateCategory() {
-    this.updateCategoryName(this.category.name);
+  updateDispatchCategory() {
+    this.updateDispatchCategoryName(this.category.name);
   }
 
   connectedCallback() {
@@ -60,7 +58,6 @@ class DispatchCategory extends HTMLLIElement {
       this.replaceChildren(this.#textElement, this.listElement);
       this.#hasBeenMountedOnce = true;
     }
-    this.updateCategory();
   }
 }
 

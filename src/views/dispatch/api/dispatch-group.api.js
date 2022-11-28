@@ -1,55 +1,59 @@
 import { compareTwoNumbers } from "../../../utils/comparison";
 import { groupIsValid } from "../types/dispatch-group.type";
-import DispatchGroupCategory from "../components/dispatch-category/dispatch-group-category";
 
 class DispatchGroupAPI {
-  static #dispatchGroup = document.createElement("li", { is: "dispatch-group" });
-  static #dispatchGroups = new Map();
+  #dispatchGroup = document.createElement("li", { is: "dispatch-group" });
+  #dispatchGroupMap = new Map();
 
-  static get dispatchGroups() {
-    return [...this.#dispatchGroups.values()];
-  }
-
-  static set dispatchGroups(newGroups) {
+  constructor(groups) {
     if (
-      Array.isArray(newGroups) &&
-      newGroups.every((group) => groupIsValid(group))
+      Array.isArray(groups) &&
+      groups.every((group) => groupIsValid(group))
     ) {
-      newGroups.forEach(this.createDispatchGroup.bind(this));
+      this.createDispatchGroup = this.createDispatchGroup.bind(this);
+      groups.forEach(this.createDispatchGroup);
     } else {
       throw new Error("The groups are not valid");
     }
   }
 
-  static compareTwoDispatchGroupsByOrderId(dispatchGroupA, dispatchGroupB) {
+  get dispatchGroupMap() {
+    return this.#dispatchGroupMap;
+  }
+
+  get dispatchGroupArray() {
+    return [...this.#dispatchGroupMap.values()];
+  }
+
+  compareTwoDispatchGroupsByOrderId(dispatchGroupA, dispatchGroupB) {
     return compareTwoNumbers(
       dispatchGroupA.group.categoryOrderId,
       dispatchGroupB.group.categoryOrderId
     );
   }
 
-  static getDispatchGroupById(groupId) {
-    if (this.#dispatchGroups.has(groupId)) {
-      return this.#dispatchGroups.get(groupId);
+  getDispatchGroupById(groupId) {
+    if (this.#dispatchGroupMap.has(groupId)) {
+      return this.#dispatchGroupMap.get(groupId);
     } else {
       throw new Error("The group element has not been found");
     }
   }
 
-  static getDispatchGroupsByCategoryId(categoryId) {
-    const dispatchGroups = this.dispatchGroups.filter((dispatchGroup) => {
+  getDispatchGroupsByCategoryId(categoryId) {
+    const dispatchGroups = this.dispatchGroupArray.filter((dispatchGroup) => {
       return categoryId === dispatchGroup.group.categoryId;
     });
     dispatchGroups.sort(this.compareTwoDispatchGroupsByOrderId.bind(this));
     return dispatchGroups;
   }
 
-  static createDispatchGroup(newGroup) {
+  createDispatchGroup(newGroup) {
     if (groupIsValid(newGroup)) {
-      if (!this.#dispatchGroups.has(newGroup.id)) {
+      if (!this.#dispatchGroupMap.has(newGroup.id)) {
         const dispatchGroup = this.#dispatchGroup.cloneNode(true);
         dispatchGroup.group = newGroup;
-        this.#dispatchGroups.set(newGroup.id, dispatchGroup);
+        this.#dispatchGroupMap.set(newGroup.id, dispatchGroup);
       } else {
         throw new Error("The dispatch group already exist");
       }
@@ -58,10 +62,10 @@ class DispatchGroupAPI {
     }
   }
 
-  static updateDispatchGroup(newGroup) {
+  updateDispatchGroup(newGroup) {
     if (groupIsValid(newGroup)) {
-      if (this.#dispatchGroups.has(newGroup.id)) {
-        const dispatchGroup = this.#dispatchGroups.get(newGroup.id);
+      if (this.#dispatchGroupMap.has(newGroup.id)) {
+        const dispatchGroup = this.#dispatchGroupMap.get(newGroup.id);
         dispatchGroup.group = newGroup;
       } else {
         throw new Error("The old group has not been found");
@@ -71,26 +75,9 @@ class DispatchGroupAPI {
     }
   }
 
-  static updateDispatchGroupsCategory(dispatchGroupCategory) {
-    if (dispatchGroupCategory instanceof DispatchGroupCategory) {
-      const dispatchGroups = [...dispatchGroupCategory.listElement.children];
-      if (dispatchGroups.length > 0) {
-        dispatchGroups.forEach((dispatchGroup, dispatchGroupIndex) => {
-          DispatchGroupAPI.updateDispatchGroup({
-            ...dispatchGroup.group,
-            categoryId: dispatchGroupCategory.category.id,
-            categoryOrderId: dispatchGroupIndex,
-          });
-        });
-      }
-    } else {
-      throw new Error("The dispatch category is not valid");
-    }
-  }
-
-  static deleteDispatchGroup(groupId) {
-    if (this.#dispatchGroups.has(groupId)) {
-      this.#dispatchGroups.delete(groupId);
+  deleteDispatchGroup(groupId) {
+    if (this.#dispatchGroupMap.has(groupId)) {
+      this.#dispatchGroupMap.delete(groupId);
     } else {
       throw new Error("The dispatch group to delete has not been found");
     }

@@ -1,6 +1,6 @@
 import DispatchCategoryAPI from "../../api/dispatch-category.api";
-import DispatchUnitAPI from "../../api/dispatch-unit.api";
 import { groupIsValid } from "../../types/dispatch-group.type";
+import DispatchUnit from "../dispatch-unit";
 
 class DispatchGroup extends HTMLLIElement {
   #hasBeenMountedOnce = false;
@@ -10,6 +10,7 @@ class DispatchGroup extends HTMLLIElement {
   #listElement;
   #deleteButtonElement;
   #group;
+  #dispatchUnits;
 
   constructor() {
     super();
@@ -33,28 +34,52 @@ class DispatchGroup extends HTMLLIElement {
   set group(newGroup) {
     if (groupIsValid(newGroup)) {
       this.#group = newGroup;
-      if (this.isConnected) {
-        this.updateGroup();
-      }
+      this.updateDispatchGroup();
     } else {
       throw new Error("The new group is not valid");
     }
   }
 
-  updateGroupName() {
+  get dispatchUnits() {
+    if (
+      Array.isArray(this.#dispatchUnits) &&
+      this.#dispatchUnits.every((dispatchUnit) => dispatchUnit instanceof DispatchUnit)
+    ) {
+      return this.#dispatchUnits;
+    } else {
+      throw new Error("The dispatch units are not valid");
+    }
+  }
+
+  set dispatchUnits(newDispatchUnits) {
+    if (
+      Array.isArray(newDispatchUnits) &&
+      newDispatchUnits.every((newDispatchUnit) => newDispatchUnit instanceof DispatchUnit)
+    ) {
+      this.#dispatchUnits = newDispatchUnits;
+      this.updateDispatchGroupUnits();
+    } else {
+      throw new Error("The new dispatch units are not valid");
+    }
+  }
+
+  updateDispatchGroupName() {
     const dispatchCategory = DispatchCategoryAPI.getDispatchCategoryById(this.group.categoryId);
     if (this.#nameElement.textContent !== dispatchCategory.category.name) {
       this.#nameElement.textContent = dispatchCategory.category.name;
     }
   }
 
-  updateGroupUnits() {
-    this.#listElement.replaceChildren(
-      ...DispatchUnitAPI.getDispatchUnitsByGroupId(this.group.id)
-    );
+  updateDispatchGroupListHeight() {
+    if (this.group.size) {
+      const gridTemplateRows = `repeat(${this.group.size}, 72px)`;
+      this.#listElement.style.gridTemplateRows = gridTemplateRows;
+    } else {
+      throw new Error("The group size is not defined");
+    }
   }
 
-  updateGroupNumber() {
+  updateDispatchGroupNumber() {
     const firstUnit = this.#listElement.firstElementChild;
     if (firstUnit) {
       if (this.#numberElement.textContent !== firstUnit.unit.number) {
@@ -65,20 +90,14 @@ class DispatchGroup extends HTMLLIElement {
     }
   }
 
-  updateGroupListHeight() {
-    if (this.group.size) {
-      const gridTemplateRows = `repeat(${this.group.size}, 72px)`;
-      this.#listElement.style.gridTemplateRows = gridTemplateRows;
-    } else {
-      throw new Error("The group size is not defined");
-    }
+  updateDispatchGroup() {
+    //this.updateDispatchGroupName();
+    this.updateDispatchGroupListHeight();
   }
 
-  updateGroup() {
-    this.updateGroupName();
-    this.updateGroupUnits();
-    this.updateGroupNumber();
-    this.updateGroupListHeight();
+  updateDispatchGroupUnits() {
+    this.#listElement.replaceChildren(...this.#dispatchUnits);
+    this.updateDispatchGroupNumber();
   }
 
   connectedCallback() {
@@ -87,7 +106,6 @@ class DispatchGroup extends HTMLLIElement {
       this.replaceChildren(this.#headerElement, this.#listElement);
       this.#hasBeenMountedOnce = true;
     }
-    this.updateGroup();
     this.#deleteButtonElement.addEventListener("click", this.handleDeleteButtonClick);
   }
 

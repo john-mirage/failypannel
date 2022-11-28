@@ -1,21 +1,39 @@
 import DispatchCategory from "../dispatch-category";
-import DispatchGroupAPI from "../../../api/dispatch-group.api";
+import DispatchGroup from "../../dispatch-group";
 
 class DispatchGroupCategory extends DispatchCategory {
+  #dispatchGroups;
+
   constructor() {
     super();
   }
 
-  updateCategoryGroups() {
-    this.listElement.replaceChildren(
-      ...DispatchGroupAPI.getDispatchGroupsByCategoryId(this.category.id)
-    );
+  get dispatchGroups() {
+    if (
+      Array.isArray(this.#dispatchGroups) &&
+      this.#dispatchGroups.every((dispatchGroup) => dispatchGroup instanceof DispatchGroup)
+    ) {
+      return this.#dispatchGroups;
+    } else {
+      throw new Error("The dispatch groups are not valid");
+    }
   }
 
-  updateCategory() {
-    super.updateCategory();
-    this.updateCategoryGroups();
-    this.updateCategoryCount();
+  set dispatchGroups(newDispatchGroups) {
+    if (
+      Array.isArray(newDispatchGroups) &&
+      newDispatchGroups.every((newDispatchGroup) => newDispatchGroup instanceof DispatchGroup)
+    ) {
+      this.#dispatchGroups = newDispatchGroups;
+      this.updateDispatchGroups();
+    } else {
+      throw new Error("The new dispatch groups are not valid");
+    }
+  }
+
+  updateDispatchGroups() {
+    this.listElement.replaceChildren(...this.#dispatchGroups);
+    this.updateDispatchCategoryCount();
   }
 
   connectedCallback() {

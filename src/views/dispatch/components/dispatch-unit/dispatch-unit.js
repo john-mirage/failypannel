@@ -28,9 +28,7 @@ class DispatchUnit extends HTMLLIElement {
   set unit(newUnit) {
     if (unitIsValid(newUnit)) {
       this.#unit = newUnit;
-      if (this.isConnected) {
-        this.updateUnit();
-      }
+      this.updateUnit();
     } else {
       throw new Error("The new unit is not valid");
     }
@@ -69,7 +67,6 @@ class DispatchUnit extends HTMLLIElement {
       this.replaceChildren(this.#numberElement, this.#textElement);
       this.#hasBeenMountedOnce = true;
     }
-    this.updateUnit();
   }
 }
 

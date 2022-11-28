@@ -1,34 +1,39 @@
 import { categoryIsValid } from "../types/dispatch-category.type";
 
 class DispatchCategoryAPI {
-  static #dispatchGroupCategory = document.createElement("li", { is: "dispatch-group-category" });
-  static #dispatchUnitCategory = document.createElement("li", { is: "dispatch-unit-category" });
-  static #dispatchCategories = new Map();
+  #dispatchGroupCategory = document.createElement("li", { is: "dispatch-group-category" });
+  #dispatchUnitCategory = document.createElement("li", { is: "dispatch-unit-category" });
+  #dispatchCategoryMap = new Map();
 
-  static get dispatchCategories() {
-    return [...this.#dispatchCategories.values()];
-  }
-
-  static set dispatchCategories(newDispatchCategories) {
+  constructor(categories) {
     if (
-      Array.isArray(newDispatchCategories) &&
-      newDispatchCategories.every((category) => categoryIsValid(category))
+      Array.isArray(categories) &&
+      categories.every((category) => categoryIsValid(category))
     ) {
-      newDispatchCategories.forEach(this.createDispatchCategory.bind(this));
+      this.createDispatchCategory = this.createDispatchCategory.bind(this);
+      categories.forEach(this.createDispatchCategory);
     } else {
       throw new Error("The categories are not valid");
     }
   }
 
-  static getDispatchCategoryById(categoryId) {
-    if (this.#dispatchCategories.has(categoryId)) {
-      return this.#dispatchCategories.get(categoryId);
+  get dispatchCategoryMap() {
+    return this.#dispatchCategoryMap;
+  }
+
+  get dispatchCategoryArray() {
+    return [...this.#dispatchCategoryMap.values()];
+  }
+
+  getDispatchCategoryById(categoryId) {
+    if (this.#dispatchCategoryMap.has(categoryId)) {
+      return this.#dispatchCategoryMap.get(categoryId);
     } else {
       throw new Error("The category element has not been found");
     }
   }
 
-  static createDispatchGroupCategory(category) {
+  createDispatchGroupCategory(category) {
     if (categoryIsValid(category)) {
       if (category.type === "group") {
         const dispatchCategory = this.#dispatchGroupCategory.cloneNode(true);
@@ -42,7 +47,7 @@ class DispatchCategoryAPI {
     }
   }
 
-  static createDispatchUnitCategory(category) {
+  createDispatchUnitCategory(category) {
     if (categoryIsValid(category)) {
       if (category.type === "unit") {
         const dispatchCategory = this.#dispatchUnitCategory.cloneNode(true);
@@ -56,19 +61,19 @@ class DispatchCategoryAPI {
     }
   }
 
-  static createDispatchCategory(newCategory) {
+  createDispatchCategory(newCategory) {
     if (categoryIsValid(newCategory)) {
-      if (!this.#dispatchCategories.has(newCategory.id)) {
+      if (!this.#dispatchCategoryMap.has(newCategory.id)) {
         switch (newCategory.type) {
           case "group": {
-            this.#dispatchCategories.set(
+            this.#dispatchCategoryMap.set(
               newCategory.id,
               this.createDispatchGroupCategory(newCategory)
             );
             break;
           }
           case "unit": {
-            this.#dispatchCategories.set(
+            this.#dispatchCategoryMap.set(
               newCategory.id,
               this.createDispatchUnitCategory(newCategory)
             );
@@ -86,10 +91,10 @@ class DispatchCategoryAPI {
     }
   }
 
-  static updateDispatchCategory(newCategory) {
+  updateDispatchCategory(newCategory) {
     if (categoryIsValid(newCategory)) {
-      if (this.#dispatchCategories.has(newCategory.id)) {
-        const dispatchCategory = this.#dispatchCategories.get(newCategory.id);
+      if (this.#dispatchCategoryMap.has(newCategory.id)) {
+        const dispatchCategory = this.#dispatchCategoryMap.get(newCategory.id);
         dispatchCategory.category = newCategory;
       } else {
         throw new Error("The old category has not been found");
@@ -99,9 +104,9 @@ class DispatchCategoryAPI {
     }
   }
 
-  static deleteDispatchCategory(categoryId) {
-    if (this.#dispatchCategories.has(categoryId)) {
-      this.#dispatchCategories.delete(categoryId);
+  deleteDispatchCategory(categoryId) {
+    if (this.#dispatchCategoryMap.has(categoryId)) {
+      this.#dispatchCategoryMap.delete(categoryId);
     } else {
       throw new Error("The category to delete has not been found");
     }

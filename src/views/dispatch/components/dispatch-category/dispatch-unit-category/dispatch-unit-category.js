@@ -1,21 +1,39 @@
 import DispatchCategory from "../dispatch-category";
-import DispatchUnitAPI from "../../../api/dispatch-unit.api";
+import DispatchUnit from "../../dispatch-unit";
 
 class DispatchUnitCategory extends DispatchCategory {
+  #dispatchUnits;
+
   constructor() {
     super();
   }
 
-  updateCategoryUnits() {
-    this.listElement.replaceChildren(
-      ...DispatchUnitAPI.getDispatchUnitsByCategoryId(this.category.id)
-    );
+  get dispatchUnits() {
+    if (
+      Array.isArray(this.#dispatchUnits) &&
+      this.#dispatchUnits.every((dispatchUnit) => dispatchUnit instanceof DispatchUnit)
+    ) {
+      return this.#dispatchUnits;
+    } else {
+      throw new Error("The dispatch units are not valid");
+    }
   }
 
-  updateCategory() {
-    super.updateCategory();
-    this.updateCategoryUnits();
-    this.updateCategoryCount();
+  set dispatchUnits(newDispatchUnits) {
+    if (
+      Array.isArray(newDispatchUnits) &&
+      newDispatchUnits.every((newDispatchUnit) => newDispatchUnit instanceof DispatchUnit)
+    ) {
+      this.#dispatchUnits = newDispatchUnits;
+      this.updateDispatchUnits();
+    } else {
+      throw new Error("The new dispatch units are not valid");
+    }
+  }
+  
+  updateDispatchUnits() {
+    this.listElement.replaceChildren(...this.#dispatchUnits);
+    this.updateDispatchCategoryCount();
   }
 
   connectedCallback() {

@@ -1,70 +1,74 @@
 import { compareTwoNumbers } from "../../../utils/comparison";
 import { unitIsValid } from "../types/dispatch-unit.type";
-import DispatchUnitCategory from "../components/dispatch-category/dispatch-unit-category";
-import DispatchGroup from "../components/dispatch-group/dispatch-group";
 
 class DispatchUnitAPI {
-  static #dispatchUnit = document.createElement("li", { is: "dispatch-unit" });
-  static #dispatchUnits = new Map();
+  #dispatchUnit = document.createElement("li", { is: "dispatch-unit" });
+  #dispatchUnitMap = new Map();
 
-  static get dispatchUnits() {
-    return [...this.#dispatchUnits.values()];
-  }
-
-  static set dispatchUnits(newUnits) {
+  constructor(units) {
     if (
-      Array.isArray(newUnits) &&
-      newUnits.every((unit) => unitIsValid(unit))
+      Array.isArray(units) &&
+      units.every((unit) => unitIsValid(unit))
     ) {
-      newUnits.forEach(this.createDispatchUnit.bind(this));
+      this.compareTwoDispatchUnitsByOrderId = this.compareTwoDispatchUnitsByOrderId.bind(this);
+      this.createDispatchUnit = this.createDispatchUnit.bind(this);
+      units.forEach(this.createDispatchUnit);
     } else {
       throw new Error("The units are not valid");
     }
   }
 
-  static compareTwoDispatchUnitsByOrderId(dispatchUnitA, dispatchUnitB) {
+  get dispatchUnitMap() {
+    return this.#dispatchUnitMap;
+  }
+
+  get dispatchUnitArray() {
+    return [...this.#dispatchUnitMap.values()];
+  }
+
+  compareTwoDispatchUnitsByOrderId(dispatchUnitA, dispatchUnitB) {
     return compareTwoNumbers(
       dispatchUnitA.unit.parentOrderId,
       dispatchUnitB.unit.parentOrderId
     );
   }
 
-  static getDispatchUnitById(unitId) {
-    if (this.#dispatchUnits.has(unitId)) {
-      return this.#dispatchUnits.get(unitId);
+  getDispatchUnitById(unitId) {
+    if (this.#dispatchUnitMap.has(unitId)) {
+      return this.#dispatchUnitMap.get(unitId);
     } else {
       throw new Error("The dispatch unit has not been found");
     }
   }
 
-  static getDispatchUnitsByCategoryId(categoryId) {
-    const dispatchUnits = this.dispatchUnits.filter((dispatchUnit) => {
+  getDispatchUnitsByCategoryId(categoryId) {
+    const dispatchUnits = this.dispatchUnitArray.filter((dispatchUnit) => {
       return (
         dispatchUnit.unit.parentType === "category" && 
         dispatchUnit.unit.parentId === categoryId
       );
     });
-    dispatchUnits.sort(this.compareTwoDispatchUnitsByOrderId.bind(this));
+    dispatchUnits.sort(this.compareTwoDispatchUnitsByOrderId);
     return dispatchUnits;
   }
 
-  static getDispatchUnitsByGroupId(groupId) {
-    const units = this.dispatchUnits.filter((dispatchUnit) => {
+  getDispatchUnitsByGroupId(groupId) {
+    const dispatchUnits = this.dispatchUnitArray.filter((dispatchUnit) => {
       return (
         dispatchUnit.unit.parentType === "group" &&
         dispatchUnit.unit.parentId === groupId
       );
     });
-    units.sort(this.compareTwoDispatchUnitsByOrderId.bind(this));
-    return units;
+    dispatchUnits.sort(this.compareTwoDispatchUnitsByOrderId);
+    return dispatchUnits;
   }
 
-  static createDispatchUnit(newUnit) {
+  createDispatchUnit(newUnit) {
     if (unitIsValid(newUnit)) {
-      if (!this.#dispatchUnits.has(newUnit.id)) {
+      if (!this.#dispatchUnitMap.has(newUnit.id)) {
         const dispatchUnit = this.#dispatchUnit.cloneNode(true);
         dispatchUnit.unit = newUnit;
-        this.#dispatchUnits.set(newUnit.id, dispatchUnit);
+        this.#dispatchUnitMap.set(newUnit.id, dispatchUnit);
       } else {
         throw new Error("The dispatch unit already exist");
       }
@@ -73,10 +77,10 @@ class DispatchUnitAPI {
     }
   }
 
-  static updateDispatchUnit(newUnit) {
+  updateDispatchUnit(newUnit) {
     if (unitIsValid(newUnit)) {
-      if (this.#dispatchUnits.has(newUnit.id)) {
-        const dispatchUnit = this.#dispatchUnits.get(newUnit.id);
+      if (this.#dispatchUnitMap.has(newUnit.id)) {
+        const dispatchUnit = this.#dispatchUnitMap.get(newUnit.id);
         dispatchUnit.unit = newUnit;
       } else {
         throw new Error("The old dispatch unit has not been found");
@@ -86,46 +90,9 @@ class DispatchUnitAPI {
     }
   }
 
-  static updateDispatchUnitsCategory(dispatchUnitCategory) {
-    if (dispatchUnitCategory instanceof DispatchUnitCategory) {
-      const dispatchUnits = [...dispatchUnitCategory.listElement.children];
-      if (dispatchUnits.length > 0) {
-        dispatchUnits.forEach((dispatchUnit, dispatchUnitIndex) => {
-          console.log(dispatchUnit);
-          this.updateDispatchUnit({
-            ...dispatchUnit.unit,
-            parentType: "category",
-            parentId: dispatchUnitCategory.category.id,
-            parentOrderId: dispatchUnitIndex,
-          });
-        });
-      }
-    } else {
-      throw new Error("The dispatch category is not valid");
-    }
-  }
-
-  static updateDispatchUnitsGroup(dispatchGroup) {
-    if (dispatchGroup instanceof DispatchGroup) {
-      const dispatchUnits = [...dispatchGroup.listElement.children];
-      if (dispatchUnits.length > 0) {
-        dispatchUnits.forEach((dispatchUnit, dispatchUnitIndex) => {
-          this.updateDispatchUnit({
-            ...dispatchUnit.unit,
-            parentType: "group",
-            parentId: dispatchGroup.group.categoryId,
-            parentOrderId: dispatchUnitIndex,
-          });
-        });
-      }
-    } else {
-      throw new Error("The dispatch group is not valid");
-    }
-  }
-
-  static deleteDispatchUnit(unitId) {
-    if (this.#dispatchUnits.has(unitId)) {
-      this.#dispatchUnits.delete(unitId);
+  deleteDispatchUnit(unitId) {
+    if (this.#dispatchUnitMap.has(unitId)) {
+      this.#dispatchUnitMap.delete(unitId);
     } else {
       throw new Error("The dispatch unit has not been found");
     }
