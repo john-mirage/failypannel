@@ -47,28 +47,28 @@ class DispatchAPI {
     return this.#dispatchGroupCategoryAPI.categories;
   }
 
-  set groupCategories(newGroupCategories) {
-    this.#dispatchGroupCategoryAPI.categories = newGroupCategories;
-  }
-
   get unitCategories() {
     return this.#dispatchUnitCategoryAPI.categories;
-  }
-
-  set unitCategories(newUnitCategories) {
-    this.#dispatchUnitCategoryAPI.categories = newUnitCategories;
   }
 
   get groups() {
     return this.#dispatchGroupAPI.groups;
   }
 
-  set groups(newGroups) {
-    this.#dispatchGroupAPI.groups = newGroups;
-  }
-
   get units() {
     return this.#dispatchUnitAPI.units;
+  }
+
+  set groupCategories(newGroupCategories) {
+    this.#dispatchGroupCategoryAPI.categories = newGroupCategories;
+  }
+
+  set unitCategories(newUnitCategories) {
+    this.#dispatchUnitCategoryAPI.categories = newUnitCategories;
+  }
+
+  set groups(newGroups) {
+    this.#dispatchGroupAPI.groups = newGroups;
   }
 
   set units(newUnits) {
