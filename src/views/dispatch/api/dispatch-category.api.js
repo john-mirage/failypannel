@@ -1,28 +1,51 @@
+import DispatchCategory from "../components/dispatch-category/dispatch-category";
 import { categoryIsValid } from "../types/dispatch-category.type";
 
 class DispatchCategoryAPI {
-  #dispatchGroupCategory = document.createElement("li", { is: "dispatch-group-category" });
-  #dispatchUnitCategory = document.createElement("li", { is: "dispatch-unit-category" });
   #dispatchCategoryMap = new Map();
+  #dispatchCategory;
+  #categories;
 
-  constructor(categories) {
-    if (
-      Array.isArray(categories) &&
-      categories.every((category) => categoryIsValid(category))
-    ) {
-      this.createDispatchCategory = this.createDispatchCategory.bind(this);
-      categories.forEach(this.createDispatchCategory);
+  constructor(categories, dispatchCategory) {
+    this.createDispatchCategory = this.createDispatchCategory.bind(this);
+    if (dispatchCategory instanceof DispatchCategory) {
+      this.#dispatchCategory = dispatchCategory;
+    } else {
+      throw new Error("The dispatch category is not valid");
+    }
+    if (this.categoriesAreValid(categories)) { 
+      this.categories = categories;
     } else {
       throw new Error("The categories are not valid");
     }
+  }
+
+  get dispatchCategoryArray() {
+    return [...this.#dispatchCategoryMap.values()];
   }
 
   get dispatchCategoryMap() {
     return this.#dispatchCategoryMap;
   }
 
-  get dispatchCategoryArray() {
-    return [...this.#dispatchCategoryMap.values()];
+  get categories() {
+    return this.#categories;
+  }
+
+  set categories(newCategories) {
+    if (this.categoriesAreValid(newCategories)) {
+      this.#categories = newCategories;
+      this.#categories.forEach(this.createDispatchCategory);
+    } else {
+      throw new Error("The new categories are not valid");
+    }
+  }
+
+  categoriesAreValid(categories) {
+    return (
+      Array.isArray(categories) &&
+      categories.every((category) => categoryIsValid(category))
+    );
   }
 
   getDispatchCategoryById(categoryId) {
@@ -33,56 +56,12 @@ class DispatchCategoryAPI {
     }
   }
 
-  createDispatchGroupCategory(category) {
-    if (categoryIsValid(category)) {
-      if (category.type === "group") {
-        const dispatchCategory = this.#dispatchGroupCategory.cloneNode(true);
-        dispatchCategory.category = category;
-        return dispatchCategory;
-      } else {
-        throw new Error("The category type is not valid");
-      }
-    } else {
-      throw new Error("The category is not valid");
-    }
-  }
-
-  createDispatchUnitCategory(category) {
-    if (categoryIsValid(category)) {
-      if (category.type === "unit") {
-        const dispatchCategory = this.#dispatchUnitCategory.cloneNode(true);
-        dispatchCategory.category = category;
-        return dispatchCategory;
-      } else {
-        throw new Error("The category type is not valid");
-      }
-    } else {
-      throw new Error("The category is not valid");
-    }
-  }
-
   createDispatchCategory(newCategory) {
     if (categoryIsValid(newCategory)) {
       if (!this.#dispatchCategoryMap.has(newCategory.id)) {
-        switch (newCategory.type) {
-          case "group": {
-            this.#dispatchCategoryMap.set(
-              newCategory.id,
-              this.createDispatchGroupCategory(newCategory)
-            );
-            break;
-          }
-          case "unit": {
-            this.#dispatchCategoryMap.set(
-              newCategory.id,
-              this.createDispatchUnitCategory(newCategory)
-            );
-            break;
-          }
-          default: {
-            throw new Error("The category type is not valid");
-          }
-        }
+        const dispatchCategory = this.#dispatchCategory.cloneNode(true);
+        dispatchCategory.category = newCategory;
+        this.#dispatchCategoryMap.set(newCategory.id, dispatchCategory);
       } else {
         throw new Error("The dispatch category already exist");
       }

@@ -8,11 +8,21 @@
   flex: none;
 }
 
-.dispatchView__list {
+.dispatchView__body {
   flex: 1;
-  display: grid;
-  grid-template-rows: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
   gap: 24px;
   padding: 24px;
   overflow-y: hidden;
+}
+
+.dispatchView__list {
+  flex: none;
+  display: grid;
+  grid-template-rows: 100%;
+  height: 100%;
+  gap: 24px;
 }

@@ -1,4 +1,3 @@
-import DispatchCategoryAPI from "../../api/dispatch-category.api";
 import { groupIsValid } from "../../types/dispatch-group.type";
 import DispatchUnit from "../dispatch-unit";
 

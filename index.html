@@ -128,7 +128,10 @@
   <!-- template | dispatch view -->
   <template id="template-dispatch-view">
     <header is="dispatch-toolbar"></header>
-    <ul class="dispatchView__list"></ul>
+    <div class="dispatchView__body">
+      <ul class="dispatchView__list" data-js="unit-list"></ul>
+      <ul class="dispatchView__list" data-js="group-list"></ul>
+    </div>
   </template>
 
   <!-- template | dispatch toolbar -->

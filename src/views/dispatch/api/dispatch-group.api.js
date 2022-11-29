@@ -4,25 +4,44 @@ import { groupIsValid } from "../types/dispatch-group.type";
 class DispatchGroupAPI {
   #dispatchGroup = document.createElement("li", { is: "dispatch-group" });
   #dispatchGroupMap = new Map();
+  #groups;
 
   constructor(groups) {
-    if (
-      Array.isArray(groups) &&
-      groups.every((group) => groupIsValid(group))
-    ) {
+    if (this.groupsAreValid(groups)) {
+      this.compareTwoDispatchGroupsByOrderId = this.compareTwoDispatchGroupsByOrderId.bind(this);
       this.createDispatchGroup = this.createDispatchGroup.bind(this);
-      groups.forEach(this.createDispatchGroup);
+      this.groups = groups;
     } else {
       throw new Error("The groups are not valid");
     }
+  }
+
+  get dispatchGroupArray() {
+    return [...this.#dispatchGroupMap.values()];
   }
 
   get dispatchGroupMap() {
     return this.#dispatchGroupMap;
   }
 
-  get dispatchGroupArray() {
-    return [...this.#dispatchGroupMap.values()];
+  get groups() {
+    return this.#groups;
+  }
+
+  set groups(newGroups) {
+    if (this.groupsAreValid(newGroups)) {
+      this.#groups = newGroups;
+      this.#groups.forEach(this.createDispatchGroup);
+    } else {
+      throw new Error("The new groups are not valid");
+    }
+  }
+
+  groupsAreValid(groups) {
+    return (
+      Array.isArray(groups) &&
+      groups.every((group) => groupIsValid(group))
+    );
   }
 
   compareTwoDispatchGroupsByOrderId(dispatchGroupA, dispatchGroupB) {
@@ -44,7 +63,7 @@ class DispatchGroupAPI {
     const dispatchGroups = this.dispatchGroupArray.filter((dispatchGroup) => {
       return categoryId === dispatchGroup.group.categoryId;
     });
-    dispatchGroups.sort(this.compareTwoDispatchGroupsByOrderId.bind(this));
+    dispatchGroups.sort(this.compareTwoDispatchGroupsByOrderId);
     return dispatchGroups;
   }
 

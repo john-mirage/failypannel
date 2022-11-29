@@ -1,52 +1,70 @@
 import DispatchAPI from "../../api/dispatch.api";
+import groupCategories from "../../data/dispatch-group-category.data.json";
+import unitCategories from "../../data/dispatch-unit-category.data.json";
+import groups from "../../data/dispatch-group.data.json";
+import units from "../../data/dispatch-unit.data.json";
 
 class DispatchView extends HTMLElement {
   #hasBeenMountedOnce = false;
   #headerElement;
-  #listElement;
-  #dispatchAPI = new DispatchAPI();
+  #bodyElement;
+  #unitListElement;
+  #groupListElement;
+  #dispatchAPI = new DispatchAPI(groupCategories, unitCategories, groups, units);
 
   constructor() {
     super();
     const templateContent = document.getElementById("template-dispatch-view").content;
     this.#headerElement = templateContent.firstElementChild.cloneNode(true);
-    this.#listElement = templateContent.lastElementChild.cloneNode(true);
-    this.handleCreateCategoryEvent = this.handleCreateCategoryEvent.bind(this);
+    this.#bodyElement = templateContent.lastElementChild.cloneNode(true);
+    this.#unitListElement = this.#bodyElement.querySelector(['[data-js="unit-list"]']);
+    this.#groupListElement = this.#bodyElement.querySelector(['[data-js="group-list"]']);
+    this.handleCreateGroupCategoryEvent = this.handleCreateGroupCategoryEvent.bind(this);
     this.handleDeleteGroupEvent = this.handleDeleteGroupEvent.bind(this);
   }
 
-  updateDispatchCategories() {
-    this.#listElement.replaceChildren(...this.#dispatchAPI.dispatchCategoryArray);
+  updateDispatchUnitCategories() {
+    this.#unitListElement.replaceChildren(...this.#dispatchAPI.dispatchUnitCategoryAPI.dispatchCategoryArray);
   }
 
-  updateDispatchListColumns() {
-    const numberOfColumns = this.#listElement.children.length;
-    const gridTemplateColumns = `repeat(${String(numberOfColumns)}, 296px)`;
-    this.#listElement.style.gridTemplateColumns = gridTemplateColumns;
+  updateDispatchGroupCategories() {
+    this.#groupListElement.replaceChildren(...this.#dispatchAPI.dispatchGroupCategoryAPI.dispatchCategoryArray);
+  }
+
+  updateDispatchListColumns(listElement) {
+    if (listElement instanceof HTMLUListElement) {
+      const numberOfColumns = listElement.children.length;
+      const gridTemplateColumns = `repeat(${String(numberOfColumns)}, 296px)`;
+      listElement.style.gridTemplateColumns = gridTemplateColumns;
+    } else {
+      throw new Error("The list element is not valid");
+    }
   }
 
   updateDispatch() {
-    this.updateDispatchCategories();
-    this.updateDispatchListColumns();
+    this.updateDispatchUnitCategories();
+    this.updateDispatchGroupCategories();
+    this.updateDispatchListColumns(this.#unitListElement);
+    this.updateDispatchListColumns(this.#groupListElement);
   }
 
   connectedCallback() {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("dispatchView");
-      this.replaceChildren(this.#headerElement, this.#listElement);
+      this.replaceChildren(this.#headerElement, this.#bodyElement);
+      this.updateDispatch();
       this.#hasBeenMountedOnce = true;
     }
-    this.updateDispatch();
-    this.addEventListener("dispatch-create-category", this.handleCreateCategoryEvent);
+    this.addEventListener("dispatch-create-group-category", this.handleCreateGroupCategoryEvent);
     this.addEventListener("dispatch-delete-group", this.handleDeleteGroupEvent);
   }
 
   disconnectedCallback() {
-    this.removeEventListener("dispatch-create-category", this.handleCreateCategoryEvent);
+    this.removeEventListener("dispatch-create-group-category", this.handleCreateGroupCategoryEvent);
     this.removeEventListener("dispatch-delete-group", this.handleDeleteGroupEvent);
   }
 
-  handleCreateCategoryEvent(customEvent) {
+  handleCreateGroupCategoryEvent(customEvent) {
     // handle create category
   }
 

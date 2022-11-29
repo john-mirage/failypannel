@@ -4,26 +4,43 @@ import { unitIsValid } from "../types/dispatch-unit.type";
 class DispatchUnitAPI {
   #dispatchUnit = document.createElement("li", { is: "dispatch-unit" });
   #dispatchUnitMap = new Map();
+  #units;
 
   constructor(units) {
-    if (
-      Array.isArray(units) &&
-      units.every((unit) => unitIsValid(unit))
-    ) {
+    if (this.unitsAreValid(units)) {
       this.compareTwoDispatchUnitsByOrderId = this.compareTwoDispatchUnitsByOrderId.bind(this);
       this.createDispatchUnit = this.createDispatchUnit.bind(this);
-      units.forEach(this.createDispatchUnit);
+      this.units = units;
     } else {
       throw new Error("The units are not valid");
     }
+  }
+  get dispatchUnitArray() {
+    return [...this.#dispatchUnitMap.values()];
   }
 
   get dispatchUnitMap() {
     return this.#dispatchUnitMap;
   }
 
-  get dispatchUnitArray() {
-    return [...this.#dispatchUnitMap.values()];
+  get units() {
+    return this.#units;
+  }
+
+  set units(newUnits) {
+    if (this.unitsAreValid(newUnits)) {
+      this.#units = newUnits;
+      this.#units.forEach(this.createDispatchUnit);
+    } else {
+      throw new Error("The new units are not valid");
+    }
+  }
+
+  unitsAreValid(units) {
+    return (
+      Array.isArray(units) &&
+      units.every((unit) => unitIsValid(unit))
+    );
   }
 
   compareTwoDispatchUnitsByOrderId(dispatchUnitA, dispatchUnitB) {
