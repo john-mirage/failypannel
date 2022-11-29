@@ -1,16 +1,15 @@
 import { compareTwoNumbers } from "../../../utils/comparison";
-import { groupIsValid } from "../types/dispatch-group.type";
+import { groupIsValid, groupsAreTheSame, groupsAreValid } from "../types/dispatch-group.type";
 
 class DispatchGroupAPI {
   #dispatchGroup = document.createElement("li", { is: "dispatch-group" });
   #dispatchGroupMap = new Map();
-  #groups;
 
   constructor(groups) {
-    if (this.groupsAreValid(groups)) {
+    if (groupsAreValid(groups)) {
       this.compareTwoDispatchGroupsByOrderId = this.compareTwoDispatchGroupsByOrderId.bind(this);
       this.createDispatchGroup = this.createDispatchGroup.bind(this);
-      this.groups = groups;
+      groups.forEach(this.createDispatchGroup);
     } else {
       throw new Error("The groups are not valid");
     }
@@ -22,26 +21,6 @@ class DispatchGroupAPI {
 
   get dispatchGroupMap() {
     return this.#dispatchGroupMap;
-  }
-
-  get groups() {
-    return this.#groups;
-  }
-
-  set groups(newGroups) {
-    if (this.groupsAreValid(newGroups)) {
-      this.#groups = newGroups;
-      this.#groups.forEach(this.createDispatchGroup);
-    } else {
-      throw new Error("The new groups are not valid");
-    }
-  }
-
-  groupsAreValid(groups) {
-    return (
-      Array.isArray(groups) &&
-      groups.every((group) => groupIsValid(group))
-    );
   }
 
   compareTwoDispatchGroupsByOrderId(dispatchGroupA, dispatchGroupB) {
@@ -85,7 +64,9 @@ class DispatchGroupAPI {
     if (groupIsValid(newGroup)) {
       if (this.#dispatchGroupMap.has(newGroup.id)) {
         const dispatchGroup = this.#dispatchGroupMap.get(newGroup.id);
-        dispatchGroup.group = newGroup;
+        if (!groupsAreTheSame(dispatchGroup.group, newGroup)) {
+          dispatchGroup.group = newGroup;
+        }
       } else {
         throw new Error("The old group has not been found");
       }

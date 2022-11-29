@@ -1,46 +1,26 @@
 import { compareTwoNumbers } from "../../../utils/comparison";
-import { unitIsValid } from "../types/dispatch-unit.type";
+import { unitIsValid, unitsAreTheSame, unitsAreValid } from "../types/dispatch-unit.type";
 
 class DispatchUnitAPI {
   #dispatchUnit = document.createElement("li", { is: "dispatch-unit" });
   #dispatchUnitMap = new Map();
-  #units;
 
   constructor(units) {
-    if (this.unitsAreValid(units)) {
+    if (unitsAreValid(units)) {
       this.compareTwoDispatchUnitsByOrderId = this.compareTwoDispatchUnitsByOrderId.bind(this);
       this.createDispatchUnit = this.createDispatchUnit.bind(this);
-      this.units = units;
+      units.forEach(this.createDispatchUnit);
     } else {
       throw new Error("The units are not valid");
     }
   }
+
   get dispatchUnitArray() {
     return [...this.#dispatchUnitMap.values()];
   }
 
   get dispatchUnitMap() {
     return this.#dispatchUnitMap;
-  }
-
-  get units() {
-    return this.#units;
-  }
-
-  set units(newUnits) {
-    if (this.unitsAreValid(newUnits)) {
-      this.#units = newUnits;
-      this.#units.forEach(this.createDispatchUnit);
-    } else {
-      throw new Error("The new units are not valid");
-    }
-  }
-
-  unitsAreValid(units) {
-    return (
-      Array.isArray(units) &&
-      units.every((unit) => unitIsValid(unit))
-    );
   }
 
   compareTwoDispatchUnitsByOrderId(dispatchUnitA, dispatchUnitB) {
@@ -98,7 +78,9 @@ class DispatchUnitAPI {
     if (unitIsValid(newUnit)) {
       if (this.#dispatchUnitMap.has(newUnit.id)) {
         const dispatchUnit = this.#dispatchUnitMap.get(newUnit.id);
-        dispatchUnit.unit = newUnit;
+        if (!unitsAreTheSame(dispatchUnit.unit, newUnit)) {
+          dispatchUnit.unit = newUnit;
+        }
       } else {
         throw new Error("The old dispatch unit has not been found");
       }

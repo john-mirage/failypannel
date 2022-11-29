@@ -59,10 +59,10 @@
 
   <!-- template | web app -->
   <template id="template-web-app">
-    <header is="web-bar" class="webApp__bar" data-label="Los Santos Police Department"></header>
+    <header class="webApp__bar" is="web-bar" data-label="Los Santos Police Department"></header>
     <div class="webApp__body">
-      <aside is="web-sidebar" class="webApp__sidebar"></aside>
-      <main is="web-view" class="webApp__view" data-js="view"></main>
+      <aside class="webApp__sidebar" is="web-sidebar"></aside>
+      <main class="webApp__view" is="web-view" data-js="view"></main>
     </div>
   </template>
 
@@ -92,8 +92,8 @@
     </section>
     <section class="webSidebar__section webSidebar__section--settings">
       <h3 class="webSidebar__sectionTitle">Paramètres</h3>
-      <label is="web-theme-switch" class="webSidebar__switch"></label>
-      <label is="web-mode-switch" class="webSidebar__switch"></label>
+      <label class="webSidebar__switch" is="web-theme-switch"></label>
+      <label class="webSidebar__switch" is="web-mode-switch"></label>
     </section>
   </template>
 
@@ -127,7 +127,7 @@
 
   <!-- template | dispatch view -->
   <template id="template-dispatch-view">
-    <header is="dispatch-toolbar"></header>
+    <header class="dispatchView__header" is="dispatch-toolbar"></header>
     <div class="dispatchView__body">
       <ul class="dispatchView__list" data-js="unit-list"></ul>
       <ul class="dispatchView__list" data-js="group-list"></ul>

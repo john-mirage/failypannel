@@ -17,3 +17,26 @@ export const unitIsValid = (unit) => {
     typeof unit.role === "string"
   );
 };
+
+export const unitsAreValid = (units) => {
+  return (
+    Array.isArray(units) &&
+    units.every((unit) => unitIsValid(unit))
+  );
+}
+
+export const unitsAreTheSame = (oldUnit, newUnit) => {
+  if (unitsAreValid([oldUnit, newUnit])) {
+    return (
+      oldUnit.parentType === newUnit.parentType &&
+      oldUnit.parentId === newUnit.parentId &&
+      oldUnit.parentOrderId === newUnit.parentOrderId &&
+      oldUnit.id === newUnit.id &&
+      oldUnit.number === newUnit.number &&
+      oldUnit.name === newUnit.name &&
+      oldUnit.role === newUnit.role
+    );
+  } else {
+    throw new Error("The groups are not valid");
+  }
+}

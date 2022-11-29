@@ -1,6 +1,7 @@
 import DispatchGroupCategory from "../components/dispatch-category/dispatch-group-category";
 import DispatchUnitCategory from "../components/dispatch-category/dispatch-unit-category";
 import DispatchGroup from "../components/dispatch-group";
+import { categoriesAreValid } from "../types/dispatch-category.type";
 import DispatchGroupCategoryAPI from "./dispatch-group-category.api";
 import DispatchGroupAPI from "./dispatch-group.api";
 import DispatchUnitCategoryAPI from "./dispatch-unit-category.api";
@@ -43,36 +44,20 @@ class DispatchAPI {
     return this.#dispatchUnitAPI;
   }
 
-  get groupCategories() {
-    return this.#dispatchGroupCategoryAPI.categories;
+  updateDispatchGroupCategories(groupCategories) {
+
   }
 
-  get unitCategories() {
-    return this.#dispatchUnitCategoryAPI.categories;
+  updateDispatchUnitsCategories(unitCategories) {
+
   }
 
-  get groups() {
-    return this.#dispatchGroupAPI.groups;
+  updateDispatchGroups(groups) {
+
   }
 
-  get units() {
-    return this.#dispatchUnitAPI.units;
-  }
+  updateDispatchUnits(units) {
 
-  set groupCategories(newGroupCategories) {
-    this.#dispatchGroupCategoryAPI.categories = newGroupCategories;
-  }
-
-  set unitCategories(newUnitCategories) {
-    this.#dispatchUnitCategoryAPI.categories = newUnitCategories;
-  }
-
-  set groups(newGroups) {
-    this.#dispatchGroupAPI.groups = newGroups;
-  }
-
-  set units(newUnits) {
-    this.#dispatchUnitAPI.units = newUnits;
   }
 
   updateCategoryGroups(dispatchGroupCategory) {

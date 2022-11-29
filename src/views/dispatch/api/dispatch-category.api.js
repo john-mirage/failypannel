@@ -1,10 +1,9 @@
 import DispatchCategory from "../components/dispatch-category/dispatch-category";
-import { categoryIsValid } from "../types/dispatch-category.type";
+import { categoryIsValid, categoriesAreValid, categoriesAreTheSame } from "../types/dispatch-category.type";
 
 class DispatchCategoryAPI {
   #dispatchCategoryMap = new Map();
   #dispatchCategory;
-  #categories;
 
   constructor(categories, dispatchCategory) {
     this.createDispatchCategory = this.createDispatchCategory.bind(this);
@@ -13,8 +12,8 @@ class DispatchCategoryAPI {
     } else {
       throw new Error("The dispatch category is not valid");
     }
-    if (this.categoriesAreValid(categories)) { 
-      this.categories = categories;
+    if (categoriesAreValid(categories)) {
+      categories.forEach(this.createDispatchCategory);
     } else {
       throw new Error("The categories are not valid");
     }
@@ -26,26 +25,6 @@ class DispatchCategoryAPI {
 
   get dispatchCategoryMap() {
     return this.#dispatchCategoryMap;
-  }
-
-  get categories() {
-    return this.#categories;
-  }
-
-  set categories(newCategories) {
-    if (this.categoriesAreValid(newCategories)) {
-      this.#categories = newCategories;
-      this.#categories.forEach(this.createDispatchCategory);
-    } else {
-      throw new Error("The new categories are not valid");
-    }
-  }
-
-  categoriesAreValid(categories) {
-    return (
-      Array.isArray(categories) &&
-      categories.every((category) => categoryIsValid(category))
-    );
   }
 
   getDispatchCategoryById(categoryId) {
@@ -74,7 +53,9 @@ class DispatchCategoryAPI {
     if (categoryIsValid(newCategory)) {
       if (this.#dispatchCategoryMap.has(newCategory.id)) {
         const dispatchCategory = this.#dispatchCategoryMap.get(newCategory.id);
-        dispatchCategory.category = newCategory;
+        if (!categoriesAreTheSame(dispatchCategory.category, newCategory)) {
+          dispatchCategory.category = newCategory;
+        }
       } else {
         throw new Error("The old category has not been found");
       }

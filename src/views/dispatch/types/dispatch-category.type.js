@@ -7,3 +7,21 @@ export const categoryIsValid = (category) => {
     typeof category.name === "string"
   );
 };
+
+export const categoriesAreValid = (categories) => {
+  return (
+    Array.isArray(categories) &&
+    categories.every((category) => categoryIsValid(category))
+  );
+}
+
+export const categoriesAreTheSame = (oldCategory, newCategory) => {
+  if (categoriesAreValid([oldCategory, newCategory])) {
+    return (
+      oldCategory.id === newCategory.id &&
+      oldCategory.name === newCategory.name
+    );
+  } else {
+    throw new Error("The categories are not valid");
+  }
+}

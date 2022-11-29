@@ -11,3 +11,23 @@ export const groupIsValid = (group) => {
     typeof group.size === "number"
   );
 };
+
+export const groupsAreValid = (groups) => {
+  return (
+    Array.isArray(groups) &&
+    groups.every((group) => groupIsValid(group))
+  );
+}
+
+export const groupsAreTheSame = (oldGroup, newGroup) => {
+  if (groupsAreValid([oldGroup, newGroup])) {
+    return (
+      oldGroup.categoryId === newGroup.categoryId &&
+      oldGroup.categoryOrderId === newGroup.categoryOrderId &&
+      oldGroup.id === newGroup.id &&
+      oldGroup.size === newGroup.size
+    );
+  } else {
+    throw new Error("The groups are not valid");
+  }
+}
