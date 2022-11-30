@@ -58,6 +58,8 @@ window.addEventListener("load", () => {
   const app = document.getElementById("app");
   const webApp = document.createElement("div", { is: "web-app" });
 
+  app.replaceChildren(webApp);
+  /*
   document.addEventListener("keyup", (keyboardEvent) => {
     if (keyboardEvent.key === "e") {
       if (app.children.length <= 0) {
@@ -65,4 +67,5 @@ window.addEventListener("load", () => {
       }
     }
   });
+  */
 });

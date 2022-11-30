@@ -27,6 +27,22 @@ class DispatchAPI {
     this.#dispatchGroupAPI.dispatchGroupMap.forEach(this.updateDispatchGroupUnits);
   }
 
+  get groupCategories() {
+    return this.#dispatchGroupCategoryAPI.dispatchCategoryArray.map((dispatchCategory) => dispatchCategory.category);
+  }
+
+  get unitCategories() {
+    return this.#dispatchUnitCategoryAPI.dispatchCategoryArray.map((dispatchCategory) => dispatchCategory.category);
+  }
+
+  get groups() {
+    return this.#dispatchGroupAPI.dispatchGroupArray.map((dispatchGroup) => dispatchGroup.group);
+  }
+
+  get units() {
+    return this.#dispatchUnitAPI.dispatchUnitArray.map((dispatchUnit) => dispatchUnit.unit);
+  }
+
   get dispatchGroupCategoryAPI() {
     return this.#dispatchGroupCategoryAPI;
   }

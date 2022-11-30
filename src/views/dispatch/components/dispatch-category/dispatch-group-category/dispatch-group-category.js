@@ -1,8 +1,12 @@
 import DispatchCategory from "../dispatch-category";
 import DispatchGroup from "../../dispatch-group";
 import { groupsAreTheSame } from "../../../types/dispatch-group.type";
+import Sortable from "sortablejs";
 
 class DispatchGroupCategory extends DispatchCategory {
+  #hasBeenMountedOnce = false;
+  #sortable;
+
   constructor() {
     super();
   }
@@ -46,6 +50,15 @@ class DispatchGroupCategory extends DispatchCategory {
 
   connectedCallback() {
     super.connectedCallback();
+    if (!this.#hasBeenMountedOnce) {
+      this.#sortable = new Sortable(this.listElement, {
+        group: `group-${this.category.id}`,
+        onSort: () => {
+          this.reorderDispatchGroups();
+        }
+      });
+      this.#hasBeenMountedOnce = true;
+    }
   }
 }
 

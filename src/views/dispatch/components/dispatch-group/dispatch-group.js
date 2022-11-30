@@ -1,6 +1,7 @@
 import DispatchUnit from "../dispatch-unit";
 import { groupIsValid } from "../../types/dispatch-group.type";
 import { unitsAreTheSame } from "../../types/dispatch-unit.type";
+import Sortable from "sortablejs";
 
 class DispatchGroup extends HTMLLIElement {
   #hasBeenMountedOnce = false;
@@ -11,6 +12,7 @@ class DispatchGroup extends HTMLLIElement {
   #deleteButtonElement;
   #categoryName;
   #group;
+  #sortable;
 
   constructor() {
     super();
@@ -125,6 +127,20 @@ class DispatchGroup extends HTMLLIElement {
     if (!this.#hasBeenMountedOnce) {
       this.classList.add("dispatchGroup");
       this.replaceChildren(this.#headerElement, this.#listElement);
+      this.#sortable = new Sortable(this.#listElement, {
+        group: {
+          name: "unit",
+          put: this.dispatchUnits.length < this.group.size ? "unit" : false
+        },
+        onSort: () => {
+          this.reorderDispatchUnits();
+          this.updateDispatchGroupNumber();
+          this.#sortable.option("group", {
+            name: "unit",
+            put: this.dispatchUnits.length < this.group.size ? "unit" : false
+          });
+        }
+      });
       this.#hasBeenMountedOnce = true;
     }
     this.#deleteButtonElement.addEventListener("click", this.handleDeleteButtonClick);

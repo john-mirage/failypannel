@@ -21,6 +21,7 @@ class DispatchView extends HTMLElement {
     this.#groupListElement = this.#bodyElement.querySelector(['[data-js="group-list"]']);
     this.handleCreateGroupCategoryEvent = this.handleCreateGroupCategoryEvent.bind(this);
     this.handleDeleteGroupEvent = this.handleDeleteGroupEvent.bind(this);
+    this.handleSortUnitCategory = this.handleSortUnitCategory.bind(this);
   }
 
   updateDispatchUnitCategories() {
@@ -57,11 +58,13 @@ class DispatchView extends HTMLElement {
     }
     this.addEventListener("dispatch-create-group-category", this.handleCreateGroupCategoryEvent);
     this.addEventListener("dispatch-delete-group", this.handleDeleteGroupEvent);
+    this.addEventListener("dispatch-sort-unit-category", this.handleSortUnitCategory);
   }
 
   disconnectedCallback() {
     this.removeEventListener("dispatch-create-group-category", this.handleCreateGroupCategoryEvent);
     this.removeEventListener("dispatch-delete-group", this.handleDeleteGroupEvent);
+    this.removeEventListener("dispatch-sort-unit-category", this.handleSortUnitCategory);
   }
 
   handleCreateGroupCategoryEvent(customEvent) {
@@ -70,6 +73,11 @@ class DispatchView extends HTMLElement {
 
   handleDeleteGroupEvent(customEvent) {
     // handle delete group
+  }
+
+  handleSortUnitCategory(customEvent) {
+    const { unitId } = customEvent.detail;
+    console.log(this.#dispatchAPI.dispatchUnitAPI.getDispatchUnitById(unitId).unit);
   }
 }
 
