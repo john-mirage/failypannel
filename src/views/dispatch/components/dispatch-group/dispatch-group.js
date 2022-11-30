@@ -1,5 +1,6 @@
-import { groupIsValid } from "../../types/dispatch-group.type";
 import DispatchUnit from "../dispatch-unit";
+import { groupIsValid } from "../../types/dispatch-group.type";
+import { unitsAreTheSame } from "../../types/dispatch-unit.type";
 
 class DispatchGroup extends HTMLLIElement {
   #hasBeenMountedOnce = false;
@@ -10,7 +11,6 @@ class DispatchGroup extends HTMLLIElement {
   #deleteButtonElement;
   #categoryName;
   #group;
-  #dispatchUnits;
 
   constructor() {
     super();
@@ -51,18 +51,16 @@ class DispatchGroup extends HTMLLIElement {
   set group(newGroup) {
     if (groupIsValid(newGroup)) {
       this.#group = newGroup;
-      this.updateDispatchGroup();
+      this.updateDispatchGroupListHeight();
     } else {
       throw new Error("The new group is not valid");
     }
   }
 
   get dispatchUnits() {
-    if (
-      Array.isArray(this.#dispatchUnits) &&
-      this.#dispatchUnits.every((dispatchUnit) => dispatchUnit instanceof DispatchUnit)
-    ) {
-      return this.#dispatchUnits;
+    const dispatchUnits = [...this.#listElement.children];
+    if (dispatchUnits.every((dispatchUnit) => dispatchUnit instanceof DispatchUnit)) {
+      return dispatchUnits;
     } else {
       throw new Error("The dispatch units are not valid");
     }
@@ -73,8 +71,8 @@ class DispatchGroup extends HTMLLIElement {
       Array.isArray(newDispatchUnits) &&
       newDispatchUnits.every((newDispatchUnit) => newDispatchUnit instanceof DispatchUnit)
     ) {
-      this.#dispatchUnits = newDispatchUnits;
-      this.updateDispatchGroupUnits();
+      this.#listElement.replaceChildren(...newDispatchUnits);
+      this.updateDispatchGroupNumber();
     } else {
       throw new Error("The new dispatch units are not valid");
     }
@@ -96,23 +94,31 @@ class DispatchGroup extends HTMLLIElement {
   }
 
   updateDispatchGroupNumber() {
-    const firstUnit = this.#listElement.firstElementChild;
-    if (firstUnit) {
-      if (this.#numberElement.textContent !== firstUnit.unit.number) {
-        this.#numberElement.textContent = firstUnit.unit.number;
+    const dispatchUnits = this.dispatchUnits;
+    if (dispatchUnits.length > 0) {
+      if (this.#numberElement.textContent !== dispatchUnits[0].unit.number) {
+        this.#numberElement.textContent = dispatchUnits[0].unit.number;
       }
     } else if (this.#numberElement.textContent !== null) {
       this.#numberElement.textContent = null;
     }
   }
 
-  updateDispatchGroup() {
-    this.updateDispatchGroupListHeight();
-  }
-
-  updateDispatchGroupUnits() {
-    this.#listElement.replaceChildren(...this.#dispatchUnits);
-    this.updateDispatchGroupNumber();
+  reorderDispatchUnits() {
+    const dispatchUnits = this.dispatchUnits;
+    if (dispatchUnits.length > 0) {
+      dispatchUnits.forEach((dispatchUnit, dispatchUnitIndex) => {
+        const newUnit = {
+          ...dispatchUnit.unit,
+          parentType: "group",
+          parentId: this.group.id,
+          parentOrderId: dispatchUnitIndex,
+        };
+        if (!unitsAreTheSame(dispatchUnit.unit, newUnit)) {
+          dispatchUnit.unit = newUnit;
+        }
+      });
+    }
   }
 
   connectedCallback() {

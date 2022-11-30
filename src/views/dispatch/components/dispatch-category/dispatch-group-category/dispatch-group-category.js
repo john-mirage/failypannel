@@ -1,19 +1,16 @@
 import DispatchCategory from "../dispatch-category";
 import DispatchGroup from "../../dispatch-group";
+import { groupsAreTheSame } from "../../../types/dispatch-group.type";
 
 class DispatchGroupCategory extends DispatchCategory {
-  #dispatchGroups;
-
   constructor() {
     super();
   }
 
   get dispatchGroups() {
-    if (
-      Array.isArray(this.#dispatchGroups) &&
-      this.#dispatchGroups.every((dispatchGroup) => dispatchGroup instanceof DispatchGroup)
-    ) {
-      return this.#dispatchGroups;
+    const dispatchGroups = [...this.listElement.children];
+    if (dispatchGroups.every((dispatchGroup) => dispatchGroup instanceof DispatchGroup)) {
+      return dispatchGroups;
     } else {
       throw new Error("The dispatch groups are not valid");
     }
@@ -24,16 +21,27 @@ class DispatchGroupCategory extends DispatchCategory {
       Array.isArray(newDispatchGroups) &&
       newDispatchGroups.every((newDispatchGroup) => newDispatchGroup instanceof DispatchGroup)
     ) {
-      this.#dispatchGroups = newDispatchGroups;
-      this.updateDispatchGroups();
+      this.listElement.replaceChildren(...newDispatchGroups);
+      this.updateDispatchCategoryCount();
     } else {
       throw new Error("The new dispatch groups are not valid");
     }
   }
 
-  updateDispatchGroups() {
-    this.listElement.replaceChildren(...this.#dispatchGroups);
-    this.updateDispatchCategoryCount();
+  reorderDispatchGroups() {
+    const dispatchGroups = this.dispatchGroups;
+    if (dispatchGroups.length > 0) {
+      dispatchGroups.forEach((dispatchGroup, dispatchGroupIndex) => {
+        const newGroup = {
+          ...dispatchGroup.group,
+          categoryId: this.category.id,
+          categoryOrderId: dispatchGroupIndex,
+        };
+        if (!groupsAreTheSame(dispatchGroup.group, newGroup)) {
+          dispatchGroup.group = newGroup;
+        }
+      });
+    }
   }
 
   connectedCallback() {
