@@ -115,6 +115,14 @@
     </button>
   </template>
 
+  <!-- template | web toolbar -->
+  <template id="template-web-toolbar">
+    <div class="webToolbar__section">
+      <h2 class="webToolbar__label" data-js="label"></h2>
+    </div>
+    <div class="webToolbar__section" data-js="actions"></div>
+  </template>
+
   <!-- template | car view -->
   <template id="template-car-view">
     <div class="carView__body"></div>
@@ -122,28 +130,35 @@
 
   <!-- template | document view -->
   <template id="template-document-view">
-    <div class="documentView__body"></div>
+    <header class="documentView__header" is="document-toolbar" data-label="Dossiers et enquêtes"></header>
+    <div class="documentView__body">
+      <section class="documentView__section documentView__section--fixed">
+        <h3 class="documentView__sectionTitle">liste des documents</h3>
+        <ul is="document-card-list"></ul>
+      </section>
+      <section class="documentView__section documentView__section--fluid">
+        <h3 class="documentView__sectionTitle">document</h3>
+        <form is="document-form"></form>
+      </section>
+      <section class="documentView__section documentView__section--fixed">
+        <h3 class="documentView__sectionTitle">commentaires</h3>
+        <ul is="document-comment-list"></ul>
+      </section>
+    </div>
+  </template>
+
+  <!-- template | document form -->
+  <template id="template-document-form">
+    <input id="x" type="hidden" name="content" value="Trix seems to be very good, let's try to put initial text">
+    <trix-editor input="x"></trix-editor>
   </template>
 
   <!-- template | dispatch view -->
   <template id="template-dispatch-view">
-    <header class="dispatchView__header" is="dispatch-toolbar"></header>
+    <header class="dispatchView__header" is="dispatch-toolbar" data-label="Dispatch des unités"></header>
     <div class="dispatchView__body">
       <ul class="dispatchView__list" data-js="unit-list"></ul>
       <ul class="dispatchView__list" data-js="group-list"></ul>
-    </div>
-  </template>
-
-  <!-- template | dispatch toolbar -->
-  <template id="template-dispatch-toolbar">
-    <div class="dispatchToolbar__section">
-      <h2 class="dispatchToolbar__name">Dispatch des unités</h2>
-    </div>
-    <div class="dispatchToolbar__section">
-      <button data-js="add-category-button">Créer une categorie</button>
-      <!--
-      <button class="dispatchToolbar__button" is="web-button" data-icon="add" data-label="ajouter une catégorie" data-js="add-category-button"></button>
-      -->
     </div>
   </template>
 

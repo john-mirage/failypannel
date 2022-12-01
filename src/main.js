@@ -7,14 +7,17 @@ import WebNavigation from "./components/web-navigation";
 import WebNavigationItem from "./components/web-navigation-item";
 import { WebModeSwitch, WebThemeSwitch } from "./components/web-switch";
 import { WebCloseButton } from "./components/web-button";
+import WebToolbar from "./components/web-toolbar";
 import CarView from "./views/car/components/car-view";
 import DocumentView from "./views/document/components/document-view";
+import DocumentToolbar from "./views/document/components/document-toolbar";
 import DispatchView from "./views/dispatch/components/dispatch-view";
 import DispatchToolbar from "./views/dispatch/components/dispatch-toolbar";
 import { DispatchGroupCategory, DispatchUnitCategory } from "./views/dispatch/components/dispatch-category";
 import DispatchGroup from "./views/dispatch/components/dispatch-group";
 import DispatchUnit from "./views/dispatch/components/dispatch-unit";
 import DispatchIconButton from "./views/dispatch/components/dispatch-icon-button";
+import Trix from "trix";
 
 /**
  * global components
@@ -28,6 +31,7 @@ customElements.define("web-navigation-item", WebNavigationItem, { extends: "li" 
 customElements.define("web-theme-switch", WebThemeSwitch, { extends: "label" });
 customElements.define("web-mode-switch", WebModeSwitch, { extends: "label" });
 customElements.define("web-close-button", WebCloseButton, { extends: "button" });
+customElements.define("web-toolbar", WebToolbar, { extends: "header" });
 
 /**
  * car plate view
@@ -35,9 +39,10 @@ customElements.define("web-close-button", WebCloseButton, { extends: "button" })
 customElements.define("car-view", CarView, { extends: "article" });
 
 /**
- * investigation view
+ * document view
  */
 customElements.define("document-view", DocumentView, { extends: "article" });
+customElements.define("document-toolbar", DocumentToolbar, { extends: "header" });
 
 /**
  * dispatch view
@@ -49,6 +54,10 @@ customElements.define("dispatch-unit-category", DispatchUnitCategory, { extends:
 customElements.define("dispatch-group", DispatchGroup, { extends: "li" });
 customElements.define("dispatch-unit", DispatchUnit, { extends: "li" });
 customElements.define("dispatch-icon-button", DispatchIconButton, { extends: "button" });
+
+document.addEventListener("trix-file-accept", (event) => {
+  event.preventDefault();
+});
 
 /**
  * app mount

@@ -1,4 +1,4 @@
-.dispatchToolbar {
+.webToolbar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -10,13 +10,13 @@
   border-bottom: 1px solid var(--color-bar-border);
 }
 
-.dispatchToolbar__section {
+.webToolbar__section {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.dispatchToolbar__name {
+.webToolbar__label {
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;

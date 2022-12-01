@@ -1,20 +1,42 @@
-.webInvestigation {
-  display: block;
-  height: 100%;
-}
-
-.webInvestigation__container {
+.documentView {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.webInvestigation__header {
+.documentView__header {
   flex: none;
 }
 
-.webInvestigation__body {
+.documentView__body {
   flex: 1;
-  display: block;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  height: 100%;
   padding: 24px;
+}
+
+.documentView__section {
+  height: 100%;
+}
+
+.documentView__section--fixed {
+  flex: 0 0 292px;
+}
+
+.documentView__section--fluid {
+  flex: 0 1 768px;
+}
+
+.documentView__sectionTitle {
+  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  line-height: 16px;
+  color: var(--color-typo-secondary);
 }

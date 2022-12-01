@@ -1,6 +1,6 @@
 import navigationItems from "./web-navigation.data.json";
 
-const DEFAULT_ITEM = 2;
+const DEFAULT_ITEM = 1;
 
 class WebNavigation extends HTMLElement {
   #hasBeenMountedOnce = false;
@@ -9,9 +9,7 @@ class WebNavigation extends HTMLElement {
 
   constructor() {
     super();
-    const templateContent = document.getElementById(
-      "template-web-navigation"
-    ).content;
+    const templateContent = document.getElementById("template-web-navigation").content;
     this.#listElement = templateContent.firstElementChild.cloneNode(true);
     this.handleActiveItemEvent = this.handleActiveItemEvent.bind(this);
   }
@@ -32,9 +30,7 @@ class WebNavigation extends HTMLElement {
 
   handleInitialItems() {
     const webNavigationItems = navigationItems.map((navigationItem) => {
-      const webNavigationItem = document.createElement("li", {
-        is: "web-navigation-item",
-      });
+      const webNavigationItem = document.createElement("li", { is: "web-navigation-item" });
       webNavigationItem.item = navigationItem;
       return webNavigationItem;
     });
