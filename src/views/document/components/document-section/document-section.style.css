@@ -1,0 +1,9 @@
+.documentSection__title {
+  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  line-height: 16px;
+  color: var(--color-typo-secondary);
+}

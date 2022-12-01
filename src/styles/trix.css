@@ -1,10 +1,22 @@
 trix-editor {
+  /*
   border: 1px solid #bbb;
+  */
+  height: 100%;
+  background-color: var(--color-bar);
   border-radius: 3px;
   margin: 0;
   padding: 0.4em 0.6em;
   min-height: 5em;
-  outline: none; }
+  outline: none;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+
+trix-toolbar {
+  margin-bottom: 24px;
+  background-color: var(--color-bar);
+  padding: 16px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
 
 trix-toolbar * {
   box-sizing: border-box; }
@@ -17,7 +29,9 @@ trix-toolbar .trix-button-row {
 
 trix-toolbar .trix-button-group {
   display: flex;
+  /*
   margin-bottom: 10px;
+  */
   border: 1px solid #bbb;
   border-top-color: #ccc;
   border-bottom-color: #888;

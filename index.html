@@ -132,25 +132,26 @@
   <template id="template-document-view">
     <header class="documentView__header" is="document-toolbar" data-label="Dossiers et enquêtes"></header>
     <div class="documentView__body">
-      <section class="documentView__section documentView__section--fixed">
-        <h3 class="documentView__sectionTitle">liste des documents</h3>
-        <ul is="document-card-list"></ul>
-      </section>
-      <section class="documentView__section documentView__section--fluid">
-        <h3 class="documentView__sectionTitle">document</h3>
-        <form is="document-form"></form>
-      </section>
-      <section class="documentView__section documentView__section--fixed">
-        <h3 class="documentView__sectionTitle">commentaires</h3>
-        <ul is="document-comment-list"></ul>
-      </section>
+      <section class="documentView__section documentView__section--fixed" is="document-card-section" data-label="documents"></section>
+      <section class="documentView__section documentView__section--fluid" is="document-editor-section" data-label="éditeur"></section>
+      <section class="documentView__section documentView__section--fixed" is="document-comment-section" data-label="commentaires"></section>
     </div>
   </template>
 
-  <!-- template | document form -->
-  <template id="template-document-form">
-    <input id="x" type="hidden" name="content" value="Trix seems to be very good, let's try to put initial text">
-    <trix-editor input="x"></trix-editor>
+  <!-- template | document card -->
+  <template id="template-document-card">
+
+  </template>
+
+  <!-- template | document editor -->
+  <template id="template-document-editor">
+    <input id="trix-editor" type="hidden" name="content">
+    <trix-editor class="documentEditor__editor" input="trix-editor"></trix-editor>
+  </template>
+
+  <!-- template | document comment -->
+  <template id="template-document-comment">
+    
   </template>
 
   <!-- template | dispatch view -->

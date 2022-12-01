@@ -10,6 +10,10 @@ import { WebCloseButton } from "./components/web-button";
 import WebToolbar from "./components/web-toolbar";
 import CarView from "./views/car/components/car-view";
 import DocumentView from "./views/document/components/document-view";
+import DocumentCardSection from "./views/document/components/document-section/document-card-section";
+import DocumentEditorSection from "./views/document/components/document-section/document-editor-section";
+import DocumentCommentSection from "./views/document/components/document-section/document-comment-section";
+import DocumentEditor from "./views/document/components/document-editor";
 import DocumentToolbar from "./views/document/components/document-toolbar";
 import DispatchView from "./views/dispatch/components/dispatch-view";
 import DispatchToolbar from "./views/dispatch/components/dispatch-toolbar";
@@ -43,6 +47,10 @@ customElements.define("car-view", CarView, { extends: "article" });
  */
 customElements.define("document-view", DocumentView, { extends: "article" });
 customElements.define("document-toolbar", DocumentToolbar, { extends: "header" });
+customElements.define("document-card-section", DocumentCardSection, { extends: "section" });
+customElements.define("document-editor-section", DocumentEditorSection, { extends: "section" });
+customElements.define("document-comment-section", DocumentCommentSection, { extends: "section" });
+customElements.define("document-editor", DocumentEditor, { extends: "form" });
 
 /**
  * dispatch view

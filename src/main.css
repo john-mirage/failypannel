@@ -12,7 +12,11 @@
 @import "./components/web-toolbar/web-toolbar.style.css";
 
 @import "./views/car/components/car-view/car-view.style.css";
+
 @import "./views/document/components/document-view/document-view.style.css";
+@import "./views/document/components/document-section/document-section.style.css";
+@import "./views/document/components/document-editor/document-editor.style.css";
+
 @import "./views/dispatch/components/dispatch-view/dispatch-view.style.css";
 @import "./views/dispatch/components/dispatch-category/dispatch-category.style.css";
 @import "./views/dispatch/components/dispatch-group/dispatch-group.style.css";

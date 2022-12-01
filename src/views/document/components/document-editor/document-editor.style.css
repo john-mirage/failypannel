@@ -1,0 +1,13 @@
+.documentEditor {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 36px);
+}
+
+.documentEditor__toolbar {
+  flex: none;
+}
+
+.documentEditor__editor {
+  flex: 1;
+}
